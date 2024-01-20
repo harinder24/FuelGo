@@ -1,6 +1,7 @@
 import React, { } from "react";
 import LandingPage from "./Screen/LandingPage";
 import Login from "./Screen/Login";
+import Signup from "./Screen/Signup";
 
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
     // <LandingPage/>
 
     <Login/>
+    // <Signup/>
   );
 }
 

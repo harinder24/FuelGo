@@ -11,10 +11,10 @@ function NavLanding() {
           <div className="font-medium text-[rgb(14,164,233)]">Go</div>
         </div>
         <div className="flex flex-row items-center w-full justify-end gap-x-2">
-          <div className=" px-2 py-1 bg-lightMode-button dark:bg-lightMode-button text-lightMode-header dark:text-lightMode-header font-medium rounded-lg hover:bg-lightMode-buttonHover text-center cursor-pointer">
+          <div className=" px-2 py-1 bg-lightMode-button dark:bg-lightMode-button text-lightMode-header dark:text-lightMode-header font-medium rounded-sm hover:bg-lightMode-buttonHover text-center cursor-pointer">
             Log in
           </div>
-          <div className="  px-2  py-1 bg-lightMode-button dark:bg-lightMode-button text-lightMode-header dark:text-lightMode-header font-medium rounded-lg hover:bg-lightMode-buttonHover text-center cursor-pointer">
+          <div className="  px-2  py-1 bg-lightMode-button dark:bg-lightMode-button text-lightMode-header dark:text-lightMode-header font-medium rounded-sm hover:bg-lightMode-buttonHover text-center cursor-pointer">
             Sign up
           </div>
         </div>

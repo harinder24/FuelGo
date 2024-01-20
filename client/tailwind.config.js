@@ -16,6 +16,7 @@ export default {
           bg: "#0e1726",
           sbg: "#182335",
           tbg: "#141d2c",
+          p: "#747c88",
 
         },
         darkMode: {
@@ -27,6 +28,7 @@ export default {
           bg: "#0e1726",
           sbg: "#182335",
           tbg: "#141d2c",
+          p: "#747c88",
           // primaryPurple: '#6a1b9a',
           // accentPurple: '#7c43bd',
           // background: '#2c3e50',
