@@ -8,10 +8,10 @@ function App() {
 
   return (
  
-    // <LandingPage/>
+    //  <LandingPage/>
 
-    <Login/>
-    // <Signup/>
+    // <Login/>
+    <Signup/>
   );
 }
 
