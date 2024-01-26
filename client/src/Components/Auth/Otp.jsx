@@ -44,7 +44,7 @@ export default function Otp({ isLogin , setOtpPopUp,setIsOtpValid }) {
   return (
     <div
       onClick={(e) => OtpPopUpChecker(e)}
-      className=" absolute top-0 right-0  "
+      className=" absolute top-0 right-0 z-40 "
     >
       <div
         id="otpCard"

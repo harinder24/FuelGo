@@ -23,7 +23,7 @@ export default function BgBlackOpacity({ children}) {
   }, []);
 
   return (
-    <div   className=" absolute top-0 right-0 w-screen h-screen bg-[rgb(1,1,1,0.5)]">
+    <div   className=" absolute top-0 right-0 w-screen h-screen bg-[rgb(1,1,1,0.5)] z-[39]">
     {children}
     </div>
   );
