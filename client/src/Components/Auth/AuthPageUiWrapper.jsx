@@ -407,10 +407,10 @@ function handleMouseEnter() {
         <WhatshotIcon sx={{ color: "rgb(14,165,233)", fontSize: "50px" }} />
       </div>
       <div className=" w-screen min-h-screen h-auto bg-lightMode-bg dark:bg-darkMode-bg flex justify-center items-center ">
-        <div className=" absolute  z-30">
+        <div  className=" absolute  z-30">
           <div className="px-4">
         <div className=" w-[800px] max-[840px]:w-[calc(100vw-32px)] h-[500px] bg-lightMode-sbg dark:bg-darkMode-sbg rounded-lg border-lightMode-border dark:border-darkMode-border border-[3px] flex flex-row overflow-hidden">
-        <div className=" relative flex-1 w-full h-full max-[640px]:hidden overflow-hidden">
+        <div onMouseEnter={handleMouseEnter} className=" relative flex-1 w-full h-full max-[640px]:hidden overflow-hidden">
         <div class="screen-image"></div>  
           <div className="screen-overlay"></div>
           <div className=" absolute z-30 top-0 w-full h-full p-4">
@@ -424,22 +424,12 @@ function handleMouseEnter() {
               </div>
               <div className="FuelGoLogoAuthWrap">
               <div 
-              onMouseEnter={handleMouseEnter} className="FuelGoLogoAuth pb-6" data-value="FuelGo">{name}</div>
+               className="FuelGoLogoAuth pb-6" data-value="FuelGo">{name}</div>
               </div>
             </div>
           </div>
           </div>
-          {/* 
-            <div className="flex-1 flex w-full h-full flex-row items-center justify-center  ">
-             
-            </div>
-            <div className=" absolute top-0 w-full flex items-center justify-center pt-4">
-              <div className="font-lg text-2xl text-lightMode-header">Fuel</div>
-              <div className="font-medium text-2xl text-[rgb(14,164,233)]">
-                Go
-              </div>
-            </div>
-           */}
+         
           <div className="border-lightMode-border dark:border-darkMode-border border-r-[3px] max-[640px]:hidden">
 
           </div>
