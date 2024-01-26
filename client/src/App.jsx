@@ -2,16 +2,41 @@ import React, { } from "react";
 import LandingPage from "./Screen/LandingPage";
 import Login from "./Screen/Login";
 import Signup from "./Screen/Signup";
+import ForgetPassword from "./Screen/ForgetPassword";
+import ChangePassWord from "./Screen/ChangePassWord";
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <LandingPage/>,
+  },
+  {
+    path: "/login",
+    element: <Login/>,
+  },
+  {
+    path: "/signup",
+    element: <Signup/>,
+  },
+  {
+    path: "/forgetpassword",
+    element: <ForgetPassword/>,
+  },
+  {
+    path: "/changepassWord",
+    element: <ChangePassWord/>,
+  },
+]);
 
 function App() {
 
   return (
  
-    //  <LandingPage/>
-
-    // <Login/>
-    <Signup/>
+    <RouterProvider router={router} />
   );
 }
 
