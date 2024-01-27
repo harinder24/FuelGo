@@ -12,7 +12,7 @@ function Controls({ }) {
 const x = controls.camera.position.x
 controls.zoom = false;
   useFrame(() => {
-    controls.rotate(0.001, 0, 0); // Adjust rotation speed as needed
+    controls.rotate(0.0003, 0, 0); // Adjust rotation speed as needed
     controls.update();
     // if(zoom){
     //   zoom ? pos.set(focus.x + 0.5, focus.y + 0.5, focus.z + 0.5) : pos.set(3.422061460869188, 5.315856452720275, 10.150449432123484);

@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import OtpInput from "react-otp-input";
 import CloseIcon from '@mui/icons-material/Close';
-export default function Otp({ isLogin , setOtpPopUp,setIsOtpValid }) {
+import axios from 'axios'
+import Loading from "../Loading";
+export default function Otp({  setOtpPopUp,setIsOtpValid,email }) {
   const [otp, setOtp] = useState("");
   const [nineToZero, setNineToZero] = useState(0);
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false)
   const OtpPopUpChecker = (e) => {
    
     if (e && e.target) {
@@ -22,8 +25,29 @@ export default function Otp({ isLogin , setOtpPopUp,setIsOtpValid }) {
     nineToZeroHandler();
   }, []);
   async function resendHandler(){
-    setNineToZero(9);
-    nineToZeroHandler();
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/auth/otpresend",
+        {
+          email: email,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const {success} = response.data
+      if(success === true){
+        
+      setNineToZero(9);
+      nineToZeroHandler();
+        
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+    }
+   
   }
   async function nineToZeroHandler() {
     let num = 9;
@@ -34,14 +58,46 @@ export default function Otp({ isLogin , setOtpPopUp,setIsOtpValid }) {
     }
   }
   async function submitOtp() {
-    if(!isLogin){
+    setIsLoading(true)
+setError("")
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/auth/otpvalidation",
+        {
+          email: email,
+          otp: otp
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const {success, error} = response.data
+      setIsLoading(false)
+      if (success === false) {
+        setError(error)
+      } else if(success === true){
+     
         setIsOtpValid(true)
+        setOtpPopUp(false)
+        
+      }
+    } catch (error) {
+      setIsLoading(false)
+      console.error("Network error:", error);
     }
   
-    setOtpPopUp(false)
+
+       
+   
   }
   
   return (
+    <>
+    {isLoading &&     <div className=" absolute top-0 w-screen h-screen z-[50]"> <Loading/></div>}
+
+   
     <div
       onClick={(e) => OtpPopUpChecker(e)}
       className=" absolute top-0 right-0 z-40 "
@@ -66,6 +122,7 @@ export default function Otp({ isLogin , setOtpPopUp,setIsOtpValid }) {
                   value={otp}
                   onChange={setOtp}
                   numInputs={4}
+                  shouldAutoFocus={true}
                   renderSeparator={
                     <span className=" text-lightMode-tbg text:border-darkMode-tbg text-2xl font-bold leading-none ">
                       -
@@ -113,7 +170,7 @@ export default function Otp({ isLogin , setOtpPopUp,setIsOtpValid }) {
           </div>
         </div>
       </div>
-    </div>
+    </div></>
   );
 }
 {

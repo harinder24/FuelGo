@@ -3,13 +3,15 @@ import { TextField, Grid, ThemeProvider } from "@mui/material";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
 import Button from "../Button";
 import theme from "../Theme/Mui";
-import googleImg from "../../../public/google.png";
-import facebookImg from "../../../public/facebook.png";
+import googleImg from "/public/google.png";
+import facebookImg from "/facebook.png";
 import BgBlackOpacity from "../BgBlackOpacity";
 import Otp from "./Otp";
 import EditIcon from "@mui/icons-material/Edit";
 import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Loading from "../Loading";
 export default function AuthPageUiWrapper({ isLogin = true }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,6 +20,7 @@ export default function AuthPageUiWrapper({ isLogin = true }) {
   const [errorPasswordBorder, setErrorPasswordBorder] = useState(false);
   const [otpPopUp, setOtpPopUp] = useState(false);
   const [isOtpValid, setIsOtpValid] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
   const handleLogin = (e) => {};
 
   const handleSubmit = (e) => {
@@ -28,15 +31,55 @@ export default function AuthPageUiWrapper({ isLogin = true }) {
     if (isLogin) {
       handleLogin();
     } else {
-      setOtpPopUp(true);
+      handlesignup()
     }
   };
 
-  const handlesignup = (e) => {
-    setOtpPopUp(true);
+  const handlesignup = async() => {
+    setIsLoading(true)
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/auth/emailsignup",
+        {
+          email: email,
+          password: password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+
+        }
+      );
+      const {success, fault, error} = response.data
+      setIsLoading(false)
+      if (success === false) {
+        if(fault === "none"){
+          setError(error)
+        }else if(fault === "password"){
+          setErrorPasswordBorder(true)
+          setError(error)
+        }else if(fault === "email"){
+          setErrorEmailBorder(true)
+          setError(error)
+        }
+      } else if(success === true){
+        
+          setOtpPopUp(true)
+        
+      }
+    } catch (error) {
+      setIsLoading(false)
+      console.error("Network error:", error);
+    }
+  
+
+
+   
   };
   return (
     <>
+     {isLoading &&     <div className=" absolute top-0 w-screen h-screen z-[50]"> <Loading/></div>}
       <AuthPageUiWrapperComp>
         {isOtpValid ? (
           <UserDataForm />
@@ -60,8 +103,8 @@ export default function AuthPageUiWrapper({ isLogin = true }) {
           <BgBlackOpacity>
             {" "}
             <Otp
+            email={email}
               setIsOtpValid={setIsOtpValid}
-              isLogin={isLogin}
               setOtpPopUp={setOtpPopUp}
             />
           </BgBlackOpacity>
@@ -205,6 +248,7 @@ function AuthForm({
       </h4>
 
       <form onSubmit={handleSubmit} noValidate>
+       
         <ThemeProvider theme={theme}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -212,7 +256,7 @@ function AuthForm({
                 error={errorEmailBorder}
                 variant="outlined"
                 fullWidth
-                className=" caret-white bg-lightMode-tbg dark:bg-darkMode-tbg rounded-sm text-lightMode-p"
+                className="  caret-white   bg-lightMode-tbg dark:bg-darkMode-tbg rounded-sm text-lightMode-p"
                 size="small"
                 color="primary"
                 label="Email"
@@ -328,7 +372,7 @@ export function AuthPageUiWrapperComp({ children }) {
 function setNewName(n) {
   setName(n);
 }
-
+useEffect(()=>{handleMouseEnter()},[])
 async function updateNameWithDelay(charArray, charArray2, charArray3) {
   for (let i = 0; i < charArray.length ; i++) {
     
@@ -423,8 +467,11 @@ function handleMouseEnter() {
               <div className=" blur-[2px] bg-lightMode-button  w-10 h-[2px] my-6"></div>
               </div>
               <div className="FuelGoLogoAuthWrap">
-              <div 
-               className="FuelGoLogoAuth pb-6" data-value="FuelGo">{name}</div>
+              <div className="FuelGoLogoAuth pb-6 flex flex-row" data-value="FuelGo">
+                <div>{name.slice(0, -2)}</div>
+  
+  <div className="text-lightMode-button ">{name.slice(-2)}</div>
+</div>
               </div>
             </div>
           </div>
