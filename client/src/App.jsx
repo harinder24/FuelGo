@@ -8,12 +8,16 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+import Error from "./Screen/Error";
+import Home from "./Screen/Home";
+
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <LandingPage/>,
   },
+
   {
     path: "/login",
     element: <Login/>,
@@ -27,8 +31,16 @@ const router = createBrowserRouter([
     element: <ForgetPassword/>,
   },
   {
-    path: "/changepassWord",
+    path: "/changepassword/:id",
     element: <ChangePassWord/>,
+  },
+  {
+    path: "/error",
+    element: <Error/>,
+  },
+  {
+    path: "/home",
+    element: <Home/>,
   },
 ]);
 

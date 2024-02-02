@@ -1,37 +1,75 @@
 
-import React, { useRef, useEffect} from "react";
-import { OrbitControls } from "@react-three/drei";
+import React, { useRef, useEffect,useMemo, useState} from "react";
+import { OrbitControls, Text, Html  } from "@react-three/drei";
 import Model from "../../../public/Route_66_adventure_-_sketchfab_challenge";
+
 import * as THREE from 'three';
 
-const CanvasComponent = ({setIsModelRendered}) => {
-    const controls = useRef();
-    const target = new THREE.Vector3();
-   
 
+import { useFrame, useThree } from "@react-three/fiber";
+// import SetParticlesGrid from "./PictureMesh.jsx";
+
+
+const CanvasComponent = ({setIsModelRendered,isAboutUsActive}) => {
+    const controls = useRef();
+  
+    const cubeRef = useRef()
+ 
+
+  // useFrame(() => {
+  //   if (cubeRef.current) { 
+  //     cubeRef.current.rotation.y += 0.0005;
+  //   }
+   
+  // });
     const handleControlsUpdate = () => {
-      console.log("hi");
+    
       setIsModelRendered(true);
     };
+    // const meshPosition = 
     return (
       <>
-        <ambientLight />
-        <Model />
+        <ambientLight  intensity={1}/>
+      
+      
+      <mesh position={[0,0,0]}   ref={cubeRef}>
+        {/* <Model /> */}
+        <SetParticlesGrid/>
+        </mesh>
+        <mesh  >
+       {/* {
+        isAboutUsActive &&
+        <></>
+        // < position={[0, 15.35,  40.5]}/>
+       } */}
+        
+     
+ 
+      </mesh>
         <OrbitControls
-          ref={controls}
-          enableZoom={false}
+         
+           enableZoom={true}
           enablePan={true}
+          
           enableRotate={true}
-          zoomSpeed={0.5}
-          panSpeed={0.5}
-          rotateSpeed={0.5}
-          target={[0, 0, 0]}
-          onUpdate={handleControlsUpdate} 
+       
+          // zoomSpeed={0.5}
+          // panSpeed={0.5}
+          // rotateSpeed={0.5}
+          // target={[0, 0, 0]}
+         onUpdate={handleControlsUpdate} 
+       
         />
+        
       </>
     );
   }
 
+ 
+  
+  
+  
+  
 
-
+  
 export default CanvasComponent;

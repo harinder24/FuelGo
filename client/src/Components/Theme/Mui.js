@@ -21,7 +21,20 @@ const theme = createTheme({
         root: {
           '& .MuiOutlinedInput-notchedOutline': {
             borderColor: '#747c88', // Change the border color for TextField
+
+            
           },
+          '&.Mui-focused .MuiOutlinedInput-notchedOutline' : {
+            borderColor: 'rgb(14,165,233)', // 
+            boxShadow: `0 0 4px #38bdf8`,
+
+          },
+          '&:hover .MuiOutlinedInput-notchedOutline' : {
+            borderColor: 'rgb(14,165,233)', // 
+            boxShadow: `0 0 4px #38bdf8`,
+
+          },
+         
         },
       },
     },
