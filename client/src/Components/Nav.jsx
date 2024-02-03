@@ -9,7 +9,7 @@ function NavLanding() {
   return (
     <div className="w-full h-full flex flex-row justify-center items-center mt-2 ">
       <div className=" w-[1400px] min-w-auto h-full items-center px-4 flex flex-row justify-between">
-        <div className="flex items-center  ">
+        <div className="flex items-center flex-row gap-x-1 ">
           <WhatshotIcon sx={{ color: "rgb(14,164,233)", fontSize:"28px" }}  />
           {/* <Icon size={28} /> */}
           <div

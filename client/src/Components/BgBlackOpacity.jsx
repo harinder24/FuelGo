@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-export default function BgBlackOpacity({ children}) {
+export default function BgBlackOpacity({ isTransparent = false ,children}) {
   const toggleBodyScroll = (enableScroll) => {
     const body = document.body;
     const html = document.documentElement;
@@ -23,7 +23,7 @@ export default function BgBlackOpacity({ children}) {
   }, []);
 
   return (
-    <div   className=" absolute top-0 right-0 w-screen h-screen bg-[rgb(1,1,1,0.5)] z-[39]">
+    <div   className={` absolute top-0 right-0 w-screen h-screen ${isTransparent ? "bg-transparent" : "bg-[rgb(1,1,1,0.5)]"}  z-[39]`}>
     {children}
     </div>
   );

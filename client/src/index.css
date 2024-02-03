@@ -18,9 +18,26 @@
 .fbg {
   @apply bg-lightMode-fbg dark:bg-darkMode-fbg;
 }
+.bgbtn {
+  @apply bg-lightMode-button dark:bg-darkMode-button;
+}
+.cborder {
+  @apply border-lightMode-border dark:border-darkMode-border;
+}
 .tbg-gradient {
   background: #33415580;
   background: linear-gradient(45deg, #33415580 0%, #212c3b80 100%);
+}
+@keyframes slideIn {
+  from {
+    transform: translateX(-312px); /* Move from left to right */
+  }
+  to {
+    transform: translateX(0); /* Move to the right */
+  }
+}
+.animate-slide-in {
+  animation: slideIn 0.5s forwards; /* 0.5s duration for sliding in */
 }
 input::-ms-reveal {
   filter: invert(100%);
