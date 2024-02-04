@@ -327,6 +327,9 @@ function UserDataForm({
           <EditIcon />
         </div>
       </div>
+      <div className=" text-sm text-lightMode-p dark:text-darkMode-p mt-1 pb-1">
+            Name*
+          </div>
       <form onSubmit={(e) => handleUserData(e)} noValidate>
         <div className="w-full relative">
           <input
@@ -837,7 +840,11 @@ function ForgetPasswordGetEmail({
         We will send an email, follow the link in email to change password
       </h4>
       <form onSubmit={submit} noValidate>
+      <div className=" text-sm text-lightMode-p dark:text-darkMode-p my-1">
+            Email*
+          </div>
         <div className="w-full relative">
+          
           <input
             autoFocus
             style={errorEmailBorder ? { borderColor: "rgb(211 47 47 )" } : {}}
@@ -886,7 +893,7 @@ export function ChangePassWordComp() {
   let { id } = useParams();
   const navigate = useNavigate();
   useEffect(() => {
-    changePasswordParamVerification();
+     changePasswordParamVerification();
   }, []);
 
   const changePasswordParamVerification = async () => {
@@ -968,6 +975,9 @@ export function ChangePassWordComp() {
           Password must be 6 or more characters long
         </h4>
         <form onSubmit={submitPassword} noValidate>
+        <div className=" text-sm text-lightMode-p dark:text-darkMode-p mt-1">
+            Password*
+          </div>
           <div className="w-full relative">
             <input
               style={
@@ -985,7 +995,11 @@ export function ChangePassWordComp() {
               <LockOpenOutlinedIcon sx={{ color: "#747c88" }} />
             </div>
           </div>
+          <div className=" text-sm text-lightMode-p dark:text-darkMode-p mt-1">
+            Confirm password*
+          </div>
           <div className="w-full relative">
+          
             <input
               style={
                 errorConfirmPasswordBorder

@@ -102,6 +102,7 @@ function MainBody({ isList }) {
 function StationMap() {
   const [showStationInfo, setShowStationInfo] = useState(false);
   const mapRef = useRef(null);
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 520);
   const mapStyle = [
     { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
     { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
@@ -195,7 +196,7 @@ function StationMap() {
     height: "100%",
     width: "100%",
     border: "0px",
-    borderRadius: "8px",
+    borderRadius: isSmallScreen ? "0px" : "8px",
   };
   const initialPosition = {
     lat: 49.258347,
@@ -208,6 +209,7 @@ function StationMap() {
     <div className="w-full h-full relative">
       {showStationInfo && <StationInfo setShowStationInfo={setShowStationInfo}/>}
       <GoogleMap
+      
         ref={mapRef}
         options={mapOptions}
         mapContainerStyle={mapContainerStyle}
