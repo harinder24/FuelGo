@@ -8,16 +8,18 @@ import PixIcon from "@mui/icons-material/Pix";
 import ContactSupportOutlinedIcon from '@mui/icons-material/ContactSupportOutlined';
 import PowerSettingsNewOutlinedIcon from '@mui/icons-material/PowerSettingsNewOutlined';
 
+import BgBlackOpacity from "../../Components/BgBlackOpacity";
+
 
 export default function Profile() {
     return (
-      <div className="w-full h-full bg-lightMode-sbg flex flex-col dark:bg-darkMode-sbg rounded-xl max-[1000px]:rounded-none">
-        <div className="p-2 pb-0 w-full mb-6">
+      <div className="w-full h-full caret-transparent bg-lightMode-sbg flex flex-col dark:bg-darkMode-sbg rounded-xl max-[1000px]:rounded-none overflow-auto">
+        <div className="p-2 pb-0 w-full mb-6 ">
           <div className="w-full border-t-[1px] border-lightMode-fbg h-[88px] rounded-xl tbg-gradient flex flex-row items-center  p-4 ">
             <div className="flex flex-row gap-x-4 items-center w-full justify-between">
               <div className="flex flex-row gap-x-4 items-center flex-1">
                 <img
-                  className="size-14 rounded-full"
+                  className="size-14 rounded-full object-cover"
                   src="../public/oilrig.jpg"
                   alt=""
                 />
@@ -75,7 +77,7 @@ export default function Profile() {
               sx={{ color: "#ffffff", fontSize: 25 }}
             />
             <div className="text-lightMode-header dark:text-darkMode-header text-sm">
-              Favourite
+              Avatar
             </div>
           </div>
         </div>
@@ -123,4 +125,17 @@ export default function Profile() {
       </div>
     );
   }
-  
+  export function ProfilePopUp({ setIsProfilePopUp }) {
+    return (
+      <BgBlackOpacity>
+        <div
+          onClick={() => setIsProfilePopUp(false)}
+          className=" absolute top-0 w-screen h-screen z-40"
+        >
+          <div className=" absolute top-0  w-[312px] h-full animate-slide-in">
+            <Profile />
+          </div>
+        </div>
+      </BgBlackOpacity>
+    );
+  }

@@ -5,7 +5,10 @@
 .customInput {
   @apply w-full rounded-lg h-[40px] border-[1px] focus-visible:outline-none bg-lightMode-tbg dark:bg-darkMode-tbg border-lightMode-border dark:border-darkMode-border  focus-visible:border-lightMode-button focus-visible:shadow-[0_0px_6px_#38bdf8] caret-lightMode-p dark:caret-darkMode-p placeholder:text-lightMode-p dark:placeholder:text-darkMode-p text-white;
 }
-
+body,
+html {
+  overflow: hidden;
+}
 .bg {
   @apply bg-lightMode-bg dark:bg-darkMode-bg;
 }
@@ -19,10 +22,23 @@
   @apply bg-lightMode-fbg dark:bg-darkMode-fbg;
 }
 .bgbtn {
-  @apply bg-lightMode-button dark:bg-darkMode-button;
+  @apply bg-lightMode-button dark:bg-darkMode-button hover:bg-lightMode-buttonHover hover:dark:bg-darkMode-buttonHover;
+}
+.bgbtn2 {
+  @apply bg-lightMode-bg dark:bg-darkMode-bg
+  hover:bg-lightMode-tbg dark:hover:bg-darkMode-tbg;
 }
 .cborder {
   @apply border-lightMode-border dark:border-darkMode-border;
+}
+.th {
+  @apply text-lightMode-header dark:text-darkMode-header;
+}
+.tb {
+  @apply text-lightMode-button dark:text-darkMode-button;
+}
+.tp {
+  @apply text-lightMode-p dark:text-darkMode-p;
 }
 .tbg-gradient {
   background: #33415580;
@@ -36,6 +52,40 @@
     transform: translateX(0); /* Move to the right */
   }
 }
+/* ::-webkit-scrollbar {
+ 
+  width: 12px;
+}
+
+ ::-webkit-scrollbar-thumb {
+  border: 4px solid rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+  border-radius: 9999px;
+  background: #33415580;
+    /* background: linear-gradient(to right, transparent, transparent 25%, #33415580 25%, #33415580 75%, transparent 75%, transparent); */
+
+  
+/* }  */ 
+::-webkit-scrollbar {
+  width: 14px;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 4px solid rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+  border-radius: 9999px;
+  background-color: #33415580;
+}
+
+
+@media only screen and (max-width: 520px) {
+  ::-webkit-scrollbar {
+ 
+    width: 0px;
+  }
+}
+
+
 .animate-slide-in {
   animation: slideIn 0.5s forwards; /* 0.5s duration for sliding in */
 }
