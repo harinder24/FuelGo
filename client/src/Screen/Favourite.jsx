@@ -11,7 +11,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import stationMarke from '../../public/station.png';
 import CloseIcon from '@mui/icons-material/Close';
-export default function Home() {
+export default function Favourite() {
   // const [isMobile, setIsMobile] = useState(false);
   // const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isProfilePopUp, setIsProfilePopUp] = useState(false);
@@ -295,7 +295,7 @@ function IndividualStationsList() {
   const totalStars = 5;
   const size = 16;
   const stars = [];
-  const isFavourite = false;
+  const isFavourite = true;
   // Filled stars
   for (let i = 0; i < filledStars; i++) {
     stars.push(<StarIcon key={i} sx={{ color: 'gold', fontSize: size }} />);
@@ -372,7 +372,11 @@ function IndividualStationsList() {
       </div>
       <div className=' flex flex-col justify-between th max-[720px]:hidden'>
         <div className='  p-2 rounded-full sbg cursor-pointer'>
-          {isFavourite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+          {isFavourite ? (
+            <FavoriteIcon className='text-red-600' />
+          ) : (
+            <FavoriteBorderIcon />
+          )}
         </div>
         <div className=' tb p-2 rounded-full sbg cursor-pointer'>
           <NavigateNextIcon />
