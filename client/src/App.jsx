@@ -8,6 +8,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Error from './Screen/Error';
 import Home from './Screen/Home';
 import Favourite from './Screen/Favourite';
+import Rewards from './Screen/Rewards';
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
   {
     path: '/favourite',
     element: <Favourite />,
+  },
+  {
+    path: '/rewards',
+    element: <Rewards />,
   },
 ]);
 

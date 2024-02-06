@@ -13,7 +13,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useState } from 'react';
 import Button from '../Button';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function Profile() {
   const [isSettings, setIsSettings] = useState(false);
@@ -84,6 +84,7 @@ function Avatar({ setIsAvatar, setIsProfile }) {
 
 function ProfileComp({ setIsSettings, setIsProfile, setIsFrame, setIsAvatar }) {
   const navigate = useNavigate();
+  const crrPath = useLocation().pathname;
   function settingsHandler() {
     setIsProfile(false);
     setIsSettings(true);
@@ -152,7 +153,9 @@ function ProfileComp({ setIsSettings, setIsProfile, setIsFrame, setIsAvatar }) {
       <div className='px-2 w-full caret-transparent'>
         <div
           onClick={() => navigate('/favourite')}
-          className=' flex flex-row items-center gap-x-4 p-4 rounded-xl cursor-pointer hover:bg-lightMode-tbg dark:hover:bg-darkMode-tbg'
+          className={` flex flex-row items-center gap-x-4 p-4 rounded-xl cursor-pointer hover:bg-lightMode-tbg dark:hover:bg-darkMode-tbg ${
+            crrPath === '/favourite' && 'bg-lightMode-tbg dark:bg-darkMode-tbg'
+          }`}
         >
           <FavoriteBorderOutlinedIcon sx={{ color: '#ffffff', fontSize: 25 }} />
           <div className='text-lightMode-header dark:text-darkMode-header text-sm'>
@@ -161,7 +164,12 @@ function ProfileComp({ setIsSettings, setIsProfile, setIsFrame, setIsAvatar }) {
         </div>
       </div>
       <div className='px-2 w-full caret-transparent'>
-        <div className=' flex flex-row items-center gap-x-4 p-4 rounded-xl cursor-pointer hover:bg-lightMode-tbg dark:hover:bg-darkMode-tbg'>
+        <div
+          onClick={() => navigate('/rewards')}
+          className={` flex flex-row items-center gap-x-4 p-4 rounded-xl cursor-pointer hover:bg-lightMode-tbg dark:hover:bg-darkMode-tbg ${
+            crrPath === '/rewards' && 'bg-lightMode-tbg dark:bg-darkMode-tbg'
+          }`}
+        >
           <WalletOutlinedIcon sx={{ color: '#ffffff', fontSize: 25 }} />
           <div className='text-lightMode-header dark:text-darkMode-header text-sm'>
             Rewards

@@ -2,13 +2,14 @@ import WhatshotIcon from '@mui/icons-material/Whatshot';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import FormatListBulletedOutlinedIcon from '@mui/icons-material/FormatListBulletedOutlined';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 export default function TopNav({
   setIsProfilePopUpHandler,
   isList,
   setIsList,
 }) {
   const navigate = useNavigate();
+  const isRewardPage = useLocation().pathname === '/rewards';
   return (
     <div className=' w-full rounded-lg sbg flex flex-row items-center p-4 gap-x-4 max-[520px]:rounded-none max-[520px]:p-2'>
       <div
@@ -41,10 +42,12 @@ export default function TopNav({
         <div
           onClick={() => setIsList(true)}
           className={`flex flex-row items-center ${
-            isList
+            !isRewardPage && isList
               ? 'text-lightMode-button dark:text-darkMode-button'
               : 'text-lightMode-p dark:text-darkMode-p'
-          }    w-[100px] justify-center gap-x-1 cursor-pointer max-[740px]:w-10`}
+          }    w-[100px] justify-center gap-x-1 ${
+            !isRewardPage && 'cursor-pointer'
+          } max-[740px]:w-10`}
         >
           <FormatListBulletedOutlinedIcon />
           <div className='max-[740px]:hidden'>List</div>
@@ -54,10 +57,12 @@ export default function TopNav({
         <div
           onClick={() => setIsList(false)}
           className={`flex flex-row items-center ${
-            !isList
+            !isRewardPage && !isList
               ? 'text-lightMode-button dark:text-darkMode-button'
               : 'text-lightMode-p dark:text-darkMode-p'
-          } w-[100px] justify-center gap-x-1 cursor-pointer max-[740px]:w-10`}
+          } w-[100px] justify-center gap-x-1 ${
+            !isRewardPage && 'cursor-pointer'
+          } max-[740px]:w-10`}
         >
           <MapOutlinedIcon />
           <div className='max-[740px]:hidden'>Map</div>
