@@ -9,6 +9,7 @@ import Error from './Screen/Error';
 import Home from './Screen/Home';
 import Favourite from './Screen/Favourite';
 import Rewards from './Screen/Rewards';
+import GasStation from './Screen/GasStation';
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
   {
     path: '/rewards',
     element: <Rewards />,
+  },
+  {
+    path: '/gs',
+    element: <GasStation />,
   },
 ]);
 
