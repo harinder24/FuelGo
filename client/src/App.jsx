@@ -1,60 +1,60 @@
-import React, { } from "react";
-import LandingPage from "./Screen/LandingPage";
-import Login from "./Screen/Login";
-import Signup from "./Screen/Signup";
-import ForgetPassword from "./Screen/ForgetPassword";
-import ChangePassWord from "./Screen/ChangePassWord";
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
-import Error from "./Screen/Error";
-import Home from "./Screen/Home";
-
+import React from 'react';
+import LandingPage from './Screen/LandingPage';
+import Login from './Screen/Login';
+import Signup from './Screen/Signup';
+import ForgetPassword from './Screen/ForgetPassword';
+import ChangePassWord from './Screen/ChangePassWord';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Error from './Screen/Error';
+import Home from './Screen/Home';
+import Favourite from './Screen/Favourite';
+import Rewards from './Screen/Rewards';
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <LandingPage/>,
+    path: '/',
+    element: <LandingPage />,
   },
 
   {
-    path: "/login",
-    element: <Login/>,
+    path: '/login',
+    element: <Login />,
   },
   {
-    path: "/signup",
-    element: <Signup/>,
+    path: '/signup',
+    element: <Signup />,
   },
   {
-    path: "/forgetpassword",
-    element: <ForgetPassword/>,
+    path: '/forgetpassword',
+    element: <ForgetPassword />,
   },
   {
-    path: "/changepassword/:id",
-    element: <ChangePassWord/>,
+    path: '/changepassword/:id',
+    element: <ChangePassWord />,
   },
   {
-    path: "/error",
-    element: <Error/>,
+    path: '/error',
+    element: <Error />,
   },
   {
-    path: "/home",
-    element: <Home/>,
+    path: '/home',
+    element: <Home />,
+  },
+  {
+    path: '/favourite',
+    element: <Favourite />,
+  },
+  {
+    path: '/rewards',
+    element: <Rewards />,
   },
 ]);
 
 function App() {
-
-  return (
- 
-    <RouterProvider router={router} />
-  );
+  return <RouterProvider router={router} />;
 }
 
-
 export default App;
-
 
 // import React, { Suspense, useRef } from "react";
 // import { Canvas } from "@react-three/fiber";
@@ -95,5 +95,3 @@ export default App;
 // }
 
 // export default App;
-
-
