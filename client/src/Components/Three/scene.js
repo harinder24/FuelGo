@@ -33,11 +33,11 @@ export default class MainScene {
   #stats;
   #width;
   #height;
-  #loadingScreen
+  #loadingScreen;
   #texture;
-  container
-  mesh
-  
+  container;
+  mesh;
+
   #guiObj = {
     progress: 0,
     showTitle: true,
@@ -46,7 +46,6 @@ export default class MainScene {
 
   constructor() {
     if (document.querySelector("canvas")) {
-      
       this.#canvas = document.querySelector(".scene");
     } else {
       const root = document.getElementById("root");
@@ -57,21 +56,21 @@ export default class MainScene {
       can.classList.add("scene");
       this.#canvas = document.querySelector(".scene");
     }
-    // if(!this.glb){
-    //    this.#loadingScreen = document.createElement('div');
-    //    this.#loadingScreen.classList = 'landing-loading-screen w-screen h-screen bg-lightMode-bg dark:bg-darkMode-bg absolute top-0 z-50';
-    //    this.#loadingScreen.innerHTML = `
-    //   <div class="w-full h-full flex justify-center items-center">
-    //     <div class="loadingScreen">
-    //       <div class="loadingScreenline"></div>
-    //       <div class="loadingScreenline"></div>
-    //       <div class="loadingScreenline"></div>
-    //     </div>
-     
-    // </div>
-    // `
-    // document.getElementById('root').appendChild(this.#loadingScreen);
-    // }
+    if(!this.glb){
+       this.#loadingScreen = document.createElement('div');
+       this.#loadingScreen.classList = 'landing-loading-screen w-screen h-screen bg-lightMode-bg dark:bg-darkMode-bg absolute top-0 z-50';
+       this.#loadingScreen.innerHTML = `
+      <div class="w-full h-full flex justify-center items-center">
+        <div class="loadingScreen">
+          <div class="loadingScreenline"></div>
+          <div class="loadingScreenline"></div>
+          <div class="loadingScreenline"></div>
+        </div>
+
+    </div>
+    `
+    document.getElementById('root').appendChild(this.#loadingScreen);
+    }
     this.init();
   }
 
@@ -85,17 +84,17 @@ export default class MainScene {
     ];
 
     await LoaderManager.load(assets);
-    this.#texture = LoaderManager.assets["image"].texture
+    this.#texture = LoaderManager.assets["image"].texture;
     //   this.setStats()
     //   this.setGUI()
-    this.isAbout = false
+    this.isAbout = false;
     this.setScene();
     this.setRender();
     this.setCamera();
     this.setControls();
     this.setAxesHelper();
-  //  this.loadGLBModel();
-  // this.setParticlesGrid()
+     this.loadGLBModel();
+    // this.setParticlesGrid()
 
     this.handleResize();
 
@@ -103,10 +102,10 @@ export default class MainScene {
     this.events();
   };
 
-  goBack(){
+  goBack() {
     this.#controls.enableRotate = true;
-    this.isAbout = false
-    this.#scene.remove(this.container)
+    this.isAbout = false;
+    this.#scene.remove(this.container);
     this.glb.scale.set(8, 8, 8);
   }
 
@@ -120,9 +119,9 @@ export default class MainScene {
         this.glb.rotateX(0.3);
         this.#scene.add(this.glb);
         const root = document.getElementById("root");
-        this.#loadingScreen.remove()
+        this.#loadingScreen.remove();
         const clock = new Clock();
-      
+
         // Render loop for continuous rotation
         const render = () => {
           const delta = clock.getDelta(); // Get the time elapsed since the last frame
@@ -141,15 +140,14 @@ export default class MainScene {
         render();
       }
     );
-    
   }
- 
+
   async aboutUs() {
     this.#controls.enableRotate = false;
-    this.container = new Group()
-    this.container.position.set(0,0,10)
-    this.#scene.add(this.container)
-    this.glb.scale.set(0.001,0.001,0.001)
+    this.container = new Group();
+    this.container.position.set(0, 0, 10);
+    this.#scene.add(this.container);
+    this.glb.scale.set(0.001, 0.001, 0.001);
     const assets = [
       {
         name: "image",
@@ -158,9 +156,9 @@ export default class MainScene {
     ];
 
     await LoaderManager.load(assets);
-    this.#texture = LoaderManager.assets["image"].texture
+    this.#texture = LoaderManager.assets["image"].texture;
     this.setParticlesGrid();
-    this.isAbout = true
+    this.isAbout = true;
   }
   setRender() {
     this.#renderer = new WebGLRenderer({
@@ -170,7 +168,7 @@ export default class MainScene {
   }
 
   async changeImg(num) {
-    const t = this.#texture
+    const t = this.#texture;
 
     await gsap.fromTo(
       this.material.uniforms.uProgress,
@@ -182,44 +180,42 @@ export default class MainScene {
         duration: 2.5,
         ease: "Power4.easeOut",
       }
-    )
-    if(num === 1){
+    );
+    if (num === 1) {
       const assets = [
         {
           name: "image",
           texture: "../../../public/aboutus1.png",
         },
       ];
-  
+
       await LoaderManager.load(assets);
-      this.#texture = LoaderManager.assets["image"].texture
-    }else if(num === 2){
+      this.#texture = LoaderManager.assets["image"].texture;
+    } else if (num === 2) {
       const assets = [
         {
           name: "image",
           texture: "../../../public/aboutus2.png",
         },
       ];
-  
+
       await LoaderManager.load(assets);
-      this.#texture = LoaderManager.assets["image"].texture
-    }else if(num === 3){
+      this.#texture = LoaderManager.assets["image"].texture;
+    } else if (num === 3) {
       const assets = [
         {
           name: "image",
           texture: "../../../public/aboutus3.png",
         },
       ];
-  
+
       await LoaderManager.load(assets);
-      this.#texture = LoaderManager.assets["image"].texture
+      this.#texture = LoaderManager.assets["image"].texture;
     }
     // const tex = this.#texture
     // this.material.uniforms.uTexture = tex
-    this.container.remove(this.mesh)
-    this.setParticlesGrid()
- 
-
+    this.container.remove(this.mesh);
+    this.setParticlesGrid();
   }
 
   /**
@@ -241,7 +237,7 @@ export default class MainScene {
     const gradient = ctx.createLinearGradient(0, canvas.width, 0, 0);
     gradient.addColorStop(0.5, "#ffffff"); // Red
     gradient.addColorStop(1, "rgb(14,164,233)"); // Cyan
-   
+
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -366,7 +362,7 @@ export default class MainScene {
     this.mesh.position.set(0, 0, 0);
     this.material = material;
     this.container.add(this.mesh);
-  
+
     gsap.fromTo(
       this.material.uniforms.uProgress,
       {
@@ -423,10 +419,9 @@ export default class MainScene {
 
     if (this.#controls) this.#controls.update(); // for damping
     this.#renderer.render(this.#scene, this.#camera);
-if(this.isAbout){
-  this.material.uniforms.uTime.value = time / 1000
-}
-
+    if (this.isAbout) {
+      this.material.uniforms.uTime.value = time / 1000;
+    }
 
     //   this.#stats.end()
     this.raf = window.requestAnimationFrame(this.draw);
@@ -443,7 +438,7 @@ if(this.isAbout){
     // Update camera
     this.#camera.aspect = this.#width / this.#height;
     this.#camera.updateProjectionMatrix();
-    if(this.isAbout){
+    if (this.isAbout) {
       if (this.#width > 800) {
         this.#camera.position.y = 0;
         this.#camera.position.x = 70;
@@ -461,9 +456,8 @@ if(this.isAbout){
         this.#camera.position.z = 550;
         this.#camera.position.x = 250;
       }
-    }else{
-     
-      if(this.#width > 530){
+    } else {
+      if (this.#width > 530) {
         this.#camera.position.y = 0;
         this.#camera.position.x = 70;
         this.#camera.position.z = 250;
@@ -472,8 +466,7 @@ if(this.isAbout){
         this.#camera.position.z = 350;
         this.#camera.position.x = 100;
       }
-  
-  }
+    }
     const DPR = window.devicePixelRatio ? window.devicePixelRatio : 1;
 
     this.#renderer.setPixelRatio(DPR);

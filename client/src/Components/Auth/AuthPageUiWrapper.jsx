@@ -28,6 +28,7 @@ export default function AuthPageUiWrapper({ isLogin = true }) {
   const [isOtpValid, setIsOtpValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isAgreedToTerms, setIsAgreedToTerms] = useState(false);
+  const navigate = useNavigate()
   const [img, setImg] = useState(
     "https://res.cloudinary.com/dddggrofv/image/upload/v1691608835/profile_lxq8sq.jpg"
   );
@@ -62,6 +63,7 @@ export default function AuthPageUiWrapper({ isLogin = true }) {
         }
       } else if (success === true) {
         localStorage.setItem("fuelgotoken", JSON.stringify(token));
+        navigate("/home")
       }
     } catch (error) {
       setIsLoading(false);
@@ -238,7 +240,7 @@ function UserDataForm({
 
   const [errorNameBorder, setErrorNameBorder] = useState(false);
   const [localLink, setLocalLink] = useState("");
-
+  const navigate = useNavigate()
   const handleUserData = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -262,6 +264,7 @@ function UserDataForm({
       setIsLoading(false);
       if (success === true) {
         localStorage.setItem("fuelgotoken", JSON.stringify(token));
+        navigate("/home")
       } else {
         setErrorNameBorder(true);
         setError(error);

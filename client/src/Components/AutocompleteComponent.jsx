@@ -56,7 +56,7 @@ setIsOptions(true)
              
                 {...getInputProps({
                   placeholder: ' Enter address',
-                  className: 'w-full h-full bg-inherit border-lightMode-border border-[0px]  pl-2 rounded-inherit focus-visible:outline-0 rounded-lg'
+                  className: 'w-full h-full bg-inherit border-lightMode-border border-[0px]  pl-2 rounded-inherit focus-visible:outline-0 rounded-lg caret-darkMode-p'
                 })}
               />
              {isOptions && address && 

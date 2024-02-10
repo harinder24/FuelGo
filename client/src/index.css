@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+*{
+  caret-color: transparent;
+}
+
 .customInput {
   @apply w-full rounded-lg h-[40px] border-[1px] focus-visible:outline-none bg-lightMode-tbg dark:bg-darkMode-tbg border-lightMode-border dark:border-darkMode-border  focus-visible:border-lightMode-button focus-visible:shadow-[0_0px_6px_#38bdf8] caret-lightMode-p dark:caret-darkMode-p placeholder:text-lightMode-p dark:placeholder:text-darkMode-p text-white;
 }
@@ -77,6 +81,25 @@ html {
   background-color: #33415580;
 }
 
+/* YourComponent.css */
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.animate-fadeInOut {
+  animation: fadeInOut 2s ease-out;
+}
 
 @media only screen and (max-width: 520px) {
   ::-webkit-scrollbar {

@@ -366,7 +366,7 @@ function IndividualStationsList() {
           </div>
         </div>
       </div>
-      <div className=" flex flex-col justify-between th max-[720px]:hidden">
+      <div className=" flex flex-col justify-between th max-[720px]:hidden ml-4">
         <div className="  p-2 rounded-full sbg cursor-pointer">
           {isFavourite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </div>
