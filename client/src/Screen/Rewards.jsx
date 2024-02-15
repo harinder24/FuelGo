@@ -1,12 +1,6 @@
 import { useState } from 'react';
 import Profile, { ProfilePopUp } from '../Components/User/Profile';
-import {
-  SiStarbucks,
-  SiAmazon,
-  SiUbereats,
-  SiApple,
-  SiGoogleplay,
-} from 'react-icons/si';
+import { SiStarbucks, SiAmazon, SiUbereats, SiApple } from 'react-icons/si';
 import { BiSolidPurchaseTagAlt } from 'react-icons/bi';
 import { MdClose } from 'react-icons/md';
 
@@ -66,12 +60,11 @@ export default function Rewards() {
   const [isList, setIsList] = useState(true);
   const [point, setPoint] = useState(2000);
   const [isPurchasing, setIsPurchasing] = useState(false);
-  const [reward, setReward] = useState();
+  const [modal, setModal] = useState();
 
   async function setIsProfilePopUpHandler() {
     setIsProfilePopUp(true);
   }
-
   return (
     <>
       {isPurchasing && (
@@ -79,7 +72,7 @@ export default function Rewards() {
           point={point}
           setPoint={setPoint}
           setIsPurchasing={setIsPurchasing}
-          reward={reward}
+          modal={modal}
         />
       )}
       <div
@@ -93,12 +86,14 @@ export default function Rewards() {
               <div className='w-[312px] h-full rounded-xl max-[1000px]:rounded-none max-[1230px]:hidden'>
                 <Profile />
               </div>
-              <ul className='flex-1 flex flex-col overflow-auto'>
+              <ul className='flex-1 flex flex-col overflow-auto p-4'>
                 {rewardsList.map((reward) => (
                   <RewardList
                     key={reward.title}
                     reward={reward}
                     point={point}
+                    setIsPurchasing={setIsPurchasing}
+                    setModal={setModal}
                   />
                 ))}
               </ul>
@@ -111,130 +106,177 @@ export default function Rewards() {
   );
 }
 
-function RewardCard({ reward, amount, price, point }) {
-  const { icon, bg } = reward;
-  const isAvailable = point > price;
+function RewardCard({ reward, amount, price, point, isSm, setIsPurchasing }) {
+  const { title, icon, bg } = reward;
+  const isAvailable = point >= price;
   const percent = isAvailable ? 100 : (point / price) * 100;
   const converted = percent.toFixed();
-
   return (
-    <li>
+    <>
       <div
-        className='w-56 p-4 rounded-xl flex flex-col th'
+        className={`w-56 p-4 rounded-xl flex flex-col th ${
+          isSm && ' w-48 h-32'
+        }`}
         style={{ backgroundColor: bg }}
       >
-        <div className=' flex justify-center mb-6 mt-2 text-4xl'>{icon}</div>
-
-        <div className=' w-full h-[6px] rounded-full bg-neutral-300 mb-4'>
-          <div
-            className='h-full rounded-full bg-white'
-            style={{ width: converted + '%' }}
-          ></div>
+        <div
+          className={` w-full h-full flex items-center justify-center text-4xl ${
+            !isSm && 'mb-6 mt-2'
+          }`}
+        >
+          {icon}
         </div>
+        {!isSm && (
+          <>
+            <div className=' w-full h-[6px] rounded-full bg-neutral-300 mb-4'>
+              <div
+                className='h-full rounded-full bg-white'
+                style={{ width: converted + '%' }}
+              ></div>
+            </div>
 
-        <div className='flex items-center text-sm justify-between'>
-          <div className='text-base font-medium'>$ {amount}</div>
-          <button
-            className={`flex items-center bg-black border-[3px] border-[#444444] px-2 py-0.5 rounded-full ${
-              isAvailable ? 'brightness-100' : 'brightness-70'
-            }`}
-            disabled={!isAvailable}
-          >
-            <img
-              className='w-5 h-5 mr-1.5'
-              src='https://img.icons8.com/3d-fluency/94/gas-station.png'
-              alt='token'
-            />
-            <span className='text-sm font-medium'>
-              {price.toLocaleString('en-US')}
-            </span>
-          </button>
-        </div>
+            <div className='flex items-center text-sm justify-between'>
+              <div className='text-base font-medium'>$ {amount}</div>
+              <button
+                onClick={() => setIsPurchasing(true)}
+                className={
+                  'flex items-center bg-black border-[3px] border-[#444444] px-2 py-0.5 rounded-full ' +
+                  `${!isAvailable && ' brightness-50'}`
+                }
+              >
+                <img
+                  className='w-5 h-5 mr-1.5'
+                  src='https://img.icons8.com/3d-fluency/94/gas-station.png'
+                  alt='token'
+                />
+                <span className='text-sm font-medium'>
+                  {price.toLocaleString('en-US')}
+                </span>
+              </button>
+            </div>
+          </>
+        )}
       </div>
-    </li>
+      {isSm && (
+        <div className='w-full min-w-36 text-center pt-3'>
+          <span className=' font-mono text-xs'>{title} Gift Card</span>
+          <div className='w-full flex items-center text-sm justify-between mt-4'>
+            <div className='text-base font-medium'>$ {amount}</div>
+            <div
+              className={
+                'flex items-center bg-black border-[3px] border-[#444444] px-2 py-0.5 rounded-full ' +
+                `${!isAvailable && ' brightness-50'}`
+              }
+            >
+              <img
+                className='w-5 h-5 mr-1.5'
+                src='https://img.icons8.com/3d-fluency/94/gas-station.png'
+                alt='token'
+              />
+              <span className='text-sm font-medium'>
+                {price.toLocaleString('en-US')}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
-function RewardList({ reward, point }) {
+function RewardList({ reward, point, setIsPurchasing, setModal }) {
   const { title } = reward;
+  const setModalInfo = (amount, price) => {
+    setModal({
+      card: (
+        <RewardCard
+          reward={reward}
+          point={point}
+          amount={amount}
+          price={price}
+          isSm
+        />
+      ),
+      price: price,
+      isAvailable: point >= price,
+    });
+  };
   return (
     <li>
       <span className='text-gray-400 text-sm font-mono font-semibold'>
         {title} Gift Card
       </span>
-      <ul className='flex w-full overflow-auto'>
+      <ul className='flex w-full overflow-auto my-4'>
         {amountOptions.map((option) => (
-          <RewardCard
+          <li
+            onClick={() => setModalInfo(option.amount, option.price)}
             key={title + option.amount}
-            reward={reward}
-            point={point}
-            amount={option.amount}
-            price={option.price}
-          />
+            className=' mr-3'
+          >
+            <RewardCard
+              reward={reward}
+              point={point}
+              amount={option.amount}
+              price={option.price}
+              setIsPurchasing={setIsPurchasing}
+              setModal={setModal}
+            />
+          </li>
         ))}
       </ul>
     </li>
   );
 }
 
-function PurchaseModal({ point, setPoint, setIsPurchasing, reward }) {
+function PurchaseModal({ point, setPoint, setIsPurchasing, modal }) {
   const [showCode, setShowCode] = useState(false);
-
-  const { title, icon, amount, requiredPoint } = reward;
-
+  const { card, price, isAvailable } = modal;
   const hardCodedCoupon = '4XC2-23BE-3TO7-2Y6P';
-  const balance = point - requiredPoint;
 
   const handleClick = () => {
     setIsPurchasing(false);
     setShowCode(false);
   };
   const getCoupon = () => {
+    const balance = point - price;
     setPoint(balance);
     setShowCode(true);
   };
 
   return (
     <div
-      className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-5/6 max-w-96 ${
-        showCode ? 'max-h-60' : 'max-h-96'
-      } h-5/6 border-t-[1px] border-lightMode-fbg bg-lightMode-sbg dark:bg-darkMode-sbg rounded-xl p-4 z-10 overflow-auto`}
+      className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-5/6 max-w-96 text-center overflow-x-hidden max-h-96 h-5/6 border-[1.5px] border-lightMode-fbg bg-lightMode-sbg dark:bg-darkMode-sbg rounded-xl p-5 z-10`}
     >
-      <div className='flex justify-end w-full text-darkMode-border min-w-36'>
+      <div className='flex justify-between w-full text-darkMode-border min-w-36 mb-4 mt-2 text-white ml-5'>
         <button onClick={handleClick}>
           <MdClose />
         </button>
+        <div className='flex items-center bg-black border-[3px] border-[#444444] px-2 py-0.5 pr-4 rounded-l-full border-r-0'>
+          <img
+            className='w-5 h-5 mr-1.5'
+            src='https://img.icons8.com/3d-fluency/94/gas-station.png'
+            alt='token'
+          />
+          <span className='text-sm font-medium'>
+            {point.toLocaleString('en-US')}
+          </span>
+        </div>
       </div>
-      <div className='flex flex-col items-center w-full mt-6 mb-6 min-w-36'>
-        <div className='text-4xl mb-2 min'>{icon}</div>
-        <h2 className='text-xl text-white font-medium mb-1'>{title}</h2>
-        <span className=' text-sm text-darkMode-valid'>$ {amount}</span>
-      </div>
+      <div className='flex flex-col items-center text-white'>{card}</div>
       {showCode ? (
-        <div className='flex flex-col w-full gap-5 items-center min-w-36'>
-          <div className='w-full border-[0.5px] border-solid border-darkMode-border rounded py-2 pl-2 text-darkMode-header text-xs '>
-            {hardCodedCoupon}
-          </div>
+        <div className=' mt-8 font-mono font-extrabold text-white'>
+          {hardCodedCoupon}
         </div>
       ) : (
-        <div className='flex flex-col w-full gap-5 items-center min-w-36'>
-          <div className='w-full border-[0.5px] border-solid border-darkMode-border rounded text-right py-2 pr-2 text-darkMode-valid text-xs '>
-            {point} Points
-          </div>
-          <div className='flex justify-between w-full border-[0.5px] border-solid border-darkMode-border rounded text-right py-2 px-2 text-darkMode-error text-xs '>
-            <span className='font-black tracking-[-0.2rem]'>--</span>
-            <span>{requiredPoint} Points</span>
-          </div>
-          <div className='w-full border-[0.5px] border-solid border-darkMode-border rounded text-right py-2 pr-2 text-darkMode-valid text-xs '>
-            {balance} Points
-          </div>
-          <button
-            onClick={getCoupon}
-            className='w-fit py-1.5 px-4 font-medium rounded-lg bg-darkMode-valid text-sm'
-          >
-            Get
-          </button>
-        </div>
+        <button
+          onClick={getCoupon}
+          className={`w-48 py-2 rounded-lg border-b-[5px] font-mono font-extrabold border-[#D46D0D] bg-[#F2A317] mt-8 ${
+            isAvailable && 'hover:brightness-110'
+          } `}
+          disabled={!isAvailable}
+        >
+          {isAvailable ? 'GET A CARD' : 'NOT ENOUGH UNIT'}
+        </button>
       )}
     </div>
   );
