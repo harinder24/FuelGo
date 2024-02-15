@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { NavLanding } from "../Components/Nav";
 
 import AutocompleteComponent from "../Components/AutocompleteComponent";
+import Button from "../Components/Button";
 export default function LandingPage() {
   return (
     <div className="w-screen h-screen relative bg-darkMode-bg overflow-y-auto overflow-hidden">
@@ -26,8 +27,17 @@ export default function LandingPage() {
                     Use current location
                   </div> */}
                 </div>
-                <div className=" h-10  th ">
+                <div className=" flex-1 flex flex-row gap-x-4">
+                <div className=" h-10 flex-1  th ">
                   <AutocompleteComponent />
+                </div>
+                <div className=" w-fit h-10 px-4 cursor-pointer  bgbtn flex flex-row items-center justify-center text-sm text-white rounded-lg">
+                  <div>
+                    Search
+                  </div>
+                  
+
+                </div>
                 </div>
               </div>
             </div>
