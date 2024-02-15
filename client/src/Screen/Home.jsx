@@ -9,7 +9,7 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { GoogleMap, Marker } from "@react-google-maps/api";
-import stationMarke from "../../public/station.png";
+import stationMarke from "/station.png";
 import CloseIcon from "@mui/icons-material/Close";
 export default function Home() {
   // const [isMobile, setIsMobile] = useState(false);
@@ -205,6 +205,28 @@ function StationMap() {
   const handleMarkerClick = () => {
     setShowStationInfo(true)
   };
+  useEffect(() => {
+    getThirdGmStyleChild();
+  }, []);
+  const getThirdGmStyleChild = async () => {
+    const gmStyleElements = document.querySelectorAll(".gm-style");
+
+    if (gmStyleElements.length === 0) {
+      if (count < 5) {
+        setCount((prev) => prev + 1);
+        await sleep(1000);
+        getThirdGmStyleChild();
+      }
+    }
+    console.log(gmStyleElements);
+
+    const thirdGmStyleElement = gmStyleElements[0].children[2];
+
+    thirdGmStyleElement.style.border = "0px";
+  };
+  function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
   return (
     <div className="w-full h-full relative">
       {showStationInfo && <StationInfo setShowStationInfo={setShowStationInfo}/>}
@@ -248,7 +270,7 @@ function StationInfo({setShowStationInfo}) {
           <div className=" relative pt-2">
             <img
               className=" w-[320px]   min-[520px]:aspect-video max-[500px]:w-full rounded-lg object-cover"
-              src="../public/oilrig.jpg"
+              src="/oilrig.jpg"
               alt=""
             />
             <div className=" absolute top-0 right-0  p-2 rounded-full cursor-pointer th">
@@ -265,7 +287,7 @@ function StationInfo({setShowStationInfo}) {
                     12343 st king highwaytdrjfyugiuhoijokojihgjyfhfxdz
                   </div>
                 </div>
-                <div className="p-[6px] rounded-full th fbg text-xs ">
+                <div className="p-[6px] rounded-full th sbg text-xs ">
                   {rating}
                 </div>
               </div>
@@ -324,7 +346,7 @@ function IndividualStationsList() {
         <div className=" relative">
           <img
             className=" w-[320px] max-[720px]:w-[260px] max-[630px]:w-[320px]  aspect-video rounded-lg object-cover"
-            src="../public/oilrig.jpg"
+            src="/oilrig.jpg"
             alt=""
           />
           <div className=" absolute top-0 right-0  p-2 rounded-full cursor-pointer th min-[720px]:hidden">
@@ -346,7 +368,7 @@ function IndividualStationsList() {
               <div className="  relative ">
                 <div className=" flex flex-row gap-x-[2px]">{stars}</div>
               </div>
-              <div>(246)</div>
+              <div className=" text-[9px] relative top-[-4px] right-[4px]">(246)</div>
             </div>
             <div className="tp flex w-full  flex-row gap-x-[2px] text-sm overflow-hidden">
               <div className="">22 km - </div>

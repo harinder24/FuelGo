@@ -41,7 +41,7 @@ setIsOptions(true)
     };
  
     return (
-      <div className=' h-full flex-1 bg-inherit rounded-lg' ref={ref}>
+      <div className=' h-full flex-1 tbg rounded-lg ' ref={ref}>
         <PlacesAutocomplete
         
           value={address}
@@ -51,16 +51,16 @@ setIsOptions(true)
           
         >
           {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-            <div className='w-full h-full bg-inherit rounded-lg'>
+            <div className='w-full h-full tbg rounded-lg'>
               <input
              
                 {...getInputProps({
                   placeholder: ' Enter address',
-                  className: 'w-full h-full bg-inherit border-lightMode-border border-[0px]  pl-2 rounded-inherit focus-visible:outline-0 rounded-lg caret-darkMode-p'
+                  className: 'w-full h-full tbg border-lightMode-border border-[0px]  pl-2 rounded-inherit focus-visible:outline-0 rounded-lg caret-darkMode-p focus-visible:outline-none bg-lightMode-tbg dark:bg-darkMode-tbg border-lightMode-border dark:border-darkMode-border  focus-visible:border-lightMode-button focus-visible:shadow-[0_0px_6px_#38bdf8] caret-lightMode-p dark:caret-darkMode-p placeholder:text-lightMode-p dark:placeholder:text-darkMode-p border-[1px] cborder'
                 })}
               />
              {isOptions && address && 
-              <div id='autocomplete-dropdown' className="autocomplete-dropdown-container bg-inherit h-[100px] overflow-auto pl-2  mt-2 mr-2 w-full">
+              <div id='autocomplete-dropdown' className="autocomplete-dropdown-container tbg h-[100px] overflow-auto pl-2  mt-2 mr-2 w-full">
                 {loading && <div>Loading...</div>}
                 
                 {suggestions.map((suggestion,i) => {

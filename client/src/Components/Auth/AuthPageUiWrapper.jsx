@@ -3,7 +3,7 @@ import { TextField, Grid, ThemeProvider } from "@mui/material";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
 import Button from "../Button";
 import theme from "../Theme/Mui";
-import googleImg from "/public/google.png";
+import googleImg from "/google.png";
 import facebookImg from "/facebook.png";
 import BgBlackOpacity from "../BgBlackOpacity";
 import Otp from "./Otp";
@@ -716,7 +716,7 @@ export function AuthPageUiWrapperComp({ children }) {
       <div className=" w-screen min-h-screen h-auto bg-lightMode-bg dark:bg-darkMode-bg flex justify-center items-center ">
         <div className=" absolute  z-30">
           <div className="px-4">
-            <div className="  w-[800px] max-[840px]:w-[calc(100vw-32px)] h-[500px] bg-lightMode-sbg dark:bg-darkMode-sbg max-[640px]:bg-transparent dark:max-[640px]:bg-transparent max-[640px]:border-transparent dark:max-[640px]:border-transparent rounded-lg shadow-[0px_0px_6px_#e2e8f033] dark:shadow-[0px_0px_6px_#e2e8f033] flex flex-row overflow-hidden">
+            <div className="  w-[800px] max-[840px]:w-[calc(100vw-32px)] h-[500px] bg-lightMode-sbg dark:bg-darkMode-sbg max-[640px]:bg-transparent dark:max-[640px]:bg-transparent max-[640px]:border-transparent dark:max-[640px]:border-transparent rounded-lg min-[640px]:shadow-[0px_0px_6px_#e2e8f033] min-[640px]:dark:shadow-[0px_0px_6px_#e2e8f033] flex flex-row overflow-hidden">
               <div
                 onMouseEnter={handleMouseEnter}
                 className=" relative flex-1 w-full h-full max-[640px]:hidden overflow-hidden"
@@ -751,7 +751,7 @@ export function AuthPageUiWrapperComp({ children }) {
 
               <div className="border-lightMode-border dark:border-darkMode-border border-r-[1px] max-[640px]:hidden"></div>
               <div className="flex-1 flex flex-col ">
-                <div className="p-4 h-full relative"> {children}</div>
+                <div className="p-4 h-full relative max-[520px]:px-0"> {children}</div>
               </div>
             </div>
           </div>

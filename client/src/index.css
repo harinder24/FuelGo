@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-*{
+* {
   caret-color: transparent;
 }
 
@@ -68,8 +68,13 @@ html {
   background: #33415580;
     /* background: linear-gradient(to right, transparent, transparent 25%, #33415580 25%, #33415580 75%, transparent 75%, transparent); */
 
-  
-/* }  */ 
+/* }  */
+.trapezoid {
+  position: relative;
+  /* top: -53px; */
+  /* transform: perspective(10px) rotateX(1deg); */
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 20% 100%);
+}
 ::-webkit-scrollbar {
   width: 14px;
 }
@@ -80,7 +85,18 @@ html {
   border-radius: 9999px;
   background-color: #33415580;
 }
-
+.amantic {
+  font-family: "Amatic SC";
+}
+.sb::-webkit-scrollbar {
+  width: 14px;
+}
+.sb::-webkit-scrollbar-thumb {
+  border: 6px solid rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+  border-radius: 9999px;
+  background-color: #33415580;
+}
 /* YourComponent.css */
 @keyframes fadeInOut {
   0% {
@@ -103,11 +119,9 @@ html {
 
 @media only screen and (max-width: 520px) {
   ::-webkit-scrollbar {
- 
     width: 0px;
   }
 }
-
 
 .animate-slide-in {
   animation: slideIn 0.5s forwards; /* 0.5s duration for sliding in */
@@ -231,6 +245,14 @@ input[type="checkbox"]:checked:after {
     background-position: 0% -100%;
   }
 }
+.gmnoprint a,
+.gmnoprint span,
+.gm-style-cc {
+  display: none;
+}
+.gmnoprint div {
+  background: none !important;
+}
 
 .screen-image {
   background-image: url("/oilrig.jpg");
@@ -245,6 +267,83 @@ input[type="checkbox"]:checked:after {
   filter: sepia(100%) hue-rotate(180deg);
   opacity: 0.6;
   animation: pan-image 15s linear infinite;
+}
+.transition-div {
+  height: 0;
+  animation: expandHeight 0.5s ease forwards;
+}
+.translateGoUp {
+  bottom: -100px;
+  animation: goUpAnimation 2.5s ease forwards;
+}
+@keyframes goUpAnimation {
+  0% {
+    bottom: -100px;
+  }
+  25% {
+    bottom: -100px;
+  }
+  50% {
+    bottom: -62px;
+  }
+  75% {
+    bottom: -62px;
+  }
+  100% {
+    bottom: -37px;
+  }
+}
+.translateGoDown {
+  top: -30px;
+  animation: goDownAnimation 4s ease forwards;
+}
+@keyframes goDownAnimation {
+  0% {
+    top: -30px;
+  }
+  80% {
+    top: -30px;
+  }
+  100% {
+    top: 7px;
+  }
+}
+.translateGoUpSurvey {
+  bottom: -90px;
+  animation: goUpSurveyAnimation 5s ease forwards;
+}
+@keyframes goUpSurveyAnimation {
+  0% {
+    bottom: -90px;
+  }
+  90% {
+    bottom: -90px;
+  }
+  100% {
+    bottom: -48px;
+  }
+}
+
+@keyframes expandHeight {
+  from {
+    height: 0;
+  }
+  to {
+    height: 96px;
+  }
+}
+.transition-divb {
+  height: 96px;
+  animation: expandHeightb 0.5s ease forwards;
+}
+
+@keyframes expandHeightb {
+  from {
+    height: 96px;
+  }
+  to {
+    height: 0;
+  }
 }
 @keyframes pan-image {
   0% {

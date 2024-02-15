@@ -9,7 +9,7 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { GoogleMap, Marker } from '@react-google-maps/api';
-import stationMarke from '../../public/station.png';
+import stationMarke from '/station.png';
 import CloseIcon from '@mui/icons-material/Close';
 export default function Home() {
   // const [isMobile, setIsMobile] = useState(false);
@@ -202,6 +202,7 @@ function StationMap() {
     lat: 49.258347,
     lng: -123.076953,
   };
+
   const handleMarkerClick = () => {
     setShowStationInfo(true);
   };
@@ -252,7 +253,7 @@ function StationInfo({ setShowStationInfo }) {
           <div className=' relative pt-2'>
             <img
               className=' w-[320px]   min-[520px]:aspect-video max-[500px]:w-full rounded-lg object-cover'
-              src='../public/oilrig.jpg'
+              src='/oilrig.jpg'
               alt=''
             />
             <div className=' absolute top-0 right-0  p-2 rounded-full cursor-pointer th'>
@@ -328,7 +329,7 @@ function IndividualStationsList() {
         <div className=' relative'>
           <img
             className=' w-[320px] max-[720px]:w-[260px] max-[630px]:w-[320px]  aspect-video rounded-lg object-cover'
-            src='../public/oilrig.jpg'
+            src='/oilrig.jpg'
             alt=''
           />
           <div className=' absolute top-0 right-0  p-2 rounded-full cursor-pointer th min-[720px]:hidden'>

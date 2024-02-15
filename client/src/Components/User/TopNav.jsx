@@ -15,10 +15,21 @@ export default function TopNav({
     <div className=" w-full rounded-lg sbg flex flex-row items-center p-4 gap-x-4 max-[520px]:rounded-none max-[520px]:p-2">
       {isFavouritePage ? (
         <>
-          <div className=" flex flex-row items-center tp rounded-lg border-[1px] cborder h-10 px-2 tbg gap-x-1 cursor-pointer ">
+          <div className=" flex flex-row items-center tp rounded-lg border-[1px] cborder h-10 px-2 tbg gap-x-1 cursor-pointer max-[520px]:hidden  hover:text-lightMode-header dark:hover:text-darkMode-header ">
             <HomeIcon />
             <div className=" max-[740px]:hidden">Home</div>
           </div>
+          <div
+          className="flex items-center gap-x-1 caret-transparent cursor-pointer min-[520px]:hidden"
+          onClick={() => navigate("/home")}
+        >
+          <WhatshotIcon sx={{ color: "rgb(14,164,233)", fontSize: "28px" }} />
+          {/* <Icon size={28} /> */}
+          <div className="flex flex-row items-center  text-lightMode-button ">
+            <div className="text-white">Fuel</div>
+            Go
+          </div>
+        </div>
         </>
       ) : (
         <div
@@ -72,8 +83,8 @@ export default function TopNav({
           className={`flex flex-row items-center ${
             isList
               ? "text-lightMode-button dark:text-darkMode-button"
-              : "text-lightMode-p dark:text-darkMode-p"
-          }    w-[100px] justify-center gap-x-1 ${"cursor-pointer"} max-[740px]:w-10`}
+              : "text-lightMode-p dark:text-darkMode-p  hover:text-lightMode-header dark:hover:text-darkMode-header "
+          }    w-[100px] justify-center gap-x-1 ${"cursor-pointer"}  max-[740px]:w-10`}
         >
           <FormatListBulletedOutlinedIcon />
           <div className="max-[740px]:hidden">List</div>
@@ -85,7 +96,7 @@ export default function TopNav({
           className={`flex flex-row items-center ${
             !isList
               ? "text-lightMode-button dark:text-darkMode-button"
-              : "text-lightMode-p dark:text-darkMode-p"
+              : "text-lightMode-p dark:text-darkMode-p  hover:text-lightMode-header dark:hover:text-darkMode-header "
           } w-[100px] justify-center gap-x-1 ${"cursor-pointer"} max-[740px]:w-10`}
         >
           <MapOutlinedIcon />
@@ -94,17 +105,18 @@ export default function TopNav({
       </div>
       <div
         style={{
-          backgroundImage: 'url("../public/frame/level5.jpg")',
+          backgroundImage: 'url("/frame/level5.jpg")',
           backgroundSize: "cover", // Adjust as needed
+
           backgroundPosition: "center", // Adjust as needed
           // Additional background properties can be added here
         }}
-        className=" flex justify-center items-center size-[44px] rounded-full border-0 min-[1001px]:hidden max-[520px]:hidden"
+        className=" flex justify-center items-center size-[40px] rounded-full border-0 min-[1001px]:hidden max-[520px]:hidden"
       >
         <img
           onClick={() => setIsProfilePopUpHandler()}
-          className="size-10 rounded-full  cursor-pointer object-cover relative"
-          src="../public/oilrig.jpg"
+          className="size-9 rounded-full  cursor-pointer object-cover relative"
+          src="/oilrig.jpg"
           alt=""
         />
       </div>
@@ -151,7 +163,7 @@ function IndividualStationsList() {
         <div className=" relative">
           <img
             className=" w-[320px] max-[720px]:w-[260px] max-[630px]:w-[320px]  aspect-video rounded-lg object-cover"
-            src="../public/oilrig.jpg"
+            src="/oilrig.jpg"
             alt=""
           />
           <div className=" absolute top-0 right-0  p-2 rounded-full cursor-pointer th min-[720px]:hidden">

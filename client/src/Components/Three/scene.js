@@ -112,7 +112,7 @@ export default class MainScene {
   loadGLBModel() {
     const loader = new GLTFLoader();
     loader.load(
-      "../../../public/route_66_adventure_-_sketchfab_challenge.glb",
+      "/route_66_adventure_-_sketchfab_challenge.glb",
       (glb) => {
         this.glb = glb.scene;
         this.glb.scale.set(8, 8, 8);
@@ -151,7 +151,7 @@ export default class MainScene {
     const assets = [
       {
         name: "image",
-        texture: "../../../public/aboutus1.png",
+        texture: "/aboutus1.png",
       },
     ];
 
@@ -185,7 +185,7 @@ export default class MainScene {
       const assets = [
         {
           name: "image",
-          texture: "../../../public/aboutus1.png",
+          texture: "/aboutus1.png",
         },
       ];
 
@@ -195,7 +195,7 @@ export default class MainScene {
       const assets = [
         {
           name: "image",
-          texture: "../../../public/aboutus2.png",
+          texture: "/aboutus2.png",
         },
       ];
 
@@ -205,7 +205,7 @@ export default class MainScene {
       const assets = [
         {
           name: "image",
-          texture: "../../../public/aboutus3.png",
+          texture: "/aboutus3.png",
         },
       ];
 
