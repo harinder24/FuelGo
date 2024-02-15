@@ -25,6 +25,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../Button";
 import NavigateNextOutlinedIcon from "@mui/icons-material/NavigateNextOutlined";
 import AttachmentIcon from "@mui/icons-material/Attachment";
+import BottomNav from "./BottomNav";
 export default function Profile() {
   const [isSettings, setIsSettings] = useState(false);
   const [isProfile, setIsProfile] = useState(true);
@@ -34,7 +35,8 @@ export default function Profile() {
   const [isContactUs, setIsContactUs] = useState(false);
 
   return (
-    <div className="w-full h-full  bg-lightMode-sbg flex flex-col dark:bg-darkMode-sbg rounded-xl max-[1000px]:rounded-none overflow-auto">
+    <>
+    <div className="w-full h-full max-[520px]:h-[calc(100%-56px)] max-[520px]:bg-lightMode-bg max-[520px]:dark:bg-darkMode-bg  bg-lightMode-sbg flex flex-col dark:bg-darkMode-sbg rounded-xl max-[1000px]:rounded-none overflow-auto">
       {isProfile && (
         <ProfileComp
           setIsSettings={setIsSettings}
@@ -64,7 +66,12 @@ export default function Profile() {
           setIsProfile={setIsProfile}
         />
       )}
+      
     </div>
+    <div className="w-full min-[520px]:hidden ">
+    <BottomNav />
+  </div>
+  </>
   );
 }
 

@@ -11,29 +11,10 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { GoogleMap, Marker } from "@react-google-maps/api";
 import stationMarke from "/station.png";
 import CloseIcon from "@mui/icons-material/Close";
+import BottomNav from "../Components/User/BottomNav";
 export default function Home() {
-  // const [isMobile, setIsMobile] = useState(false);
-  // const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isProfilePopUp, setIsProfilePopUp] = useState(false);
   const [isList, setIsList] = useState(true);
-  // useEffect(() => {
-  //   const updateMousePosition = (e) => {
-  //     setMousePosition({ x: e.clientX, y: e.clientY });
-  //   };
-
-  //   window.addEventListener("mousemove", updateMousePosition);
-
-  //   return () => {
-  //     window.removeEventListener("mousemove", updateMousePosition);
-  //   };
-  // }, []);
-  // useEffect(() => {
-  //   const userAgent = window.navigator.userAgent.toLowerCase();
-  //   const isMobileDevice = /mobile|tablet|ip(ad|hone|od)|android/i.test(
-  //     userAgent
-  //   );
-  //   setIsMobile(isMobileDevice);
-  // }, []);
 
   async function setIsProfilePopUpHandler() {
     setIsProfilePopUp(true);
@@ -41,17 +22,6 @@ export default function Home() {
 
   return (
     <>
-      {" "}
-      {/* {!isMobile && (
-        <div className=" absolute top-0 z-10">
-          <div className="relative w-screen h-screen overflow-hidden">
-            <div
-              className="glowing-cursor"
-              style={{ left: mousePosition.x, top: mousePosition.y }}
-            ></div>
-          </div>
-        </div>
-      )} */}
       <div className="w-screen h-screen  bg-lightMode-bg dark:bg-darkMode-bg ">
         <div className=" absolute w-screen h-screen z-20">
           <div className=" flex w-full h-full justify-center">
@@ -70,6 +40,9 @@ export default function Home() {
                   <Preferences isList={isList} />
                 </div>
                 <MainBody isList={isList} />
+                <div className="w-full min-[520px]:hidden ">
+                  <BottomNav />
+                </div>
               </div>
             </div>
           </div>
@@ -203,7 +176,7 @@ function StationMap() {
     lng: -123.076953,
   };
   const handleMarkerClick = () => {
-    setShowStationInfo(true)
+    setShowStationInfo(true);
   };
   useEffect(() => {
     getThirdGmStyleChild();
@@ -229,9 +202,10 @@ function StationMap() {
   }
   return (
     <div className="w-full h-full relative">
-      {showStationInfo && <StationInfo setShowStationInfo={setShowStationInfo}/>}
+      {showStationInfo && (
+        <StationInfo setShowStationInfo={setShowStationInfo} />
+      )}
       <GoogleMap
-      
         ref={mapRef}
         options={mapOptions}
         mapContainerStyle={mapContainerStyle}
@@ -252,7 +226,7 @@ function StationMap() {
   );
 }
 
-function StationInfo({setShowStationInfo}) {
+function StationInfo({ setShowStationInfo }) {
   const isFavourite = false;
   const rating = 4.3;
   return (
@@ -263,7 +237,10 @@ function StationInfo({setShowStationInfo}) {
             <div className="w-[225px] max-[325px]:w-[200px] max-[300px]:w-[175px]   font-[400] th max-text-xl text-ellipsis whitespace-nowrap overflow-hidden">
               Chevron gas stations
             </div>
-            <div onClick={()=>setShowStationInfo(false)} className="  th  cursor-pointer">
+            <div
+              onClick={() => setShowStationInfo(false)}
+              className="  th  cursor-pointer"
+            >
               <CloseIcon />
             </div>
           </div>
@@ -368,7 +345,9 @@ function IndividualStationsList() {
               <div className="  relative ">
                 <div className=" flex flex-row gap-x-[2px]">{stars}</div>
               </div>
-              <div className=" text-[9px] relative top-[-4px] right-[4px]">(246)</div>
+              <div className=" text-[9px] relative top-[-4px] right-[4px]">
+                (246)
+              </div>
             </div>
             <div className="tp flex w-full  flex-row gap-x-[2px] text-sm overflow-hidden">
               <div className="">22 km - </div>

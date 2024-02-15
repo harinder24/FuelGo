@@ -7,9 +7,11 @@ import ChangePassWord from './Screen/ChangePassWord';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Error from './Screen/Error';
 import Home from './Screen/Home';
-import Favourite from './Screen/Favourite';
+
 import Rewards from './Screen/Rewards';
 import GasStation from './Screen/GasStation';
+import ProfileScreen from './Screen/ProfileScreen';
+import SearchScreen from './Screen/SearchScreen';
 
 const router = createBrowserRouter([
   {
@@ -43,7 +45,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/favourite',
-    element: <Favourite />,
+    element: <Home />,
   },
   {
     path: '/rewards',
@@ -52,6 +54,14 @@ const router = createBrowserRouter([
   {
     path: '/gs',
     element: <GasStation />,
+  },
+  {
+    path: '/profile',
+    element: <ProfileScreen />,
+  },
+  {
+    path: '/search',
+    element: <SearchScreen />,
   },
 ]);
 

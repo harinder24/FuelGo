@@ -497,7 +497,7 @@ function AuthForm({
                 {" "}
                 <div
                   className="  text-sm bg-lightMode-sbg dark:bg-darkMode-sbg max-[640px]:bg-lightMode-bg
-                dark:max-[640px]:bg-darkMode-bg
+                dark:max-[640px]:bg-darkMode-bg rounded-full
                 px-1"
                 >
                   or
@@ -506,7 +506,7 @@ function AuthForm({
             </div>
           </div>
         </div>
-        <GoogleOAuthProvider clientId="720914987652-2d9l2bopkbs6afjv21gappa514mp8m6k.apps.googleusercontent.com">
+        <GoogleOAuthProvider clientId="698921458629-k410ff2u0hnkl6bap113t8f9vepj8eoq.apps.googleusercontent.com">
           <OAuth
             setIsLoading={setIsLoading}
             setError={setError}

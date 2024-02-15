@@ -4,6 +4,13 @@ import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import FormatListBulletedOutlinedIcon from "@mui/icons-material/FormatListBulletedOutlined";
 import { useLocation, useNavigate } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
+import { useState } from "react";
+import CloseIcon from "@mui/icons-material/Close";
+import StarIcon from "@mui/icons-material/Star";
+import StarHalfIcon from "@mui/icons-material/StarHalf";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 export default function TopNav({
   setIsProfilePopUpHandler,
   isList,
@@ -11,6 +18,7 @@ export default function TopNav({
 }) {
   const navigate = useNavigate();
   const isFavouritePage = useLocation().pathname === "/favourite";
+  const [isSearchActive, setIsSearchActive] = useState(false);
   return (
     <div className=" w-full rounded-lg sbg flex flex-row items-center p-4 gap-x-4 max-[520px]:rounded-none max-[520px]:p-2">
       {isFavouritePage ? (
@@ -20,16 +28,16 @@ export default function TopNav({
             <div className=" max-[740px]:hidden">Home</div>
           </div>
           <div
-          className="flex items-center gap-x-1 caret-transparent cursor-pointer min-[520px]:hidden"
-          onClick={() => navigate("/home")}
-        >
-          <WhatshotIcon sx={{ color: "rgb(14,164,233)", fontSize: "28px" }} />
-          {/* <Icon size={28} /> */}
-          <div className="flex flex-row items-center  text-lightMode-button ">
-            <div className="text-white">Fuel</div>
-            Go
+            className="flex items-center gap-x-1 caret-transparent cursor-pointer min-[520px]:hidden"
+            onClick={() => navigate("/home")}
+          >
+            <WhatshotIcon sx={{ color: "rgb(14,164,233)", fontSize: "28px" }} />
+            {/* <Icon size={28} /> */}
+            <div className="flex flex-row items-center  text-lightMode-button ">
+              <div className="text-white">Fuel</div>
+              Go
+            </div>
           </div>
-        </div>
         </>
       ) : (
         <div
@@ -44,32 +52,54 @@ export default function TopNav({
           </div>
         </div>
       )}
-      {/* <div className=" absolute top-0 left-0 w-screen h-full z-10 bg-[rgba(0,0,0,0.5)]">
-        <div className=" flex flex-col">
-        <div className=" w-full flex flex-row pt-7 max-[1000px]:pt-[30px]">
-          <div className=" w-[449px] max-[1000px]:w-[125px]"></div>
-          <div className=" flex-1 w-full relative max-[520px]:hidden">
-            <input
-              // style={errorEmailBorder ? { borderColor: "rgb(211 47 47 )" } : {}}
-              // label="Email"
-              // type="email"
-              // value={email}
-              autoFocus
-              placeholder="Search"
-              // onChange={(e) => setEmail(e.target.value)}
-              className=" pl-10 customInput"
-            />
+      {isSearchActive && (
+        <div className=" absolute top-0 left-0 w-screen h-full z-10 bg-[rgba(0,0,0,0.5)]">
+          <div className=" flex h-full flex-col">
+            <div className=" flex w-full flex-row justify-center">
+              <div className=" w-[1400px] min-w-auto flex flex-row pt-7 max-[1000px]:pt-[28px]">
+                <div className=" w-[449px] max-[1000px]:w-[125px]"></div>
+                <div className=" flex-1 w-full relative max-[520px]:hidden">
+                  <input
+                    // style={errorEmailBorder ? { borderColor: "rgb(211 47 47 )" } : {}}
+                    // label="Email"
+                    // type="email"
+                    // value={email}
+                    autoFocus
+                    placeholder="Search"
+                    // onChange={(e) => setEmail(e.target.value)}
+                    className=" px-10 customInput"
+                  />
 
-            <div className=" absolute top-[7.5px] left-2">
-              <SearchOutlinedIcon sx={{ color: "#747c88" }} />
+                  <div className=" absolute top-[7.5px] left-2">
+                    <SearchOutlinedIcon sx={{ color: "#747c88" }} />
+                  </div>
+                  <div
+                    onClick={() => setIsSearchActive(false)}
+                    className=" absolute top-[7.5px] right-2 th cursor-pointer"
+                  >
+                    <CloseIcon />
+                  </div>
+                </div>
+                <div className=" w-[246px] max-[1000px]:w-[302px] max-[740px]:w-[186px]"></div>
+              </div>
+            </div>
+            <div className=" flex-1 flex flex-row mt-4 mb-4 justify-center">
+              <div className=" w-[800px] min-w-auto flex h-full flex-col overflow-y-auto px-4 gap-4  max-[720px]:flex-wrap max-[720px]:flex-row max-[720px]:justify-center">
+                <IndividualStationsList />
+                <IndividualStationsList />
+                <IndividualStationsList />
+                <IndividualStationsList />
+                <IndividualStationsList />
+              </div>
             </div>
           </div>
-          <div className=" w-[246px] max-[1000px]:w-[306px] max-[740px]:w-[186px]"></div>
         </div>
-        </div>
-      </div> */}
+      )}
       <div className=" flex-1 w-full relative max-[520px]:hidden">
-        <div className=" h-10 w-full rounded-lg border-[1px] cborder flex flex-row items-center cursor-text tbg">
+        <div
+          onClick={() => setIsSearchActive(true)}
+          className=" h-10 w-full rounded-lg border-[1px] cborder flex flex-row items-center cursor-text tbg"
+        >
           <div className="pl-10 tp">Search</div>
         </div>
         <div className=" absolute top-[7.5px] left-2">
@@ -124,7 +154,7 @@ export default function TopNav({
   );
 }
 
-function IndividualStationsList() {
+export function IndividualStationsList() {
   const rating = 3.1;
   const filledStars = Math.floor(rating);
   const totalStars = 5;
@@ -158,7 +188,7 @@ function IndividualStationsList() {
     stars.push(<StarIcon key={i} sx={{ fontSize: size }} />);
   }
   return (
-    <div className=" caret-transparent w-full rounded-lg border-[1px] cborder flex justify-between p-4  max-[720px]:w-fit  ">
+    <div className=" caret-transparent w-full rounded-lg sbg border-[1px] cborder flex justify-between p-4  max-[720px]:w-fit  ">
       <div className=" flex flex-row gap-x-12 max-[720px]:flex-col ">
         <div className=" relative">
           <img
@@ -206,10 +236,10 @@ function IndividualStationsList() {
         </div>
       </div>
       <div className=" flex flex-col justify-between th max-[720px]:hidden ml-4">
-        <div className="  p-2 rounded-full sbg cursor-pointer">
+        <div className="  p-2 rounded-full tbg cursor-pointer">
           {isFavourite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </div>
-        <div className=" tb p-2 rounded-full sbg cursor-pointer">
+        <div className=" tb p-2 rounded-full tbg cursor-pointer">
           <NavigateNextIcon />
         </div>
       </div>
