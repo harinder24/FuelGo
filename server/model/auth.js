@@ -24,6 +24,9 @@ const authSchema = {
       },
       isInitAuthComplete : {
         type : Boolean
+      },
+      isAgreedToTerms :{
+        type: Boolean
       }
 }
 

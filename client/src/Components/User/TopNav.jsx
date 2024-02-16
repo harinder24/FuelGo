@@ -20,7 +20,7 @@ export default function TopNav({
   const isFavouritePage = useLocation().pathname === "/favourite";
   const [isSearchActive, setIsSearchActive] = useState(false);
   return (
-    <div className=" w-full rounded-lg sbg flex flex-row items-center p-4 gap-x-4 max-[520px]:rounded-none max-[520px]:p-2">
+    <div className=" w-full rounded-lg sbg flex flex-row items-center p-4 gap-x-4 max-[520px]:rounded-none max-[520px]:p-2 max-[520px]:border-b-[1px] cborder">
       {isFavouritePage ? (
         <>
           <div className=" flex flex-row items-center tp rounded-lg border-[1px] cborder h-10 px-2 tbg gap-x-1 cursor-pointer max-[520px]:hidden  hover:text-lightMode-header dark:hover:text-darkMode-header ">
@@ -154,7 +154,7 @@ export default function TopNav({
   );
 }
 
-export function IndividualStationsList() {
+export function IndividualStationsList({isTransparent}) {
   const rating = 3.1;
   const filledStars = Math.floor(rating);
   const totalStars = 5;
@@ -188,7 +188,7 @@ export function IndividualStationsList() {
     stars.push(<StarIcon key={i} sx={{ fontSize: size }} />);
   }
   return (
-    <div className=" caret-transparent w-full rounded-lg sbg border-[1px] cborder flex justify-between p-4  max-[720px]:w-fit  ">
+    <div className={` caret-transparent w-full rounded-lg ${isTransparent ? "bg-transparent" : "sbg"}  border-[1px] cborder flex justify-between p-4  max-[720px]:w-fit  `}>
       <div className=" flex flex-row gap-x-12 max-[720px]:flex-col ">
         <div className=" relative">
           <img

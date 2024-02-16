@@ -4,7 +4,7 @@ import Background from "../Components/Landing/Background";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
 import { useNavigate } from "react-router-dom";
 export default function LandingPage() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <>
       <Background />
@@ -28,7 +28,10 @@ export default function LandingPage() {
                 Join millions around the globe who are getting best fuel prices
                 and earning extra money along the way.
               </div>
-              <div onClick={()=>navigate("/signup")} className="h-16 mt-6 cursor-pointer px-10 flex flex-row justify-center items-center rounded-full bgbtn  text-white text-xl ">
+              <div
+                onClick={() => navigate("/signup")}
+                className="h-16 mt-6 cursor-pointer px-10 flex flex-row justify-center items-center rounded-full bgbtn  text-white text-xl "
+              >
                 <div>Get started</div>
               </div>
             </div>

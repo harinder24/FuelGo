@@ -81,7 +81,7 @@ const addUserData = async (req, res) => {
 };
 
 const emailSignUp = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password,isAgreedToTerms } = req.body;
   const verificationResult = await formatVerification(email, password);
 
   if (!verificationResult.success) {
@@ -114,6 +114,7 @@ const emailSignUp = async (req, res) => {
         foundUser.password = encryptPassword;
         foundUser.otp = otpCode;
         foundUser.isOtpValid = true;
+   
         foundUser.otpTimeStamp = currentTimestamp;
         foundUser.isOtpIncorrect = 0;
         await foundUser.save();
@@ -127,6 +128,7 @@ const emailSignUp = async (req, res) => {
         authType: "email",
         otp: otpCode,
         isOtpValid: true,
+        isAgreedToTerms:isAgreedToTerms,
         otpTimeStamp: currentTimestamp,
         isOtpIncorrect: 0,
         isInitAuthComplete: false,
@@ -238,6 +240,7 @@ const Oauth = async (req, res) => {
         email: email,
         authType: "Google",
         isInitAuthComplete: false,
+        isAgreedToTerms: true,
       });
       await newUser.save();
       return res.status(201).json({

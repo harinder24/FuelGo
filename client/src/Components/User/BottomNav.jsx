@@ -10,7 +10,7 @@ export default function BottomNav() {
   const pathName = useLocation().pathname;
  
   return (
-    <div className="h-[56px] w-full flex flex-row justify-evenly items-center sbg border-t-[0px] cborder">
+    <div className="h-[56px] w-full flex flex-row justify-evenly items-center sbg border-t-[1px] cborder">
       <div
       onClick={()=> navigate("/home")}
         className={` ${

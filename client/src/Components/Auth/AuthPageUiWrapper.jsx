@@ -17,6 +17,7 @@ import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
 import { GoogleOAuthProvider, useGoogleLogin } from "@react-oauth/google";
+import serverLink from "../../serverLink";
 
 export default function AuthPageUiWrapper({ isLogin = true }) {
   const [email, setEmail] = useState("");
@@ -38,7 +39,7 @@ export default function AuthPageUiWrapper({ isLogin = true }) {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3000/auth/emaillogin",
+        serverLink+"/auth/emaillogin",
         {
           email: email,
           password: password,
@@ -93,10 +94,11 @@ export default function AuthPageUiWrapper({ isLogin = true }) {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/auth/emailsignup",
+        serverLink+"/auth/emailsignup",
         {
           email: email,
           password: password,
+          isAgreedToTerms: isAgreedToTerms,
         },
         {
           headers: {
@@ -248,7 +250,7 @@ function UserDataForm({
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/auth/adduserdata",
+        serverLink+"/auth/adduserdata",
         {
           email: email,
           name: userName,
@@ -545,7 +547,7 @@ function OAuth({
           setIsLoading(true);
           axios
             .post(
-              "http://localhost:3000/auth/oauth",
+              serverLink+"/auth/oauth",
               {
                 email: res.data.email,
               },
@@ -774,7 +776,7 @@ export function ForgetPasswordComp({ isLogin = true }) {
     setErrorEmailBorder(false);
     try {
       const response = await axios.post(
-        "http://localhost:3000/auth/forgetpassword",
+        serverLink+"/auth/forgetpassword",
         {
           email: email,
         },
@@ -902,7 +904,7 @@ export function ChangePassWordComp() {
   const changePasswordParamVerification = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/auth/changepasswordparamverification",
+        serverLink+"/auth/changepasswordparamverification",
         {
           id: id,
         },
@@ -930,7 +932,7 @@ export function ChangePassWordComp() {
     setErrorConfirmPasswordBorder(false);
     try {
       const response = await axios.post(
-        "http://localhost:3000/auth/changepassword",
+        serverLink+"/auth/changepassword",
         {
           id: id,
           password: password,

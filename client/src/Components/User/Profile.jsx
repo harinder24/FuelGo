@@ -36,42 +36,43 @@ export default function Profile() {
 
   return (
     <>
-    <div className="w-full h-full max-[520px]:h-[calc(100%-56px)] max-[520px]:bg-lightMode-bg max-[520px]:dark:bg-darkMode-bg  bg-lightMode-sbg flex flex-col dark:bg-darkMode-sbg rounded-xl max-[1000px]:rounded-none overflow-auto">
-      {isProfile && (
-        <ProfileComp
-          setIsSettings={setIsSettings}
-          setIsProfile={setIsProfile}
-          setIsFrame={setIsFrame}
-          setIsAvatar={setIsAvatar}
-          setIsShareLink={setIsShareLink}
-          setIsContactUs={setIsContactUs}
-        />
-      )}
-      {isSettings && (
-        <Settings setIsSettings={setIsSettings} setIsProfile={setIsProfile} />
-      )}
-      {isFrame && <Frame setIsFrame={setIsFrame} setIsProfile={setIsProfile} />}
-      {isAvatar && (
-        <Avatar setIsAvatar={setIsAvatar} setIsProfile={setIsProfile} />
-      )}
-      {isShareLink && (
-        <ShareLink
-          setIsShareLink={setIsShareLink}
-          setIsProfile={setIsProfile}
-        />
-      )}
-      {isContactUs && (
-        <ContactUs
-          setIsContactUs={setIsContactUs}
-          setIsProfile={setIsProfile}
-        />
-      )}
-      
-    </div>
-    <div className="w-full min-[520px]:hidden ">
-    <BottomNav />
-  </div>
-  </>
+      <div className="w-full h-full max-[520px]:h-[calc(100%-56px)] max-[520px]:bg-lightMode-bg max-[520px]:dark:bg-darkMode-bg  bg-lightMode-sbg flex flex-col dark:bg-darkMode-sbg rounded-xl max-[1000px]:rounded-none overflow-auto">
+        {isProfile && (
+          <ProfileComp
+            setIsSettings={setIsSettings}
+            setIsProfile={setIsProfile}
+            setIsFrame={setIsFrame}
+            setIsAvatar={setIsAvatar}
+            setIsShareLink={setIsShareLink}
+            setIsContactUs={setIsContactUs}
+          />
+        )}
+        {isSettings && (
+          <Settings setIsSettings={setIsSettings} setIsProfile={setIsProfile} />
+        )}
+        {isFrame && (
+          <Frame setIsFrame={setIsFrame} setIsProfile={setIsProfile} />
+        )}
+        {isAvatar && (
+          <Avatar setIsAvatar={setIsAvatar} setIsProfile={setIsProfile} />
+        )}
+        {isShareLink && (
+          <ShareLink
+            setIsShareLink={setIsShareLink}
+            setIsProfile={setIsProfile}
+          />
+        )}
+        {isContactUs && (
+          <ContactUs
+            setIsContactUs={setIsContactUs}
+            setIsProfile={setIsProfile}
+          />
+        )}
+      </div>
+      <div className="w-full min-[520px]:hidden ">
+        <BottomNav />
+      </div>
+    </>
   );
 }
 
@@ -623,11 +624,11 @@ function ProfileComp({
                   alt=""
                 />
               </div>
-              <div className="flex flex-col flex-1 overflow-hidden">
-                <div className="text-lightMode-header text-base font-[400] width-full overflow-hidden text-ellipsis whitespace-nowrap">
+              <div className="flex flex-col flex-1 overflow-hidden justify-between h-full">
+                <div className="text-lightMode-header text-base font-[400] width-full overflow-hidden text-ellipsis whitespace-nowrap w-[144px] max-[315px]:w-[110px]">
                   Harinder Sran
                 </div>
-                <div className="text-lightMode-p dark:text-darkMode-p text-sm width-full overflow-hidden text-ellipsis whitespace-nowrap">
+                <div className="text-lightMode-p dark:text-darkMode-p text-xs w-[144px] overflow-hidden text-ellipsis whitespace-nowrap max-[315px]:w-[110px]">
                   hss0220022gmail.com
                 </div>
               </div>
