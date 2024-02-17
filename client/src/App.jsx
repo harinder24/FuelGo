@@ -1,72 +1,80 @@
-import React from 'react';
-import LandingPage from './Screen/LandingPage';
-import Login from './Screen/Login';
-import Signup from './Screen/Signup';
-import ForgetPassword from './Screen/ForgetPassword';
-import ChangePassWord from './Screen/ChangePassWord';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Error from './Screen/Error';
-import Home from './Screen/Home';
-
-import Rewards from './Screen/Rewards';
-import GasStation from './Screen/GasStation';
-import ProfileScreen from './Screen/ProfileScreen';
-import SearchScreen from './Screen/SearchScreen';
+import React, { useState } from "react";
+import LandingPage from "./Screen/LandingPage";
+import Login from "./Screen/Login";
+import Signup from "./Screen/Signup";
+import ForgetPassword from "./Screen/ForgetPassword";
+import ChangePassWord from "./Screen/ChangePassWord";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Error from "./Screen/Error";
+import Home from "./Screen/Home";
+import Rewards from "./Screen/Rewards";
+import GasStation from "./Screen/GasStation";
+import ProfileScreen from "./Screen/ProfileScreen";
+import SearchScreen from "./Screen/SearchScreen";
+import Context from "./context";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <LandingPage />,
   },
 
   {
-    path: '/login',
+    path: "/login",
     element: <Login />,
   },
   {
-    path: '/signup',
+    path: "/signup",
     element: <Signup />,
   },
   {
-    path: '/forgetpassword',
+    path: "/forgetpassword",
     element: <ForgetPassword />,
   },
   {
-    path: '/changepassword/:id',
+    path: "/changepassword/:id",
     element: <ChangePassWord />,
   },
   {
-    path: '/error',
+    path: "/error",
     element: <Error />,
   },
   {
-    path: '/home',
+    path: "/home",
     element: <Home />,
   },
   {
-    path: '/favourite',
+    path: "/favourite",
     element: <Home />,
   },
   {
-    path: '/rewards',
+    path: "/rewards",
     element: <Rewards />,
   },
   {
-    path: '/gs',
+    path: "/gs",
     element: <GasStation />,
   },
   {
-    path: '/profile',
+    path: "/profile",
     element: <ProfileScreen />,
   },
   {
-    path: '/search',
+    path: "/search",
     element: <SearchScreen />,
   },
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  const [user, setUser] = useState(null);
+
+  
+
+  return (
+    <Context.Provider value={{ user, setUser }}>
+      <RouterProvider router={router} />
+    </Context.Provider>
+  );
 }
 
 export default App;

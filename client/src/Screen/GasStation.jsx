@@ -148,13 +148,13 @@ function Comment() {
         </div>
       </div>
 
-      <div className=" text-sm th mt-2">
+      <div className=" text-sm th my-2">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae
         molestiae natus aspernatur quidem accusamus inventore voluptate
         laboriosam deserunt ipsa? Maxime voluptatibus veritatis enim ipsa amet
         esse dolor vel fugit repudiandae?
       </div>
-      <div class="grid grid-cols-3 gap-2 md:grid-cols-2 pt-2 max-h-[200px] overflow-y-auto">
+      <div class="grid grid-cols-3 gap-2 md:grid-cols-2  max-h-[200px] overflow-y-auto">
         <img src="/oilrig.jpg" alt="" />
         <img src="/oilrig.jpg" alt="" />
         <img src="/oilrig.jpg" alt="" />

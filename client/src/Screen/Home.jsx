@@ -16,6 +16,9 @@ export default function Home() {
   const [isProfilePopUp, setIsProfilePopUp] = useState(false);
   const [isList, setIsList] = useState(true);
 
+  
+  
+
   async function setIsProfilePopUpHandler() {
     setIsProfilePopUp(true);
   }
