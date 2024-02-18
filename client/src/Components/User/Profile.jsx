@@ -754,13 +754,13 @@ function ProfileComp({
           <div className=" flex flex-row  gap-x-4 ">
             <div
               onClick={() => setConfirm(false)}
-              className="flex-1 rounded-lg tbg hover:bg-lightMode-bg dark:hover:bg-darkMode-bg py-4 text-center th text-sm cursor-pointer"
+              className="flex-1 rounded-lg tbg hover:bg-lightMode-bg dark:hover:bg-darkMode-bg py-[18.5px] text-center th text-sm cursor-pointer"
             >
               Cancel
             </div>
             <div
               className=" flex-1  bg-lightMode-button dark:bg-lightMode-button text-lightMode-header  text-sm dark:text-lightMode-header hover:bg-lightMode-buttonHover rounded-lg
-             py-4 text-center th cursor-pointer"
+             py-[18.5px] text-center th cursor-pointer"
             >
               Sign out
             </div>

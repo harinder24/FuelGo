@@ -24,17 +24,17 @@ const setUserData = async (user,setUser , navigate) => {
             setUser(response.data.data)
             return
           } else {
-            navigate("/");
+            navigate("/login");
           }
         } catch (error) {
-            navigate("/");
+            navigate("/login");
           console.error("Network error:", error);
         }
       }else {
-        navigate("/");
+        navigate("/login");
       }
     } else {
-      navigate("/");
+      return
     }
   };
   export {setUserData}

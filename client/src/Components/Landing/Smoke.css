@@ -19,7 +19,7 @@
   position: absolute;
   display: flex;
   justify-content: center;
-  align-items: end;
+  align-items: flex-end;
 }
 @keyframes smoke_animation {
   0% {
