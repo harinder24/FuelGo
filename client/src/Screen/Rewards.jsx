@@ -1,47 +1,112 @@
-import { useState } from "react";
-import Profile, { ProfilePopUp } from "../Components/User/Profile";
-import { SiStarbucks, SiAmazon, SiUbereats, SiApple } from "react-icons/si";
-import { BiSolidPurchaseTagAlt } from "react-icons/bi";
-import { MdClose } from "react-icons/md";
-import BottomNav from "../Components/User/BottomNav";
+import { useState } from 'react';
+import Profile, { ProfilePopUp } from '../Components/User/Profile';
+import {
+  SiStarbucks,
+  SiAmazon,
+  SiUbereats,
+  SiApple,
+  SiPix,
+} from 'react-icons/si';
+import { BiSolidPurchaseTagAlt } from 'react-icons/bi';
+import { MdClose } from 'react-icons/md';
+import BottomNav from '../Components/User/BottomNav';
+const AVATARS = {
+  title: 'Avatar',
+  items: [
+    {
+      title: 'Tappy',
+      icon: <img className=' rounded-full size-10' src='/oilrig.jpg' alt='' />,
+      price: 300,
+      bg: '#741C1B',
+    },
+    {
+      title: 'Tappy',
+      icon: <img className=' rounded-full size-10' src='/oilrig.jpg' alt='' />,
+      price: 300,
+      bg: '#2E5814',
+    },
+  ],
+};
 
-const rewardsList = [
+const FRAMES = {
+  title: 'Frame',
+  items: [
+    {
+      title: 'Frame-4',
+      icon: (
+        <div
+          style={{
+            backgroundImage: 'url("/frame/level5.jpg")',
+            backgroundSize: 'cover', // Adjust as needed
+            backgroundPosition: 'center', // Adjust as needed
+            // Additional background properties can be added here
+          }}
+          className=' flex justify-center items-center size-10 rounded-full border-0 '
+        >
+          <div className='w-[93%] h-[93%] rounded-full bg-[#2E5814]' />
+        </div>
+      ),
+      price: 300,
+      bg: '#2E5814',
+    },
+    {
+      title: 'Frame-5',
+      icon: (
+        <div
+          style={{
+            backgroundImage: 'url("/frame/level10.jpg")',
+            backgroundSize: 'cover', // Adjust as needed
+            backgroundPosition: 'center', // Adjust as needed
+            // Additional background properties can be added here
+          }}
+          className=' flex justify-center items-center size-10 rounded-full border-0 '
+        >
+          <div className='w-[93%] h-[93%] rounded-full bg-[#741C1B]' />
+        </div>
+      ),
+      price: 300,
+      bg: '#741C1B',
+    },
+  ],
+};
+
+const REWARDS = [
   {
-    title: "Starbucks",
-    icon: <SiStarbucks className="text-[#187653] bg-white rounded-full" />,
-    bg: "#187653",
+    title: 'Starbucks Gift Card',
+    icon: <SiStarbucks className='text-[#187653] bg-white rounded-full' />,
+    bg: '#187653',
   },
   {
-    title: "Amazon",
+    title: 'Amazon Gift Card',
     icon: <SiAmazon />,
-    bg: "#F59516",
+    bg: '#F59516',
   },
   {
-    title: "Apple",
+    title: 'Apple Gift Card',
     icon: <SiApple />,
-    bg: "#8A8A8F",
+    bg: '#8A8A8F',
   },
   {
-    title: "Best Buy",
-    icon: <BiSolidPurchaseTagAlt className="text-[#F9DB03] " />,
-    bg: "#194DAB",
+    title: 'Best Buy Gift Card',
+    icon: <BiSolidPurchaseTagAlt className='text-[#F9DB03] ' />,
+    bg: '#194DAB',
   },
   {
-    title: "Google Play",
+    title: 'Google Play Gift Card',
     icon: (
       <img
-        width="40px"
-        height="40px"
-        src="https://img.icons8.com/fluency/48/google-play-store-new.png"
-        alt="google-play-store-new"
+        width='40px'
+        height='40px'
+        src='https://img.icons8.com/fluency/48/google-play-store-new.png'
+        alt='google-play-store-new'
       />
     ),
-    bg: "#0D0E10",
+    bg: '#0D0E10',
   },
   {
-    title: "Uber Eats",
+    title: 'Uber Eats Gift Card',
     icon: <SiUbereats />,
-    bg: "#64B91A",
+    bg: '#64B91A',
   },
 ];
 const amountOptions = [
@@ -76,20 +141,32 @@ export default function Rewards() {
           modal={modal}
         />
       )}
-      <div className="h-screen flex flex-col">
+      <div className='h-screen flex flex-col'>
         <div
           className={`w-screen flex-1  overflow-hidden  bg-lightMode-bg dark:bg-darkMode-bg ${
-            isPurchasing && "blur-sm brightness-50 pointer-events-none"
+            isPurchasing && 'blur-sm brightness-50 pointer-events-none'
           }`}
         >
-          <div className=" absolute w-screen h-[calc(100vh-56px)] z-20">
-            <div className=" flex w-full h-full justify-center">
-              <div className="   w-[1400px] min-w-auto  h-full flex flex-row gap-x-3 max-[520px]:p-0 overflow-hidden">
-                <div className="w-[312px] h-full rounded-xl max-[1000px]:rounded-none max-[1230px]:hidden">
+          <div className=' absolute w-screen h-[calc(100vh-56px)] z-20'>
+            <div className=' flex w-full h-full justify-center'>
+              <div className='   w-[1400px] min-w-auto  h-full flex flex-row gap-x-3 max-[520px]:p-0 overflow-hidden'>
+                <div className='w-[312px] h-full rounded-xl max-[1000px]:rounded-none max-[1230px]:hidden'>
                   <Profile />
                 </div>
-                <ul className="flex-1 flex flex-col overflow-auto p-4">
-                  {rewardsList.map((reward) => (
+                <ul className='flex-1 flex flex-col overflow-auto p-4'>
+                  <RewardList
+                    reward={AVATARS}
+                    point={point}
+                    setIsPurchasing={setIsPurchasing}
+                    setModal={setModal}
+                  />
+                  <RewardList
+                    reward={FRAMES}
+                    point={point}
+                    setIsPurchasing={setIsPurchasing}
+                    setModal={setModal}
+                  />
+                  {REWARDS.map((reward) => (
                     <RewardList
                       key={reward.title}
                       reward={reward}
@@ -103,7 +180,7 @@ export default function Rewards() {
             </div>
           </div>
         </div>
-        <div className="w-full min-[520px]:hidden relative z-[20]">
+        <div className='w-full min-[520px]:hidden relative z-[20]'>
           <BottomNav />
         </div>
       </div>
@@ -112,123 +189,145 @@ export default function Rewards() {
   );
 }
 
-function RewardCard({ reward, amount, price, point, isSm, setIsPurchasing }) {
-  const { title, icon, bg } = reward;
+function RewardCard({
+  reward,
+  amount,
+  price,
+  point,
+  sm,
+  md,
+  lg,
+  setIsPurchasing,
+}) {
+  const { icon, bg } = reward;
   const isAvailable = point >= price;
   const percent = isAvailable ? 100 : (point / price) * 100;
   const converted = percent.toFixed();
+
+  const cardSizeClass = sm
+    ? 'w-48 h-36'
+    : 'h-[152px] ease-in-out duration-100 cursor-pointer hover:h-40 ' +
+      (md ? 'w-32 hover:w-36 ' : '') +
+      (lg ? 'w-56 hover:w-60 ' : '');
+
+  const handleClick = () => {
+    if (sm) return;
+    setIsPurchasing(true);
+  };
   return (
     <>
       <div
-        className={`w-56 p-4 rounded-xl flex flex-col th ${
-          isSm && " w-48 h-32"
-        }`}
+        onClick={handleClick}
+        className={'p-4 rounded-xl flex flex-col th ' + cardSizeClass}
         style={{ backgroundColor: bg }}
       >
         <div
-          className={` w-full h-full flex items-center justify-center text-4xl ${
-            !isSm && "mb-6 mt-2"
+          className={` w-full h-full flex items-center justify-center ${
+            sm ? `text-5xl ${amount ? '' : 'scale-150'}` : 'mb-6 mt-2 text-4xl'
           }`}
         >
           {icon}
         </div>
-        {!isSm && (
+        {(lg || md) && (
           <>
-            <div className=" w-full h-[6px] rounded-full bg-neutral-300 mb-4">
+            <div className=' w-full h-[6px] rounded-full bg-neutral-400 mb-4'>
               <div
-                className="h-full rounded-full bg-white"
-                style={{ width: converted + "%" }}
+                className='h-full rounded-full bg-white'
+                style={{ width: converted + '%' }}
               ></div>
             </div>
 
-            <div className="flex items-center text-sm justify-between">
-              <div className="text-base font-medium">$ {amount}</div>
-              <button
-                onClick={() => setIsPurchasing(true)}
-                className={
-                  "flex items-center bg-black border-[3px] border-[#444444] px-2 py-0.5 rounded-full " +
-                  `${!isAvailable && " brightness-50"}`
-                }
-              >
-                <img
-                  className="w-5 h-5 mr-1.5"
-                  src="https://img.icons8.com/3d-fluency/94/gas-station.png"
-                  alt="token"
-                />
-                <span className="text-sm font-medium">
-                  {price.toLocaleString("en-US")}
-                </span>
-              </button>
-            </div>
+            <RewardCardDetails
+              amount={amount}
+              price={price}
+              isAvailable={isAvailable}
+              md={md}
+            />
           </>
         )}
       </div>
-      {isSm && (
-        <div className="w-full min-w-36 text-center pt-3">
-          <span className=" font-mono text-xs">{title} Gift Card</span>
-          <div className="w-full flex items-center text-sm justify-between mt-4">
-            <div className="text-base font-medium">$ {amount}</div>
-            <div
-              className={
-                "flex items-center bg-black border-[3px] border-[#444444] px-2 py-0.5 rounded-full " +
-                `${!isAvailable && " brightness-50"}`
-              }
-            >
-              <img
-                className="w-5 h-5 mr-1.5"
-                src="https://img.icons8.com/3d-fluency/94/gas-station.png"
-                alt="token"
-              />
-              <span className="text-sm font-medium">
-                {price.toLocaleString("en-US")}
-              </span>
-            </div>
-          </div>
-        </div>
-      )}
     </>
+  );
+}
+
+function RewardCardDetails({ amount, price, isAvailable }) {
+  return (
+    <div className='flex items-center text-sm justify-between'>
+      {amount && <div className='text-base '>$ {amount}</div>}
+
+      <div
+        className={
+          'flex items-center bg-black border-[3px] border-[#444444] px-2 py-0.5 rounded-full ' +
+          `${!isAvailable && ' brightness-50'}`
+        }
+      >
+        <SiPix className='text-xs mr-1.5' />
+        <span className='text-sm '>{price.toLocaleString('en-US')}</span>
+      </div>
+    </div>
   );
 }
 
 function RewardList({ reward, point, setIsPurchasing, setModal }) {
   const { title } = reward;
-  const setModalInfo = (amount, price) => {
+  const setGiftCardInfo = (amount, price) => {
     setModal({
-      card: (
-        <RewardCard
-          reward={reward}
-          point={point}
-          amount={amount}
-          price={price}
-          isSm
-        />
-      ),
-      price: price,
+      card: <RewardCard reward={reward} sm />,
+      title,
+      amount,
+      price,
       isAvailable: point >= price,
+      type: 'Card',
+    });
+  };
+  const setItemInfo = ({ title, icon, price, bg }, type) => {
+    setModal({
+      title,
+      card: <RewardCard reward={{ icon, bg }} sm />,
+      price,
+      isAvailable: point >= price,
+      type,
     });
   };
   return (
     <li>
-      <span className="text-gray-400 text-sm font-mono font-semibold">
-        {title} Gift Card
-      </span>
-      <ul className="flex w-full overflow-auto my-4">
-        {amountOptions.map((option) => (
-          <li
-            onClick={() => setModalInfo(option.amount, option.price)}
-            key={title + option.amount}
-            className=" mr-3"
-          >
-            <RewardCard
-              reward={reward}
-              point={point}
-              amount={option.amount}
-              price={option.price}
-              setIsPurchasing={setIsPurchasing}
-              setModal={setModal}
-            />
-          </li>
-        ))}
+      <h4 className='th text-md my-8'>{title}</h4>
+      <ul className='flex w-full overflow-auto snap-x '>
+        {reward.items
+          ? reward.items.map((item, i) => (
+              <li
+                key={item.title + i}
+                className=' mr-3 snap-center h-40'
+                onClick={() => {
+                  console.log(reward);
+                  setItemInfo(item, reward.title);
+                }}
+              >
+                <RewardCard
+                  reward={item}
+                  point={point}
+                  price={item.price}
+                  setIsPurchasing={setIsPurchasing}
+                  md
+                />
+              </li>
+            ))
+          : amountOptions.map((option) => (
+              <li
+                onClick={() => setGiftCardInfo(option.amount, option.price)}
+                key={title + option.amount}
+                className=' mr-3 snap-center h-40'
+              >
+                <RewardCard
+                  reward={reward}
+                  point={point}
+                  amount={option.amount}
+                  price={option.price}
+                  setIsPurchasing={setIsPurchasing}
+                  lg
+                />
+              </li>
+            ))}
       </ul>
     </li>
   );
@@ -236,8 +335,8 @@ function RewardList({ reward, point, setIsPurchasing, setModal }) {
 
 function PurchaseModal({ point, setPoint, setIsPurchasing, modal }) {
   const [showCode, setShowCode] = useState(false);
-  const { card, price, isAvailable } = modal;
-  const hardCodedCoupon = "4XC2-23BE-3TO7-2Y6P";
+  const { title, amount, card, price, isAvailable } = modal;
+  const hardCodedCoupon = '4XC2-23BE-3TO7-2Y6P';
 
   const handleClick = () => {
     setIsPurchasing(false);
@@ -253,35 +352,35 @@ function PurchaseModal({ point, setPoint, setIsPurchasing, modal }) {
     <div
       className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-5/6 max-w-96 text-center overflow-x-hidden max-h-96 h-5/6 border-[1.5px] border-lightMode-fbg bg-lightMode-sbg dark:bg-darkMode-sbg rounded-xl p-5 z-10`}
     >
-      <div className="flex justify-between w-full text-darkMode-border min-w-36 mb-4 mt-2 text-white ml-5">
+      <div className='flex justify-between w-full text-darkMode-border min-w-36 mb-4 mt-2 text-white ml-5'>
         <button onClick={handleClick}>
           <MdClose />
         </button>
-        <div className="flex items-center bg-black border-[3px] border-[#444444] px-2 py-0.5 pr-4 rounded-l-full border-r-0">
-          <img
-            className="w-5 h-5 mr-1.5"
-            src="https://img.icons8.com/3d-fluency/94/gas-station.png"
-            alt="token"
-          />
-          <span className="text-sm font-medium">
-            {point.toLocaleString("en-US")}
-          </span>
+        <div className='flex items-center bg-black border-[3px] border-[#444444] px-2 py-0.5 pr-4 rounded-l-full border-r-0'>
+          <SiPix className='text-xs mr-1.5' />
+          <span className='text-sm '>{point.toLocaleString('en-US')}</span>
         </div>
       </div>
-      <div className="flex flex-col items-center text-white">{card}</div>
+      <div className='flex flex-col items-center text-white'>{card}</div>
+      <div className='w-full min-w-36 text-center pt-3 th'>
+        <span className='th text-xs'>{title}</span>
+        <RewardCardDetails
+          amount={amount}
+          price={price}
+          isAvailable={isAvailable}
+        />
+      </div>
       {showCode ? (
-        <div className=" mt-8 font-mono font-extrabold text-white">
-          {hardCodedCoupon}
-        </div>
+        <div className=' mt-8  text-white'>{hardCodedCoupon}</div>
       ) : (
         <button
           onClick={getCoupon}
-          className={`w-48 py-2 rounded-lg border-b-[5px] font-mono font-extrabold border-[#D46D0D] bg-[#F2A317] mt-8 ${
-            isAvailable && "hover:brightness-110"
+          className={`w-48 py-2 rounded-lg bg-[#0BA5E9] mt-8  th ${
+            isAvailable && 'hover:brightness-110'
           } `}
           disabled={!isAvailable}
         >
-          {isAvailable ? "GET A CARD" : "NOT ENOUGH UNIT"}
+          {isAvailable ? `GET ${modal.type.toUpperCase()}` : 'NOT ENOUGH UNIT'}
         </button>
       )}
     </div>
