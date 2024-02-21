@@ -3,8 +3,39 @@ import React, { useEffect } from "react";
 import Background from "../Components/Landing/Background";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import serverLink from "../serverLink";
 export default function LandingPage() {
   const navigate = useNavigate();
+  const handleUserData = async () => {
+   
+   
+
+    try {
+      const response = await axios.post(
+        serverLink+"/user/getgasstations",
+        {
+          latitude : 49.146714 ,
+          longitude:-122.853542
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const { success, data } = response.data;
+ 
+      if (success === true) {
+        console.log(data);
+      } else {
+        console.log("false");
+      }
+    } catch (error) {
+  
+      console.error("Network error:", error);
+    }
+  };
   return (
     <>
       <Background />
@@ -29,7 +60,11 @@ export default function LandingPage() {
                 and earning extra money along the way.
               </div>
               <div
-                onClick={() => navigate("/signup")}
+                onClick={() => 
+                  // navigate("/signup")
+                  handleUserData()
+              
+              }
                 className="h-16 mt-6 cursor-pointer px-10 flex flex-row justify-center items-center rounded-full bgbtn  text-white text-xl "
               >
                 <div>Get started</div>
