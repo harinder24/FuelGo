@@ -10,6 +10,11 @@ import {
 import { BiSolidPurchaseTagAlt } from 'react-icons/bi';
 import { MdClose } from 'react-icons/md';
 import BottomNav from '../Components/User/BottomNav';
+import WhatshotIcon from '@mui/icons-material/Whatshot';
+import HomeIcon from '@mui/icons-material/Home';
+import PollOutlinedIcon from '@mui/icons-material/PollOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+
 const AVATARS = {
   title: 'Avatar',
   items: [
@@ -17,13 +22,11 @@ const AVATARS = {
       title: 'Tappy',
       icon: <img className=' rounded-full size-10' src='/oilrig.jpg' alt='' />,
       price: 300,
-      bg: '#741C1B',
     },
     {
       title: 'Tappy',
       icon: <img className=' rounded-full size-10' src='/oilrig.jpg' alt='' />,
       price: 300,
-      bg: '#2E5814',
     },
   ],
 };
@@ -37,17 +40,15 @@ const FRAMES = {
         <div
           style={{
             backgroundImage: 'url("/frame/level5.jpg")',
-            backgroundSize: 'cover', // Adjust as needed
-            backgroundPosition: 'center', // Adjust as needed
-            // Additional background properties can be added here
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
           }}
           className=' flex justify-center items-center size-10 rounded-full border-0 '
         >
-          <div className='w-[93%] h-[93%] rounded-full bg-[#2E5814]' />
+          <div className='w-[93%] h-[93%] rounded-full bg-[#182335]' />
         </div>
       ),
       price: 300,
-      bg: '#2E5814',
     },
     {
       title: 'Frame-5',
@@ -61,11 +62,10 @@ const FRAMES = {
           }}
           className=' flex justify-center items-center size-10 rounded-full border-0 '
         >
-          <div className='w-[93%] h-[93%] rounded-full bg-[#741C1B]' />
+          <div className='w-[93%] h-[93%] rounded-full bg-[#182335] ' />
         </div>
       ),
       price: 300,
-      bg: '#741C1B',
     },
   ],
 };
@@ -144,38 +144,43 @@ export default function Rewards() {
       <div className='h-screen flex flex-col'>
         <div
           className={`w-screen flex-1  overflow-hidden  bg-lightMode-bg dark:bg-darkMode-bg ${
-            isPurchasing && 'blur-sm brightness-50 pointer-events-none'
+            isPurchasing ? 'blur-sm brightness-50 pointer-events-none' : ''
           }`}
         >
           <div className=' absolute w-screen h-[calc(100vh-56px)] z-20'>
             <div className=' flex w-full h-full justify-center'>
-              <div className='   w-[1400px] min-w-auto  h-full flex flex-row gap-x-3 max-[520px]:p-0 overflow-hidden'>
+              <div className='   w-[1400px] min-w-auto h-screen flex flex-row gap-x-3 p-3 max-[520px]:p-0 overflow-hidden'>
                 <div className='w-[312px] h-full rounded-xl max-[1000px]:rounded-none max-[1230px]:hidden'>
                   <Profile />
                 </div>
-                <ul className='flex-1 flex flex-col overflow-auto p-4'>
-                  <RewardList
-                    reward={AVATARS}
-                    point={point}
-                    setIsPurchasing={setIsPurchasing}
-                    setModal={setModal}
+                <div className='flex-1 flex flex-col overflow-x-auto overflow-y-hidden'>
+                  <RewardNav
+                    setIsProfilePopUpHandler={setIsProfilePopUpHandler}
                   />
-                  <RewardList
-                    reward={FRAMES}
-                    point={point}
-                    setIsPurchasing={setIsPurchasing}
-                    setModal={setModal}
-                  />
-                  {REWARDS.map((reward) => (
+                  <ul className='overflow-y-auto max-[520px]:px-2'>
                     <RewardList
-                      key={reward.title}
-                      reward={reward}
+                      reward={AVATARS}
                       point={point}
                       setIsPurchasing={setIsPurchasing}
                       setModal={setModal}
                     />
-                  ))}
-                </ul>
+                    <RewardList
+                      reward={FRAMES}
+                      point={point}
+                      setIsPurchasing={setIsPurchasing}
+                      setModal={setModal}
+                    />
+                    {REWARDS.map((reward) => (
+                      <RewardList
+                        key={reward.title}
+                        reward={reward}
+                        point={point}
+                        setIsPurchasing={setIsPurchasing}
+                        setModal={setModal}
+                      />
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
@@ -186,6 +191,52 @@ export default function Rewards() {
       </div>
       {isProfilePopUp && <ProfilePopUp setIsProfilePopUp={setIsProfilePopUp} />}
     </>
+  );
+}
+
+function RewardNav({ point }) {
+  return (
+    <div className=' w-full rounded-lg sbg flex flex-row items-center p-4 gap-x-4 max-[520px]:rounded-none max-[520px]:p-2'>
+      <div className=' flex flex-row items-center tp rounded-lg border-[1px] cborder h-10 px-2 tbg gap-x-1 cursor-pointer max-[520px]:hidden  hover:text-lightMode-header dark:hover:text-darkMode-header '>
+        <HomeIcon />
+        <div className=' max-[740px]:hidden'>Home</div>
+      </div>
+      <div className='flex items-center gap-x-1 caret-transparent cursor-pointer min-[520px]:hidden h-10'>
+        <WhatshotIcon sx={{ color: 'rgb(14,164,233)', fontSize: '28px' }} />
+        {/* <Icon size={28} /> */}
+        <div className='flex flex-row items-center  text-lightMode-button '>
+          <div className='text-white'>Fuel</div>
+          Go
+        </div>
+      </div>
+
+      <div className=' flex-1'></div>
+      <div className=' flex flex-row items-center tp rounded-lg border-[1px] cborder h-10 px-2 tbg gap-x-1 cursor-pointer hover:text-lightMode-header dark:hover:text-darkMode-header   '>
+        <EditOutlinedIcon />
+        <div className=' max-[740px]:hidden'>Price</div>
+      </div>
+      <div className=' flex flex-row items-center tp rounded-lg border-[1px] cborder h-10 px-2 tbg gap-x-1 cursor-pointer  hover:text-lightMode-header dark:hover:text-darkMode-header  '>
+        <PollOutlinedIcon />
+        <div className=' max-[740px]:hidden'>Survey</div>
+      </div>
+      <div
+        style={{
+          backgroundImage: 'url("/frame/level5.jpg")',
+          backgroundSize: 'cover', // Adjust as needed
+
+          backgroundPosition: 'center', // Adjust as needed
+          // Additional background properties can be added here
+        }}
+        className=' flex justify-center items-center size-[40px] rounded-full border-0 min-[1001px]:hidden max-[520px]:hidden'
+      >
+        <img
+          onClick={() => setIsProfilePopUpHandler()}
+          className='size-9 rounded-full  cursor-pointer object-cover relative'
+          src='/oilrig.jpg'
+          alt=''
+        />
+      </div>
+    </div>
   );
 }
 
@@ -205,9 +256,9 @@ function RewardCard({
   const converted = percent.toFixed();
 
   const cardSizeClass = sm
-    ? 'w-48 h-36'
+    ? `w-48 h-36 ${amount ? '' : 'bg-[#182335] '}`
     : 'h-[152px] ease-in-out duration-100 cursor-pointer hover:h-40 ' +
-      (md ? 'w-32 hover:w-36 ' : '') +
+      (md ? 'w-32 hover:w-36 bg-[#182335] ' : '') +
       (lg ? 'w-56 hover:w-60 ' : '');
 
   const handleClick = () => {
@@ -241,7 +292,6 @@ function RewardCard({
               amount={amount}
               price={price}
               isAvailable={isAvailable}
-              md={md}
             />
           </>
         )}
@@ -252,7 +302,11 @@ function RewardCard({
 
 function RewardCardDetails({ amount, price, isAvailable }) {
   return (
-    <div className='flex items-center text-sm justify-between'>
+    <div
+      className={`flex items-center text-sm ${
+        amount ? 'justify-between' : 'justify-end'
+      }`}
+    >
       {amount && <div className='text-base '>$ {amount}</div>}
 
       <div
@@ -272,7 +326,7 @@ function RewardList({ reward, point, setIsPurchasing, setModal }) {
   const { title } = reward;
   const setGiftCardInfo = (amount, price) => {
     setModal({
-      card: <RewardCard reward={reward} sm />,
+      card: <RewardCard reward={reward} amount={amount} sm />,
       title,
       amount,
       price,
@@ -280,10 +334,10 @@ function RewardList({ reward, point, setIsPurchasing, setModal }) {
       type: 'Card',
     });
   };
-  const setItemInfo = ({ title, icon, price, bg }, type) => {
+  const setItemInfo = ({ title, icon, price }, type) => {
     setModal({
       title,
-      card: <RewardCard reward={{ icon, bg }} sm />,
+      card: <RewardCard reward={{ icon }} sm />,
       price,
       isAvailable: point >= price,
       type,
@@ -297,7 +351,7 @@ function RewardList({ reward, point, setIsPurchasing, setModal }) {
           ? reward.items.map((item, i) => (
               <li
                 key={item.title + i}
-                className=' mr-3 snap-center h-40'
+                className=' mr-3 snap-start h-40'
                 onClick={() => {
                   console.log(reward);
                   setItemInfo(item, reward.title);
@@ -334,32 +388,32 @@ function RewardList({ reward, point, setIsPurchasing, setModal }) {
 }
 
 function PurchaseModal({ point, setPoint, setIsPurchasing, modal }) {
-  const [showCode, setShowCode] = useState(false);
+  const [isPurchased, setIsPurchased] = useState(false);
   const { title, amount, card, price, isAvailable } = modal;
   const hardCodedCoupon = '4XC2-23BE-3TO7-2Y6P';
 
   const handleClick = () => {
     setIsPurchasing(false);
-    setShowCode(false);
+    setIsPurchased(false);
   };
   const getCoupon = () => {
     const balance = point - price;
     setPoint(balance);
-    setShowCode(true);
+    setIsPurchased(true);
   };
 
   return (
     <div
-      className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-5/6 max-w-96 text-center overflow-x-hidden max-h-96 h-5/6 border-[1.5px] border-lightMode-fbg bg-lightMode-sbg dark:bg-darkMode-sbg rounded-xl p-5 z-10`}
+      className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-5/6 max-w-96 text-center overflow-x-hidden max-h-96 h-5/6 border-[1.5px] border-lightMode-sbg bg-[#0E1726] dark:bg-[#0E1726] rounded-xl p-5 z-10`}
     >
-      <div className='flex justify-between w-full text-darkMode-border min-w-36 mb-4 mt-2 text-white ml-5'>
-        <button onClick={handleClick}>
-          <MdClose />
-        </button>
-        <div className='flex items-center bg-black border-[3px] border-[#444444] px-2 py-0.5 pr-4 rounded-l-full border-r-0'>
+      <div className='flex justify-between w-full text-darkMode-border min-w-36 mb-4 mt-2 text-white '>
+        <div className='flex items-center bg-black border-[3px] border-[#444444] px-2 py-0.5 rounded-full '>
           <SiPix className='text-xs mr-1.5' />
           <span className='text-sm '>{point.toLocaleString('en-US')}</span>
         </div>
+        <button onClick={handleClick}>
+          <MdClose className='text-xl' />
+        </button>
       </div>
       <div className='flex flex-col items-center text-white'>{card}</div>
       <div className='w-full min-w-36 text-center pt-3 th'>
@@ -370,8 +424,10 @@ function PurchaseModal({ point, setPoint, setIsPurchasing, modal }) {
           isAvailable={isAvailable}
         />
       </div>
-      {showCode ? (
-        <div className=' mt-8  text-white'>{hardCodedCoupon}</div>
+      {isPurchased ? (
+        <div className=' mt-8 text-white leading-relaxed'>
+          Order placed. Check email !
+        </div>
       ) : (
         <button
           onClick={getCoupon}
@@ -380,7 +436,7 @@ function PurchaseModal({ point, setPoint, setIsPurchasing, modal }) {
           } `}
           disabled={!isAvailable}
         >
-          {isAvailable ? `GET ${modal.type.toUpperCase()}` : 'NOT ENOUGH UNIT'}
+          {isAvailable ? `Get ${modal.type}` : 'NOT ENOUGH UNIT'}
         </button>
       )}
     </div>
