@@ -23,27 +23,57 @@ import RateReviewOutlinedIcon from '@mui/icons-material/RateReviewOutlined';
 import AddAPhotoOutlinedIcon from '@mui/icons-material/AddAPhotoOutlined';
 import BottomNav from '../Components/User/BottomNav';
 import { MdClose } from 'react-icons/md';
+import { FaDollarSign } from 'react-icons/fa6';
 import Button from '../Components/Button';
+import { format } from 'timeago.js';
 
-const MODAL = {
-  survey: {
-    q1: 'Does this gas station have a car wash?',
-    q2: 'Does this gas station provide an air pump for tires?',
-    q3: 'Is there a convenience store available at this gas station?',
-    q4: 'Does this gas station offer electric vehicle (EV) charging stations?',
-    q5: 'Is this gas station equipped with facilities suitable for truck drivers, such as parking and amenities?',
-  },
-  price: ['Regular', 'Mid-grade', 'Premium', 'Diesel'],
-};
+const SURVEY = [
+  'Does this gas station have a car wash?',
+  'Does this gas station provide an air pump for tires?',
+  'Is there a convenience store available at this gas station?',
+  'Does this gas station offer electric vehicle (EV) charging stations?',
+  'Is this gas station equipped with facilities suitable for truck drivers, such as parking and amenities?',
+  'Do you want to use this gas station again?',
+];
 export default function GasStation() {
   const [isProfilePopUp, setIsProfilePopUp] = useState(false);
   const [modal, setModal] = useState({});
+  // ToDo get gasInfo from real database
+  const [gasInfo, setGasInfo] = useState([
+    {
+      type: 'Regular',
+      price: 1.62,
+      updatedBy: 'Harinder',
+      updatedAt: new Date().setDate(new Date().getDate() - 3),
+    },
+    {
+      type: 'Mid-grade',
+      price: 1.72,
+      updatedBy: 'Jinsoo',
+      updatedAt: new Date().setHours(new Date().getHours() - 5),
+    },
+    {
+      type: 'Premium',
+      price: 1.76,
+      updatedBy: 'Prab',
+      updatedAt: new Date().setMinutes(new Date().getMinutes() - 7),
+    },
+    {
+      type: 'Diesel',
+      price: 1.78,
+      updatedBy: 'Laghav',
+      updatedAt: Date.now(),
+    },
+  ]);
+  // add useEffect for all the info
   function setIsProfilePopUpHandler() {
     setIsProfilePopUp(true);
   }
   return (
     <>
-      {modal.show && <Modal title={modal.title} setModal={setModal} />}
+      {modal.show && (
+        <Modal title={modal.title} setModal={setModal} gasInfo={gasInfo} />
+      )}
       <div
         className={` w-screen h-screen bg-lightMode-bg dark:bg-darkMode-bg ${
           modal.show ? 'blur-sm brightness-50 pointer-events-none' : ''
@@ -59,10 +89,11 @@ export default function GasStation() {
                 <NavGasStation
                   setIsProfilePopUpHandler={setIsProfilePopUpHandler}
                   setModal={setModal}
+                  gasInfo={gasInfo}
                 />
                 <div className=' flex-1 flex-col overflow-auto mt-3'>
                   <StationInfo />
-                  <GasPrice />
+                  <GasPrice gasInfo={gasInfo} setModal={setModal} />
                   <Amenities />
                   <Contributor />
 
@@ -80,16 +111,39 @@ export default function GasStation() {
     </>
   );
 }
-function Modal({ title, setModal }) {
-  const li = MODAL[title];
-  const [crrQeustion, setcrrQuestion] = useState(
-    title === 'survey' ? li.q1 : ''
-  );
+function Modal({ title, setModal, gasInfo }) {
+  const [newPrice, setNewPrice] = useState([...gasInfo]);
+  const [crrIndex, setCrrIndex] = useState(0);
+  const [survey, setSurvey] = useState([]);
   const handleClose = () => {
     setModal({});
-    console.log(li);
   };
-  const handleSubmit = () => {};
+  const handleChangePrice = (e) => {
+    //ToDo Validate user input
+
+    setNewPrice(
+      newPrice.map((gas) =>
+        gas.type == e.target.id ? { ...gas, price: e.target.value } : gas
+      )
+    );
+  };
+  const handleNext = (e) => {
+    e.preventDefault();
+    setSurvey([...survey, e.target.innerText.toLowerCase()]);
+    if (!SURVEY[crrIndex + 1]) {
+      //ToDo post the result to database
+      setCrrIndex(0);
+      setModal({ show: false });
+      console.log(survey);
+      return;
+    }
+    setCrrIndex(crrIndex + 1);
+  };
+  const handleSubmit = (e) => {
+    //ToDo post the request to database
+    e.preventDefault();
+    setModal({ show: false });
+  };
   return (
     <div
       className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-5/6 max-w-96 text-center overflow-x-hidden max-h-96 h-5/6 border-[1.5px] border-lightMode-sbg bg-[#0E1726] dark:bg-[#0E1726] rounded-xl p-5 z-10`}
@@ -100,28 +154,54 @@ function Modal({ title, setModal }) {
         </button>
       </div>
       {title === 'price' ? (
-        <form className='grid grid-cols-2 justify-center items-center mt-4 gap-y-14 gap-x-8'>
-          {li.map((label) => {
-            const id = title + '_' + label;
+        <form className='grid grid-cols-2 justify-center items-center mt-4 gap-y-12 gap-x-8'>
+          {gasInfo.map((gas) => {
+            const { type, price } = gas;
             return (
-              <div key={id}>
-                <label className='tp mb-1 ' htmlFor={id}>
-                  {label}
-                </label>
-                <input
-                  className='customInput min-w-28 h-'
-                  type='text'
-                  id={id}
-                />
+              <div className='relative' key={type}>
+                <div className='flex flex-col gap-2'>
+                  <label className='th' htmlFor={type}>
+                    {type}
+                  </label>
+                  <input
+                    className='customInput pl-6 min-w-28 '
+                    type='text'
+                    id={type}
+                    placeholder={price}
+                    onChange={handleChangePrice}
+                  />
+                </div>
+                <FaDollarSign className='absolute bottom-[13.2px] left-2 tp text-sm' />
               </div>
             );
           })}
+
           <div className='w-[341px]'>
             <Button handleButtonClick={handleSubmit} data='Submit' />
           </div>
         </form>
       ) : (
-        <></>
+        <form className='flex flex-col items-center gap-y-8'>
+          <img className='rounded-lg w-56 h-32' src='/oilrig.jpg' alt='' />
+          <div className='th text-sm'>
+            <span className='mr-4'>Q{crrIndex + 1}.</span>
+            <span className=''>{SURVEY[crrIndex]}</span>
+          </div>
+          <div className='th flex w-full justify-center gap-x-4'>
+            <button
+              onClick={handleNext}
+              className='capitalize bg-darkMode-button w-12 py-2 rounded-lg brightness-75 hover:brightness-100'
+            >
+              yes
+            </button>
+            <button
+              onClick={handleNext}
+              className='capitalize bg-darkMode-error w-12 py-2 rounded-lg brightness-75 hover:brightness-100'
+            >
+              no
+            </button>
+          </div>
+        </form>
       )}
     </div>
   );
@@ -441,18 +521,49 @@ function Amenities() {
   );
 }
 
-function GasPrice() {
+function GasPrice({ gasInfo, setModal }) {
   return (
     <div className='w-full p-4 max-[630px]:px-2  mt-4'>
       <div className=' flex flex-row justify-between items-center th'>
         {' '}
         <div className='th text-2xl'>Gas prices</div>
-        <div className=' cursor-pointer'>
+        <div
+          onClick={() => setModal({ show: true, title: 'price' })}
+          className=' cursor-pointer'
+        >
           <EditOutlinedIcon />
         </div>
       </div>
+      <ul className='grid w-full grid-cols-4 rounded-lg mt-4 cborder border-[1px] max-[640px]:grid-cols-2'>
+        {gasInfo.map((gas) => {
+          const { type, price, updatedBy, updatedAt } = gas;
 
-      <div className=' flex w-full flex-row justify-center  mt-4 max-[640px]:flex-col rounded-lg cborder  border-[1px]'>
+          const borderBtw =
+            'cborder ' +
+            (type == 'Diesel'
+              ? ' max-[640px]:border-t-[1px] '
+              : type == 'Mid-grade'
+              ? ' min-[641px]:border-r-[1px] '
+              : 'border-r-[1px] ' +
+                (type == 'Premium' ? 'max-[640px]:border-t-[1px] ' : ''));
+          return (
+            <li
+              key={type}
+              className={
+                'flex flex-col text-center gap-y-2 px-2 py-4 ' + borderBtw
+              }
+            >
+              <div className='th'>{type}</div>
+              <div className=' text-xl th'>${price}</div>
+              <div className=' w-full justify-center  tp text-sm flex flex-row gap-x-1 items-center'>
+                <PersonIcon sx={{ fontSize: 16 }} /> <div> {updatedBy}</div>
+              </div>
+              <div className=' text-xs tp'>{format(updatedAt)}</div>
+            </li>
+          );
+        })}
+      </ul>
+      {/* <div className=' flex w-full flex-row justify-center  mt-4 max-[640px]:flex-col rounded-lg cborder  border-[1px]'>
         <div className=' flex flex-1 flex-row'>
           <div className='flex flex-col text-center gap-y-2 px-2 border-r-[1px] max-[640px]:border-b-[1px] cborder flex-1 py-4'>
             <div className='th'>Regular</div>
@@ -489,7 +600,7 @@ function GasPrice() {
             <div className=' text-xs tp'>2 hours ago</div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
@@ -905,12 +1016,14 @@ export function NavGasStation({ setIsProfilePopUpHandler, setModal }) {
       <div className=' flex-1'></div>
       <div
         onClick={() => handleModal('price')}
+        name='price'
         className=' flex flex-row items-center tp rounded-lg border-[1px] cborder h-10 px-2 tbg gap-x-1 cursor-pointer hover:text-lightMode-header dark:hover:text-darkMode-header   '
       >
         <EditOutlinedIcon />
         <div className=' max-[740px]:hidden'>Price</div>
       </div>
       <div
+        name='survey'
         onClick={() => handleModal('survey')}
         className=' flex flex-row items-center tp rounded-lg border-[1px] cborder h-10 px-2 tbg gap-x-1 cursor-pointer  hover:text-lightMode-header dark:hover:text-darkMode-header  '
       >
