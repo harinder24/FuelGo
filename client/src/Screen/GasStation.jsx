@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Profile, { ProfilePopUp } from '../Components/User/Profile';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
 import DirectionsCarFilledOutlinedIcon from '@mui/icons-material/DirectionsCarFilledOutlined';
 import HomeIcon from '@mui/icons-material/Home';
@@ -21,24 +20,27 @@ import PollOutlinedIcon from '@mui/icons-material/PollOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import RateReviewOutlinedIcon from '@mui/icons-material/RateReviewOutlined';
 import AddAPhotoOutlinedIcon from '@mui/icons-material/AddAPhotoOutlined';
-import BottomNav from '../Components/User/BottomNav';
 import { MdClose } from 'react-icons/md';
 import { FaDollarSign } from 'react-icons/fa6';
 import Button from '../Components/Button';
 import { format } from 'timeago.js';
+import CustomInput from '../Components/UI/CustomInput';
+import SideBar from '../Components/SideBar/SideBar';
+import BgBlackOpacity from '../Components/BgBlackOpacity';
+import TopNav from '../Components/TopNav/TopNav';
 
 const SURVEY = [
-  'Does this gas station have a car wash?',
-  'Does this gas station provide an air pump for tires?',
-  'Is there a convenience store available at this gas station?',
-  'Does this gas station offer electric vehicle (EV) charging stations?',
-  'Is this gas station equipped with facilities suitable for truck drivers, such as parking and amenities?',
-  'Do you want to use this gas station again?',
+  'Is there a car wash facility available at this gas station?',
+  'Does this gas station offer an air pump service for tires?',
+  'Is there a convenience store located at this gas station?',
+  'Does this gas station provide electric vehicle (EV) charging stations?',
+  'Are there facilities available for truck drivers, such as parking and amenities, at this gas station?',
+  'Is there an ATM Machine available at this gas station?',
+  'Would you consider using this gas station again?',
 ];
 export default function GasStation() {
   const [isProfilePopUp, setIsProfilePopUp] = useState(false);
   const [modal, setModal] = useState({});
-  // ToDo get gasInfo from real database
   const [gasInfo, setGasInfo] = useState([
     {
       type: 'Regular',
@@ -65,49 +67,50 @@ export default function GasStation() {
       updatedAt: Date.now(),
     },
   ]);
+
+  const handleModal = (title) => {
+    setModal({ show: true, title });
+  };
+  // ToDo get gasInfo from real database
   // add useEffect for all the info
-  function setIsProfilePopUpHandler() {
-    setIsProfilePopUp(true);
-  }
   return (
     <>
       {modal.show && (
-        <Modal title={modal.title} setModal={setModal} gasInfo={gasInfo} />
+        <BgBlackOpacity>
+          <Modal title={modal.title} setModal={setModal} gasInfo={gasInfo} />
+        </BgBlackOpacity>
       )}
-      <div
-        className={` w-screen h-screen bg-lightMode-bg dark:bg-darkMode-bg ${
-          modal.show ? 'blur-sm brightness-50 pointer-events-none' : ''
-        }`}
-      >
-        <div className=' absolute w-screen h-screen z-20'>
-          <div className=' flex w-full h-full justify-center'>
-            <div className='   w-[1400px] min-w-auto  h-full flex flex-row gap-x-3 p-3 max-[520px]:p-0 overflow-hidden'>
-              <div className='w-[312px] h-full rounded-xl max-[1000px]:rounded-none max-[1000px]:hidden'>
-                <Profile />
-              </div>
-              <div className='flex-1 flex flex-col '>
-                <NavGasStation
-                  setIsProfilePopUpHandler={setIsProfilePopUpHandler}
-                  setModal={setModal}
-                  gasInfo={gasInfo}
-                />
-                <div className=' flex-1 flex-col overflow-auto mt-3'>
-                  <StationInfo />
-                  <GasPrice gasInfo={gasInfo} setModal={setModal} />
-                  <Amenities />
-                  <Contributor />
-
-                  <CommentSection />
-                </div>
-                <div className='w-full min-[520px]:hidden '>
-                  <BottomNav />
-                </div>
-              </div>
-            </div>
-          </div>
+      <TopNav setIsProfilePopUp={setIsProfilePopUp}>
+        <div
+          onClick={() => handleModal('price')}
+          name='price'
+          className=' flex flex-row items-center tp w-[100px] justify-center gap-x-1 cursor-pointer hover:text-white max-[740px]:w-10 '
+        >
+          <EditOutlinedIcon />
+          <div className=' max-[740px]:hidden'>Price</div>
         </div>
+        <div className='h-full cborder border-l-[1px]'></div>
+        <div
+          name='survey'
+          onClick={() => handleModal('survey')}
+          className=' flex flex-row items-center tp w-[100px] justify-center gap-x-1 cursor-pointer hover:text-white max-[740px]:w-10   '
+        >
+          <PollOutlinedIcon />
+          <div className=' max-[740px]:hidden'>Survey</div>
+        </div>
+      </TopNav>
+      <div className=' flex-1 flex-col overflow-auto mt-3'>
+        <StationInfo />
+        <GasPrice gasInfo={gasInfo} setModal={setModal} />
+        <Amenities />
+        <Contributor />
+
+        <CommentSection />
       </div>
-      {isProfilePopUp && <ProfilePopUp setIsProfilePopUp={setIsProfilePopUp} />}
+
+      {isProfilePopUp && (
+        <SideBar isProfilePopUp setIsProfilePopUp={setIsProfilePopUp} />
+      )}
     </>
   );
 }
@@ -130,11 +133,11 @@ function Modal({ title, setModal, gasInfo }) {
   const handleNext = (e) => {
     e.preventDefault();
     setSurvey([...survey, e.target.innerText.toLowerCase()]);
+    console.log(survey);
     if (!SURVEY[crrIndex + 1]) {
       //ToDo post the result to database
       setCrrIndex(0);
       setModal({ show: false });
-      console.log(survey);
       return;
     }
     setCrrIndex(crrIndex + 1);
@@ -142,6 +145,7 @@ function Modal({ title, setModal, gasInfo }) {
   const handleSubmit = (e) => {
     //ToDo post the request to database
     e.preventDefault();
+    if (newPrice.some((gas) => isNaN(gas.price))) return;
     setModal({ show: false });
   };
   return (
@@ -155,24 +159,21 @@ function Modal({ title, setModal, gasInfo }) {
       </div>
       {title === 'price' ? (
         <form className='grid grid-cols-2 justify-center items-center mt-4 gap-y-12 gap-x-8'>
-          {gasInfo.map((gas) => {
+          {gasInfo.map((gas, index) => {
             const { type, price } = gas;
             return (
-              <div className='relative' key={type}>
-                <div className='flex flex-col gap-2'>
-                  <label className='th' htmlFor={type}>
-                    {type}
-                  </label>
-                  <input
-                    className='customInput pl-6 min-w-28 '
-                    type='text'
-                    id={type}
-                    placeholder={price}
-                    onChange={handleChangePrice}
-                  />
-                </div>
-                <FaDollarSign className='absolute bottom-[13.2px] left-2 tp text-sm' />
-              </div>
+              <CustomInput
+                key={type + price}
+                label={type}
+                paddingLeft='24px'
+                placeHolder={price}
+                handleChange={handleChangePrice}
+                icon={
+                  <FaDollarSign className='absolute left-2 tp text-sm bottom-[13.5px]' />
+                }
+                isInvalid={isNaN(newPrice[index].price)}
+                errorMessage='Invalid Input'
+              />
             );
           })}
 
@@ -190,13 +191,13 @@ function Modal({ title, setModal, gasInfo }) {
           <div className='th flex w-full justify-center gap-x-4'>
             <button
               onClick={handleNext}
-              className='capitalize bg-darkMode-button w-12 py-2 rounded-lg brightness-75 hover:brightness-100'
+              className='capitalize bg-darkMode-button w-12 py-2 rounded-lg hover:brightness-125'
             >
               yes
             </button>
             <button
               onClick={handleNext}
-              className='capitalize bg-darkMode-error w-12 py-2 rounded-lg brightness-75 hover:brightness-100'
+              className='capitalize bg-darkMode-error w-12 py-2 rounded-lg hover:brightness-125'
             >
               no
             </button>
@@ -490,6 +491,7 @@ function Amenities() {
     { name: 'Convenience store', src: '/conv.webp' },
     { name: 'Ev charging station', src: '/ev.webp' },
     { name: 'Truck stop', src: '/truck.webp' },
+    { name: 'ATM', src: '/atm.png' },
   ];
   return (
     <div className='flex-1 p-4 max-[630px]:px-2 w-full  mt-4 flex-col h-[256px] max-[640px]:h-[415px]'>
