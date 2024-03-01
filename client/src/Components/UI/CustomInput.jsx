@@ -1,6 +1,5 @@
-import 'react';
+import React from 'react';
 import { PiWarningCircleBold } from 'react-icons/pi';
-
 export default function CustomInput({
   label,
   paddingLeft,

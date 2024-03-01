@@ -5,11 +5,12 @@ import WhatshotIcon from '@mui/icons-material/Whatshot';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import serverLink from '../serverLink';
+import CustomButton from '../Components/UI/CustomButton';
 export default function LandingPage() {
   const navigate = useNavigate();
   const handleMovePage = async () => {
     await handleUserData();
-    navigate('/home');
+    navigate('/login');
   };
   const handleUserData = async () => {
     try {
@@ -59,12 +60,23 @@ export default function LandingPage() {
                 Join millions around the globe who are getting best fuel prices
                 and earning extra money along the way.
               </div>
-              <div
+              <div>
+                <CustomButton
+                  handleClick={handleMovePage}
+                  // innerContent='Get Started'
+                  fontSize='xl'
+                  rounded='full'
+                  height='64px'
+                >
+                  Get Started
+                </CustomButton>
+              </div>
+              {/* <div
                 onClick={handleMovePage}
                 className='h-16 mt-6 cursor-pointer px-10 flex flex-row justify-center items-center rounded-full bgbtn  text-white text-xl '
               >
                 <div>Get started</div>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className='flex-1 max-[1050px]:flex-[0.6] max-[775px]:hidden'></div>

@@ -1,16 +1,43 @@
 import React from 'react';
-import Profile from '../User/Profile';
+import Profile from './Profile';
+import BgBlackOpacity from '../BgBlackOpacity';
+import BottomNav from '../BottomNav/BottomNav';
 
-export default function SideBar({ isProfileScreen }) {
+export default function SideBar({
+  isProfileScreen,
+  isProfilePopUp,
+  setIsProfilePopUp,
+  visible,
+}) {
+  const sideBarCSS = isProfileScreen
+    ? ' w-full h-[calc(100%-56px)] bg-lightMode-bg dark:bg-darkMode-bg'
+    : ' w-[312px] h-full bg-lightMode-sbg dark:bg-darkMode-sbg' +
+      (visible ? '' : ' max-[1000px]:hidden rounded-xl');
+
+  if (isProfilePopUp) {
+    const handleClose = (e) => {
+      if (e.clientX <= 312) return;
+      setIsProfilePopUp(false);
+    };
+    return (
+      <BgBlackOpacity>
+        <div
+          onClick={handleClose}
+          className=' absolute top-0 w-screen h-screen z-10'
+        >
+          <div className='w-[312px] h-full animate-slide-in '>
+            <SideBar visible />
+          </div>
+        </div>
+      </BgBlackOpacity>
+    );
+  }
   return (
-    <div
-      className={`${
-        isProfileScreen
-          ? 'w-full'
-          : 'w-[312px] max-[1000px]:hidden max-[1000px]:rounded-none rounded-xl'
-      } h-full max-[520px]:h-[calc(100%-56px)] max-[520px]:bg-lightMode-bg max-[520px]:dark:bg-darkMode-bg  bg-lightMode-sbg dark:bg-darkMode-sbg`}
-    >
-      <Profile />
-    </div>
+    <>
+      <div className={sideBarCSS}>
+        <Profile />
+      </div>
+      {isProfileScreen && <BottomNav />}
+    </>
   );
 }

@@ -1,11 +1,10 @@
-import React from 'react'
-import Profile from '../Components/User/Profile'
+import React from 'react';
+import SideBar from '../Components/SideBar/SideBar';
 
 export default function ProfileScreen() {
   return (
     <div className='w-screen h-screen'>
-      <Profile/>
-
+      <SideBar isProfileScreen />
     </div>
-  )
+  );
 }
