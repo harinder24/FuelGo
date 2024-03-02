@@ -469,13 +469,13 @@ function AuthForm({
               </div>
             </>
           ) : (
-            <label class='inline-flex items-center mb-3'>
+            <label className='inline-flex items-center mb-3'>
               <input
                 onClick={() => setIsAgreedToTerms((prevState) => !prevState)}
                 type='checkbox'
-                class='form-checkbox h-[14px] w-[14px]  transition duration-150 ease-in-out checkbox border-[1px] border-lightMode-border dark:border-darkMode-border:'
+                className='form-checkbox h-[14px] w-[14px]  transition duration-150 ease-in-out checkbox border-[1px] border-lightMode-border dark:border-darkMode-border:'
               />
-              <span class='ml-2 text-sm text-lightMode-p dark:text-darkMode-p'>
+              <span className='ml-2 text-sm text-lightMode-p dark:text-darkMode-p'>
                 I agree to the terms and conditions
               </span>
             </label>
@@ -494,23 +494,23 @@ function AuthForm({
           {isLogin ? (
             <h4 className='flex flex-row'>
               Don't have an account?{' '}
-              <h4
+              <button
                 onClick={() => navigate('/signup')}
                 className='pl-1  text-lightMode-button dark:text-lightMode-button cursor-pointer'
               >
                 {' '}
                 Register Now{' '}
-              </h4>
+              </button>
             </h4>
           ) : (
             <h4 className='flex flex-row text-sm'>
               Already have an account?{' '}
-              <h4
+              <button
                 onClick={() => navigate('/login')}
                 className='pl-1  text-lightMode-button dark:text-lightMode-button cursor-pointer'
               >
                 Login Now{' '}
-              </h4>
+              </button>
             </h4>
           )}
         </div>
@@ -760,7 +760,7 @@ export function AuthPageUiWrapperComp({ children }) {
                 onMouseEnter={handleMouseEnter}
                 className=' relative flex-1 w-full h-full max-[640px]:hidden overflow-hidden'
               >
-                <div class='screen-image'></div>
+                <div className='screen-image'></div>
                 <div className='screen-overlay'></div>
                 <div className=' absolute z-30 top-0 w-full h-full p-4'>
                   <div className='w-full h-full border-[3px] border-lightMode-border rounded-lg flex flex-col items-center justify-end'>
