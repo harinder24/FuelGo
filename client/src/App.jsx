@@ -1,80 +1,27 @@
-import React, { useState } from "react";
-import LandingPage from "./Screen/LandingPage";
-import Login from "./Screen/Login";
-import Signup from "./Screen/Signup";
-import ForgetPassword from "./Screen/ForgetPassword";
-import ChangePassWord from "./Screen/ChangePassWord";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Error from "./Screen/Error";
-import Home from "./Screen/Home";
-import Rewards from "./Screen/Rewards";
-import GasStation from "./Screen/GasStation";
-import ProfileScreen from "./Screen/ProfileScreen";
-import SearchScreen from "./Screen/SearchScreen";
-import Context from "./context";
+import React, { useEffect, useState } from 'react';
+import { Outlet } from 'react-router-dom';
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <LandingPage />,
-  },
+import Context from './context';
+import SideBar from './Components/SideBar/SideBar';
+import BottomNav from './Components/BottomNav/BottomNav';
+import MainLayout from './Components/Layout/MainLayout';
+import { setUserData } from './api/setUserData';
 
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/signup",
-    element: <Signup />,
-  },
-  {
-    path: "/forgetpassword",
-    element: <ForgetPassword />,
-  },
-  {
-    path: "/changepassword/:id",
-    element: <ChangePassWord />,
-  },
-  {
-    path: "/error",
-    element: <Error />,
-  },
-  {
-    path: "/home",
-    element: <Home />,
-  },
-  {
-    path: "/favourite",
-    element: <Home />,
-  },
-  {
-    path: "/rewards",
-    element: <Rewards />,
-  },
-  {
-    path: "/gs",
-    element: <GasStation />,
-  },
-  {
-    path: "/profile",
-    element: <ProfileScreen />,
-  },
-  {
-    path: "/search",
-    element: <SearchScreen />,
-  },
-]);
-
-function App() {
+export default function App() {
   const [user, setUser] = useState(null);
-  
-  
-
+  const [isProfilePopUp, setIsProfilePopUp] = useState(false);
   return (
     <Context.Provider value={{ user, setUser }}>
-      <RouterProvider router={router} />
+      <MainLayout>
+        <SideBar />
+        <div className='flex flex-1 flex-col overflow-hidden'>
+          <Outlet context={{ setIsProfilePopUp }} />
+          <BottomNav />
+        </div>
+        {isProfilePopUp && (
+          <SideBar isProfilePopUp setIsProfilePopUp={setIsProfilePopUp} />
+        )}
+      </MainLayout>
     </Context.Provider>
   );
 }
-
-export default App;
