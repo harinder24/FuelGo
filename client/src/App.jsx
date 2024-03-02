@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import Context from './context';
 import SideBar from './Components/SideBar/SideBar';
 import BottomNav from './Components/BottomNav/BottomNav';
 import MainLayout from './Components/Layout/MainLayout';
+import { setUserData } from './api/setUserData';
 
 export default function App() {
   const [user, setUser] = useState(null);
   const [isProfilePopUp, setIsProfilePopUp] = useState(false);
-
   return (
     <Context.Provider value={{ user, setUser }}>
       <MainLayout>

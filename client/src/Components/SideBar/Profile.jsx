@@ -19,7 +19,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import ChatIcon from '@mui/icons-material/Chat';
 import CloseIcon from '@mui/icons-material/Close';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CustomInput from '../UI/CustomInput';
 import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
@@ -162,7 +162,7 @@ function ProfileComp() {
         const { title, icon, subtitle = '' } = action;
 
         return (
-          <>
+          <Fragment key={title + index}>
             <div className='px-2 w-full caret-transparent'>
               <div
                 onClick={() => handleActionChange(title)}
@@ -189,7 +189,7 @@ function ProfileComp() {
             {index == 4 && (
               <div className=' border-b-[1px] border-lightMode-border dark:border-darkMode-border mt-4 mb-2'></div>
             )}
-          </>
+          </Fragment>
         );
       })}
       <SignoutBtn />
@@ -252,7 +252,6 @@ function UserInfo({ handleActionChange }) {
           Level {user.lv}
         </div>
         <div className='flex flex-row h-4 rounded-full bg-lightMode-tbg cborder border-[1px]'>
-          {console.log(user.crrEXP / user.requiredEXP)}
           <div
             className='bg-lightMode-button rounded-full'
             style={{ width: `${(user.crrEXP / user.requiredEXP) * 100}%` }}
@@ -273,8 +272,11 @@ function Avatar() {
   return (
     <div className=' w-full p-3 caret-transparent'>
       <div className=' flex flex-row flex-wrap gap-4 pt-4 justify-evenly'>
-        {AVATARS.map((item) => (
-          <div key={item.url} className={`${item.isActive ? '' : 'relative'}`}>
+        {AVATARS.map((item, index) => (
+          <div
+            key={item.url + index}
+            className={`${item.isActive ? '' : 'relative'}`}
+          >
             <div className=' size-[100px] rounded-lg tbg flex justify-center items-center cursor-pointer'>
               <img
                 className='size-[60px] rounded-full  cursor-pointer object-cover relative'
@@ -308,8 +310,11 @@ function Frame() {
   return (
     <div className=' w-full p-3 caret-transparent'>
       <div className=' flex flex-row flex-wrap gap-4 pt-4 justify-evenly'>
-        {FRAMES.map((item) => (
-          <div key={item.url} className={`${item.isActive ? '' : 'relative'}`}>
+        {FRAMES.map((item, index) => (
+          <div
+            key={item.url + index}
+            className={`${item.isActive ? '' : 'relative'}`}
+          >
             <div className=' size-[100px] rounded-lg tbg flex justify-center items-center cursor-pointer'>
               <div
                 style={{
@@ -412,25 +417,31 @@ function Settings() {
   );
 }
 function ContactUs() {
-  const [isHome, setIsHome] = useState(true);
-  const [isChat, setIsChat] = useState(false);
-  const [isHelp, setIsHelp] = useState(false);
   const [isSendMsg, setIsSendMsg] = useState(false);
   const chatContainerRef = useRef(null);
   const [isAutoFocus, setIsAutoFocus] = useState(false);
   const [helpDataId, setHelpDataId] = useState(null);
+  const [crrAction, setCrrAction] = useState();
   useEffect(() => {
-    if (isSendMsg) {
-      scrollToBottom();
-    }
-  }, [isSendMsg]);
+    setCrrAction({
+      title: 'Home',
+      contents: (
+        <ContactUsHome
+          setCrrAction={setCrrAction}
+          isSendMsg={isSendMsg}
+          setIsSendMsg={setIsSendMsg}
+          setIsAutoFocus={setIsAutoFocus}
+          setHelpDataId={setHelpDataId}
+        />
+      ),
+    });
+  }, []);
 
-  const scrollToBottom = () => {
-    chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-  };
   return (
     <>
-      {helpDataId ? (
+      {crrAction && (
+        <>
+          {/* {helpDataId ? (
         <></>
       ) : (
         <div className='w-[312px]'>
@@ -458,48 +469,31 @@ function ContactUs() {
             <div className=' w-full   caret-transparent'></div>
           )}
         </div>
-      )}
-
-      <div
-        ref={chatContainerRef}
-        className={` flex-1  overflow-y-auto flex flex-col     px-3 `}
-      >
-        {isHome && (
-          <ContactUsHome
-            setIsSendMsg={setIsSendMsg}
-            setIsChat={setIsChat}
-            setIsHome={setIsHome}
-            setIsHelp={setIsHelp}
-            setIsAutoFocus={setIsAutoFocus}
-            setHelpDataId={setHelpDataId}
-          />
-        )}
-        {isChat && (
-          <ContactUsChat isSendMsg={isSendMsg} setIsSendMsg={setIsSendMsg} />
-        )}
-        {isHelp && (
-          <ContactUsHelp
-            isAutoFocus={isAutoFocus}
-            setIsAutoFocus={setIsAutoFocus}
-            helpDataId={helpDataId}
-            setHelpDataId={setHelpDataId}
-          />
-        )}
-      </div>
-      <div className='border-t-[1px] cborder'></div>
-      <div
-        className=' sticky bottom-0 m-3  
+      )} */}
+          <div
+            ref={chatContainerRef}
+            className={` flex-1  overflow-y-auto flex flex-col     px-3 `}
+          >
+            {crrAction.contents}
+          </div>
+          <div className='border-t-[1px] cborder'></div>
+          <div
+            className=' sticky bottom-0 m-3  
              '
-      >
-        <ContactUsNav
-          isHome={isHome}
-          setIsHome={setIsHome}
-          isChat={isChat}
-          setIsChat={setIsChat}
-          isHelp={isHelp}
-          setIsHelp={setIsHelp}
-        />
-      </div>
+          >
+            <ContactUsNav
+              isSendMsg={isSendMsg}
+              setIsSendMsg={setIsSendMsg}
+              isAutoFocus={isAutoFocus}
+              setIsAutoFocus={setIsAutoFocus}
+              helpDataId={helpDataId}
+              setHelpDataId={setHelpDataId}
+              crrAction={crrAction}
+              setCrrAction={setCrrAction}
+            />
+          </div>
+        </>
+      )}
     </>
   );
 }
@@ -510,15 +504,15 @@ function ContactUsHelp({
   setHelpDataId,
   helpDataId,
 }) {
-  const [hData, setHData] = useState(helpData);
+  const [hData, setHData] = useState(HELPDATA);
   const [text, setText] = useState('');
 
   useEffect(() => {}, []);
   useEffect(() => {
     if (text === '') {
-      setHData(helpData);
+      setHData(HELPDATA);
     } else {
-      let helpData2 = [...helpData];
+      let helpData2 = [...HELPDATA];
       setHData([]);
 
       // const lcText = text.toLowerCase();
@@ -585,7 +579,7 @@ function ContactUsHelp({
             <div className='th flex  flex-row justify-between items-center'>
               <div className=' th w-[calc(100%-32px)] overflow-hidden text-ellipsis whitespace-nowrap caret-transparent'>
                 {' '}
-                {helpData[helpDataId - 1].title}
+                {HELPDATA[helpDataId - 1].title}
               </div>
               <div
                 className=' cursor-pointer'
@@ -596,7 +590,7 @@ function ContactUsHelp({
             </div>{' '}
             <div className=' mt-2 tp caret-transparent '>
               {' '}
-              {helpData[helpDataId - 1].data}
+              {HELPDATA[helpDataId - 1].data}
             </div>
           </div>
         </>
@@ -638,26 +632,22 @@ function ContactUsHelp({
 }
 
 function ContactUsHome({
-  setIsHome,
-  setIsChat,
-  setIsHelp,
+  setCrrAction,
+  isSendMsg,
   setIsSendMsg,
   setIsAutoFocus,
   setHelpDataId,
 }) {
-  function sendChatHandler() {
-    setIsHome(false);
-    setIsChat(true);
-    setIsSendMsg(true);
-  }
+  function sendChatHandler() {}
   function sendHelpHandler() {
-    setIsHome(false);
-    setIsHelp(true);
-    setIsAutoFocus(true);
+    setCrrAction({
+      title: 'Chat',
+      contents: (
+        <ContactUsChat isSendMsg={isSendMsg} setIsSendMsg={setIsSendMsg} />
+      ),
+    });
   }
   function specifificHelpHandler(num) {
-    setIsHome(false);
-    setIsHelp(true);
     setHelpDataId(num);
   }
   return (
@@ -669,7 +659,14 @@ function ContactUsHome({
       <div className=' text-3xl tp'>Hey Harinder &#128075;</div>
       <div className=' text-3xl th'>How can we help?</div>
 
-      <div
+      <CustomInput
+        icon={
+          <SearchOutlinedIcon className='absolute left-2 tp text-2xl bottom-[8px]' />
+        }
+        placeHolder='Search for help'
+        paddingLeft='36px'
+      />
+      {/* <div
         onClick={() => sendHelpHandler()}
         className=' h-10 flex flex-row items-center rounded-lg tbg mt-4 border-[1px] cborder tp cursor-text'
       >
@@ -677,9 +674,9 @@ function ContactUsHome({
           <SearchOutlinedIcon />
         </div>
         <div className=' text-sm  pl-2'>Search for help</div>
-      </div>
+      </div> */}
 
-      {helpData.map((data) => {
+      {HELPDATA.map((data) => {
         if (data.id > 3) {
           return null;
         }
@@ -695,7 +692,7 @@ function ContactUsHome({
         );
       })}
       <div
-        onClick={() => sendChatHandler()}
+        onClick={sendHelpHandler}
         className='p-4 tbg rounded-lg flex flex-row text-sm mt-4 cursor-pointer mb-4 items-center tp hover:text-lightMode-header dark:hover:text-lightMode-header hover:bg-lightMode-bg  dark:hover:bg-darkMode-bg'
       >
         <div className=' flex-1 flex flex-col'>
@@ -822,51 +819,88 @@ function ChatOverView() {
 }
 
 function ContactUsNav({
-  isHome,
-  setIsHome,
-  isChat,
-  setIsChat,
-  isHelp,
-  setIsHelp,
+  crrAction,
+  setCrrAction,
+  isSendMsg,
+  setIsSendMsg,
+  isAutoFocus,
+  setIsAutoFocus,
+  helpDataId,
+  setHelpDataId,
 }) {
-  const setHomeHandler = () => {
-    setIsHome(true);
-    setIsChat(false);
-    setIsHelp(false);
-  };
-  const setChatHandler = () => {
-    setIsHome(false);
-    setIsChat(true);
-    setIsHelp(false);
-  };
-  const setHelpHandler = () => {
-    setIsHome(false);
-    setIsChat(false);
-    setIsHelp(true);
+  const { title } = crrAction;
+  const handleChangeAction = (title) => {
+    switch (title) {
+      case 'Chat':
+        setCrrAction({
+          title,
+          contents: (
+            <ContactUsChat isSendMsg={isSendMsg} setIsSendMsg={setIsSendMsg} />
+          ),
+        });
+        break;
+      case 'Help':
+        setCrrAction({
+          title,
+          contents: (
+            <ContactUsHelp
+              isAutoFocus={isAutoFocus}
+              setIsAutoFocus={setIsAutoFocus}
+              helpDataId={helpDataId}
+              setHelpDataId={setHelpDataId}
+            />
+          ),
+        });
+        break;
+      default:
+        setCrrAction({
+          title,
+          contents: (
+            <ContactUsHome
+              setIsSendMsg={setIsSendMsg}
+              setIsAutoFocus={setIsAutoFocus}
+              setHelpDataId={setHelpDataId}
+            />
+          ),
+        });
+        break;
+    }
   };
   return (
     <div className='w-full flex  caret-transparent'>
-      <div className={`${isHome ? 'tb' : 'th'}  flex-1 flex justify-center `}>
+      <div
+        className={`${
+          title == 'Home' ? 'tb' : 'th'
+        }  flex-1 flex justify-center `}
+      >
         <div
-          onClick={setHomeHandler}
+          onClick={() => handleChangeAction('Home')}
           className=' flex flex-col  items-center cursor-pointer px-2'
         >
           <HomeIcon />
           <div className=' text-sm'>Home</div>
         </div>
       </div>
-      <div className={`${isChat ? 'tb' : 'th'}  flex-1 flex justify-center `}>
+      <div
+        className={`${
+          title == 'Chat' ? 'tb' : 'th'
+        }  flex-1 flex justify-center `}
+      >
         <div
-          onClick={setChatHandler}
+          onClick={() => handleChangeAction('Chat')}
           className=' flex flex-col  items-center cursor-pointer px-2'
         >
           <ChatIcon />
           <div className=' text-sm'>Chat</div>
         </div>
       </div>
-      <div className={`${isHelp ? 'tb' : 'th'}  flex-1 flex justify-center `}>
+      <div
+        className={`${
+          title == 'Help' ? 'tb' : 'th'
+        }  flex-1 flex justify-center `}
+      >
         <div
-          onClick={setHelpHandler}
+          onClick={() => handleChangeAction('Help')}
           className=' flex flex-col  items-center cursor-pointer px-2'
         >
           <ContactSupportOutlinedIcon />
@@ -941,7 +975,7 @@ function ShareLink() {
   );
 }
 
-const helpData = [
+const HELPDATA = [
   {
     id: 1,
     title: 'Points still not credited?',

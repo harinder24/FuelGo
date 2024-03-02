@@ -300,9 +300,11 @@ function IndividualStationsList() {
   if (!Number.isInteger(rating)) {
     const halfStar = rating - filledStars;
     if (halfStar < 0.3) {
-      stars.push(<StarIcon sx={{ fontSize: size }} />);
+      stars.push(<StarIcon key={filledStars} sx={{ fontSize: size }} />);
     } else if (halfStar > 0.7) {
-      stars.push(<StarIcon sx={{ color: 'gold', fontSize: size }} />);
+      stars.push(
+        <StarIcon key={filledStars} sx={{ color: 'gold', fontSize: size }} />
+      );
     } else {
       stars.push(
         <StarHalfIcon
@@ -313,7 +315,6 @@ function IndividualStationsList() {
     }
   }
 
-  // Empty stars
   for (let i = stars.length; i < totalStars; i++) {
     stars.push(<StarIcon key={i} sx={{ fontSize: size }} />);
   }
