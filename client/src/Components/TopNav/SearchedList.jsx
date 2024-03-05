@@ -1,7 +1,7 @@
 import React from 'react';
 import BgBlackOpacity from '../BgBlackOpacity';
 import CustomInput from '../UI/CustomInput';
-import IndividualStationsList from '../IndividualStationsList';
+import IndividualStationsList from '../GasStation/GasStationCard';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import CloseIcon from '@mui/icons-material/Close';
 
