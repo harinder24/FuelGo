@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { TextField, Grid, ThemeProvider } from '@mui/material';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
-import Button from '../Button';
 import theme from '../Theme/Mui';
 import googleImg from '/google.png';
 import facebookImg from '/facebook.png';
@@ -216,7 +215,7 @@ function ConfirmationPopUp({ setPopUp }) {
                 Profile Image
               </div>
               <div className='w-full px-4 flex flex-col gap-y-4 '>
-                <Button data={'Update Image'}></Button>
+                <CustomButton data={'Update Image'}></CustomButton>
                 <button
                   className='px-2 w-full h-10 bg-lightMode-tbg dark:bg-darkMode-tbg
                    border-lightMode-border dark:border-darkMode-border  text-lightMode-p dark:text-darkMode-p  font-medium rounded-sm hover:bg-lightMode-bg dark:hover:bg-darkMode-bg'
@@ -362,7 +361,8 @@ function UserDataForm({
         )}
         <div className='mt-4'></div>
 
-        <Button type='submit' data='Finish' />
+        <CustomButton>Finish</CustomButton>
+        {/* <Button type='submit' data='Finish' /> */}
         {/* </ThemeProvider> */}
       </form>
     </>
@@ -410,19 +410,17 @@ function AuthForm({
               paddingLeft='40px'
               placeHolder='Email'
               handleChange={(e) => setEmail(e.target.value)}
-              icon={
-                <MdOutlineMail className='absolute left-2 tp text-2xl bottom-[8px]' />
-              }
-            />
+            >
+              <MdOutlineMail className='absolute left-2 tp text-2xl bottom-[8px]' />
+            </CustomInput>
             <CustomInput
               label='Password *'
               paddingLeft='40px'
               placeHolder='Password'
               handleChange={(e) => setPassword(e.target.value)}
-              icon={
-                <MdLockOutline className='absolute left-2 tp text-2xl bottom-[8px]' />
-              }
-            />
+            >
+              <MdLockOutline className='absolute left-2 tp text-2xl bottom-[8px]' />
+            </CustomInput>
           </div>
           {/* Previous Code */}
           {/* <div className=' text-sm th'>Email *</div>
@@ -890,12 +888,11 @@ function ForgetPasswordGetEmail({
           paddingLeft='40px'
           placeHolder='Email'
           handleChange={(e) => setEmail(e.target.value)}
-          icon={
-            <MdOutlineMail className='absolute left-2 tp text-2xl bottom-[8px]' />
-          }
           isInvalid={!!error}
           errorMessage={error}
-        />
+        >
+          <MdOutlineMail className='absolute left-2 tp text-2xl bottom-[8px]' />
+        </CustomInput>
         {/* <div className=' text-sm text-lightMode-p dark:text-darkMode-p my-1'>
           Email*
         </div>
@@ -1113,7 +1110,7 @@ export function ChangePassWordComp() {
           )}
           <div className='mt-4'></div>
 
-          <Button type='submit' data='Submit' />
+          <CustomButton />
           {/* </ThemeProvider> */}
         </form>
         <h4 className=' text-sm  w-full text-center text-lightMode-p dark:text-darkMode-p py-4 pb-3'>

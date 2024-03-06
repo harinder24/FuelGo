@@ -5,7 +5,7 @@ import { useOutletContext } from 'react-router-dom';
 import TopNav from '../Components/TopNav/TopNav';
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import FormatListBulletedOutlinedIcon from '@mui/icons-material/FormatListBulletedOutlined';
-import GasStationList from '../Components/GasStation/GasStationList';
+import GasStationList from '../Components/GasStationList/GasStationList';
 
 export default function Home() {
   const [isList, setIsList] = useState(true);
