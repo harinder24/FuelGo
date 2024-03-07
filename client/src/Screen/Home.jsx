@@ -344,6 +344,7 @@ function StationMap({ gasStationPreference, preferences }) {
 
 function StationInfo({ setShowStationInfo, placeId,preferences }) {
   const {gasStation} = useContext(Context)
+  const navigate = useNavigate()
   const [fuelPrice, setFuelPrice] = useState(null);
   const [station, setStation] = useState(null)
   useEffect(()=>{
@@ -428,7 +429,7 @@ function StationInfo({ setShowStationInfo, placeId,preferences }) {
                 <div className="tp flex flex-row text-sm">
                   <div className="">${fuelPrice}/</div>{preferences.fuelType}
                 </div>
-                <div className="  tb text-sm hover:underline cursor-pointer">
+                <div onClick={()=> navigate("/gs")} className="  tb text-sm hover:underline cursor-pointer">
                   More info
                 </div>
               </div>
@@ -441,6 +442,7 @@ function StationInfo({ setShowStationInfo, placeId,preferences }) {
 }
 
 function IndividualStationsList({ station, preferences }) {
+  const navigate = useNavigate()
   const [fuelPrice, setFuelPrice] = useState(null);
   useEffect(() => {
     if (preferences.fuelType === "Regular") {
@@ -545,7 +547,7 @@ function IndividualStationsList({ station, preferences }) {
               <div className="tp flex flex-row text-sm">
                 <div className="">${fuelPrice}/</div> {preferences.fuelType}
               </div>
-              <div className=" min-[720px]:hidden tb text-sm hover:underline cursor-pointer">
+              <div onClick={()=> navigate("/gs")} className=" min-[720px]:hidden tb text-sm hover:underline cursor-pointer">
                 More info
               </div>
             </div>
@@ -556,7 +558,7 @@ function IndividualStationsList({ station, preferences }) {
         <div className="  p-2 rounded-full sbg cursor-pointer">
           {isFavourite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </div>
-        <div className=" tb p-2 rounded-full sbg cursor-pointer">
+        <div onClick={()=> navigate("/gs")} className=" tb p-2 rounded-full sbg cursor-pointer">
           <NavigateNextIcon />
         </div>
       </div>

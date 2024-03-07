@@ -76,7 +76,6 @@ async function getGasStations(req, res) {
         newStation.amenities.convenienceStore.isValid = false;
         newStation.amenities.evChargingStation.isValid = false;
       
-
         if (station.types.includes("atm")) {
           newStation.amenities.atm.isValid = true;
         }
