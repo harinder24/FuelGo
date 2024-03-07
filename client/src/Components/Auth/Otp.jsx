@@ -3,6 +3,7 @@ import OtpInput from "react-otp-input";
 import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import Loading from "../Loading";
+import serverLink from "../../serverLink";
 export default function Otp({ setOtpPopUp, setIsOtpValid, email }) {
   const [otp, setOtp] = useState("");
   const [nineToZero, setNineToZero] = useState(0);
@@ -67,7 +68,7 @@ export default function Otp({ setOtpPopUp, setIsOtpValid, email }) {
     setError("");
     try {
       const response = await axios.post(
-        "http://localhost:3000/auth/otpvalidation",
+        serverLink + "/auth/otpvalidation",
         {
           email: email,
           otp: otp,

@@ -29,6 +29,8 @@ const stationSchema = new mongoose.Schema({
     regular: {
       price: {
         type: Number,
+        default: 0,
+        required : true,
       },
       timeStamp: {
         type: Number,
@@ -40,6 +42,8 @@ const stationSchema = new mongoose.Schema({
     midGrade: {
       price: {
         type: Number,
+        default: 0,
+        required : true,
       },
       timeStamp: {
         type: Number,
@@ -51,6 +55,8 @@ const stationSchema = new mongoose.Schema({
     premium: {
       price: {
         type: Number,
+        default: 0,
+        required : true,
       },
       timeStamp: {
         type: Number,
@@ -62,6 +68,8 @@ const stationSchema = new mongoose.Schema({
     diesel: {
       price: {
         type: Number,
+        default: 0,
+        required : true,
       },
       timeStamp: {
         type: Number,
@@ -127,24 +135,19 @@ const stationSchema = new mongoose.Schema({
         type: Number,
       },
     },
-    truckStop: {
-      isValid: {
-        type: Boolean,
-      },
-      valid: {
-        type: Number,
-      },
-      notValid: {
-        type: Number,
-      },
-    },
+   
   },
-  googleRating: {
+  
+  fuelGoRating: {
     rating:{
-        type : Number
+        type : Number,
+        default: 0,
+        required : true,
     },
     totalRating:{
-        type: Number
+        type: Number,
+        default: 0,
+        required : true,
     }
   },
   placeId: {

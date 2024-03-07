@@ -9,9 +9,12 @@ import { setUserData } from './api/setUserData';
 
 export default function App() {
   const [user, setUser] = useState(null);
+  const [gasStation, setGasStation] = useState(null)
+  const [gasStationPreference, setGasStationPreference] = useState(null)
   const [isProfilePopUp, setIsProfilePopUp] = useState(false);
+  const [userLatLng, setUserLatLng] = useState(null);
   return (
-    <Context.Provider value={{ user, setUser }}>
+    <Context.Provider value={{ user, setUser,gasStation, setGasStation,gasStationPreference, setGasStationPreference ,userLatLng, setUserLatLng}}>
       <MainLayout>
         <SideBar />
         <div className='flex flex-1 flex-col overflow-hidden'>
@@ -19,7 +22,7 @@ export default function App() {
           <BottomNav />
         </div>
         {isProfilePopUp && (
-          <SideBar isProfilePopUp setIsProfilePopUp={setIsProfilePopUp} />
+          <SideBar isProfilePopUp={isProfilePopUp} setIsProfilePopUp={setIsProfilePopUp} />
         )}
       </MainLayout>
     </Context.Provider>

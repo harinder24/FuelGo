@@ -1,4 +1,5 @@
 import serverLink from '../serverLink';
+
 import axios from 'axios';
 export const setUserData = async (user, setUser, navigate) => {
   if (!user) {
@@ -8,13 +9,11 @@ export const setUserData = async (user, setUser, navigate) => {
       try {
         const response = await axios.get(
           serverLink + '/user/getuserdata',
-          {
-            token: token,
-          },
+          
           {
             headers: {
               'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
+              'Authorization': `Bearer ${token}`,
             },
           }
         );

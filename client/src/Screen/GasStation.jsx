@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {  useEffect, useRef, useState } from 'react';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
 import DirectionsCarFilledOutlinedIcon from '@mui/icons-material/DirectionsCarFilledOutlined';
 import HomeIcon from '@mui/icons-material/Home';
@@ -39,6 +39,7 @@ const SURVEY = [
   'Would you consider using this gas station again?',
 ];
 export default function GasStation() {
+
   const [isProfilePopUp, setIsProfilePopUp] = useState(false);
   const [modal, setModal] = useState({});
   const [gasInfo, setGasInfo] = useState([
@@ -67,6 +68,7 @@ export default function GasStation() {
       updatedAt: Date.now(),
     },
   ]);
+  
 
   const handleModal = (title) => {
     setModal({ show: true, title });

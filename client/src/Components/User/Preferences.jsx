@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import BgBlackOpacity from "../../Components/BgBlackOpacity";
 
@@ -6,40 +6,66 @@ import VerifiedOutlinedIcon from "@mui/icons-material/VerifiedOutlined";
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { Range } from "react-range";
-export default function Preferences({ isList }) {
+import Context from "../../context";
+export default function Preferences({ isList,preferences, setPreferences }) {
   const [bgPopUp, setBgPopUp] = useState(false);
   const [target, setTarget] = useState(null);
   const [preferencePopUp, setPreferencePopUp] = useState(false);
-  const [preferences, setPreferences] = useState({
-    sort: "Recommended",
-    verified: false,
-    fuelType: "Regular",
-    Amenities: [],
-    Distance: 5,
-  });
-  const preferencesBtn = [
-    "Verified",
-    "Sort",
-    "Fuel type",
-    "Amenities",
-    "Distance",
-  ];
+  const { setGasStationPreference, gasStation } = useContext(Context);
+  
+
+  useEffect(() => {
+    if(gasStation){
+      const amenitiesMapping = {
+        "Car wash": "carWash",
+        "Air pump": "airPump",
+        "Convenience store": "convenienceStore",
+        "Ev charging station": "evChargingStation",
+        "Atm": "atm"
+      };
+    let gasStationClone = [...gasStation];
+   console.log(preferences.Amenities);
+  
+    gasStationClone =  gasStationClone.filter(station => {
+      return preferences.Amenities.every(amenity => {
+        const amenityName = amenity.name;
+        const amenityKey = amenitiesMapping[amenityName];
+        return amenityKey ? station.amenities[amenityKey]?.isValid === true : true;
+      });
+    });
+   
+
+    
+    if(preferences.sort === "Distance"){
+      gasStationClone.sort((a, b) => {
+       
+        const distanceA = parseFloat(a.distanceFromUser.replace(' km', ''));
+        const distanceB = parseFloat(b.distanceFromUser.replace(' km', ''));
+      
+        if (distanceA < distanceB) {
+          return -1;
+        } else if (distanceA > distanceB) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+    }
+    console.log(gasStationClone);
+    setGasStationPreference(gasStationClone)
+  }
+  }, [preferences, gasStation]);
+  
+  const preferencesBtn = ["Recently updated", "Sort", "Fuel type", "Amenities"];
   const preferenceData = [
     ["Verifierd", "Not verified"],
-    ["Recommended", "Rating", "Price"],
+    ["Distance", "Rating", "Price"],
     ["Regular", "Mid-grade", "Premium", "Diesel"],
-    [
-      "Car wash",
-      "Air pump",
-      "Convenience store",
-      "Ev charging station",
-      "Truck stop",
-    ],
-    [5, 10, 15, 20],
+    ["Car wash", "Air pump", "Convenience store", "Ev charging station", "Atm"],
   ];
   function preferenceOnclickHandler(i) {
     if (i === 0) {
-      setPreferences({ ...preferences, verified: !preferences.verified });
+      setPreferences({ ...preferences, recent: !preferences.recent });
     } else {
       setBgPopUp(true);
       setTarget(i);
@@ -78,24 +104,23 @@ export default function Preferences({ isList }) {
               onClick={() => preferenceOnclickHandler(i)}
               key={item}
               className={`h-full px-2 text-lightMode-header  ${
-                i === 0 && preferences.verified ? "bgbtn" : "sbg"
+                i === 0 && preferences.recent ? "bgbtn" : "sbg"
               } 
-                ${
-                  i === 1 && preferences.sort !== "Recommended"
-                    ? "bgbtn"
-                    : "sbg"
-                } 
+                ${i === 1 && preferences.sort !== "Distance" ? "bgbtn" : "sbg"} 
                ${
                  i === 2 && preferences.fuelType !== "Regular" ? "bgbtn" : "sbg"
                }
               ${i === 3 && preferences.Amenities.length !== 0 ? "bgbtn" : "sbg"}
               ${i === 4 && preferences.Distance !== 5 ? "bgbtn" : "sbg"}
-              rounded-lg flex flex-row items-center justify-center text-xs gap-x-1 cursor-pointer w-[90px]`}
+              rounded-lg flex flex-row items-center justify-center text-xs gap-x-1 cursor-pointer ${
+                i !== 0 && " w-[90px]"
+              }`}
             >
               <div>{item}</div>
 
               {i === 0 ? (
-                <VerifiedOutlinedIcon sx={{ fontSize: 16 }} />
+                // <VerifiedOutlinedIcon sx={{ fontSize: 16 }} />
+                <></>
               ) : (
                 <KeyboardArrowDownOutlinedIcon sx={{ fontSize: 16 }} />
               )}
@@ -147,7 +172,7 @@ export function PreferencePopUp({
     },
     {
       id: 4,
-      name: "Truck stop",
+      name: "Atm",
       preferred: false,
     },
   ];
@@ -171,14 +196,13 @@ export function PreferencePopUp({
       const newAmmentiesValue = [...defaultAmenitiesValue];
 
       preferences.Amenities.map((item) => {
-        
         newAmmentiesValue[item.id].preferred = true;
       });
       setAmmenitiesValue(newAmmentiesValue);
       setBottom("-382.6px");
     } else if (i === 4) {
       setBottom("-237.6px");
-      setDistanceValues([preferences.Distance])
+      setDistanceValues([preferences.Distance]);
       setHeader("Distance");
     }
   }, []);
@@ -208,27 +232,26 @@ export function PreferencePopUp({
       });
       setPreferences({ ...preferences, Amenities: ammenitiesValueArray });
       bgPopUpOnClick();
-    } else if(i === 4){
+    } else if (i === 4) {
       setPreferences({ ...preferences, Distance: distanceValues[0] });
       bgPopUpOnClick();
     }
   }
 
-  function resetHandler(){
+  function resetHandler() {
     if (i === 1) {
-      setPreferences({ ...preferences, sort: "Recommended" });
+      setPreferences({ ...preferences, sort: "Distance" });
       bgPopUpOnClick();
     } else if (i === 2) {
       setPreferences({ ...preferences, fuelType: "Regular" });
       bgPopUpOnClick();
     } else if (i === 3) {
-     
       setPreferences({ ...preferences, Amenities: [] });
       bgPopUpOnClick();
-    } else if(i === 4){
+    } else if (i === 4) {
       setPreferences({ ...preferences, Distance: 5 });
       bgPopUpOnClick();
-    } 
+    }
   }
 
   return (
@@ -250,98 +273,51 @@ export function PreferencePopUp({
         </div>
       </div>
       <div className="border-b-[1px] cborder"></div>
-      {i !== 4 ? (
-        <div>
-          {preferenceData[i].map((item, j) => {
-            
-            return (
-              <div
-                onClick={() => {
-                  if (i === 3) {
-                    amenitiesHandler(j);
-                  } else {
-                    setRadioValue(item);
-                  }
-                }}
-                key={item}
-                className="flex flex-row items-center justify-between px-4 py-[12.5px] cursor-pointer"
-              >
-                <div className=" text-[16px]">{item}</div>
 
-                <div className=" relative">
-                  {i === 3 ? (
-                    <>
-                      <div className="w-4 h-4 rounded-[2px] fbg"></div>
-                      {ammenitiesValue[j].preferred === true && (
-                        <div className="w-2 h-2 rounded-[2px] bgbtn absolute top-1 left-1"></div>
-                      )}
-                    </>
-                  ) : (
-                    <>
-                      <div className="w-4 h-4 rounded-full fbg"></div>
-                      {radioValue === item && (
-                        <div className="w-2 h-2 rounded-full bgbtn absolute top-1 left-1"></div>
-                      )}
-                    </>
-                  )}
-                </div>
+      <div>
+        {preferenceData[i].map((item, j) => {
+          return (
+            <div
+              onClick={() => {
+                if (i === 3) {
+                  amenitiesHandler(j);
+                } else {
+                  setRadioValue(item);
+                }
+              }}
+              key={item}
+              className="flex flex-row items-center justify-between px-4 py-[12.5px] cursor-pointer"
+            >
+              <div className=" text-[16px]">{item}</div>
+
+              <div className=" relative">
+                {i === 3 ? (
+                  <>
+                    <div className="w-4 h-4 rounded-[2px] fbg"></div>
+                    {ammenitiesValue[j].preferred === true && (
+                      <div className="w-2 h-2 rounded-[2px] bgbtn absolute top-1 left-1"></div>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <div className="w-4 h-4 rounded-full fbg"></div>
+                    {radioValue === item && (
+                      <div className="w-2 h-2 rounded-full bgbtn absolute top-1 left-1"></div>
+                    )}
+                  </>
+                )}
               </div>
-            );
-          })}
-        </div>
-      ) : (
-        <div className=" mt-4 px-4 mb-4">
-          <div className="text-lightMode-p dark:text-darkMode-p text-sm mb-3 text-end">
-            in (km)
-          </div>
-          <Range
-            step={5}
-            min={5}
-            max={20}
-            values={distanceValues}
-            onChange={(newValues) => setDistanceValues(newValues)}
-            renderTrack={({ props, children }) => (
-              <div
-                {...props}
-                // style={{
-                //   ...props.style,
-                //   height: "6px",
-                //   width: "100%",
-                //   backgroundColor: "#ccc",
-                // }}
-                className=" w-full h-2 rounded-lg tbg cborder border-[1px]"
-              >
-                {children}
-              </div>
-            )}
-            renderThumb={({ props }) => (
-              <div
-                {...props}
-                // style={{
-                //   ...props.style,
-                //   height: "20px",
-                //   width: "20px",
-                //   backgroundColor: "#007bff",
-                //   borderRadius: "50%",
-                // }}
-                className="h-4 w-4 rounded-full bgbtn focus-visible:outline-0   focus-visible:shadow-[0_0px_6px_#38bdf8]"
-              />
-            )}
-          />
-          <div className="text-lightMode-p dark:text-darkMode-p text-sm flex justify-between pt-2">
-            <span>5</span>
-            <span>10</span>
-            <span>15</span>
-            <span>20</span>
-          </div>
-        </div>
-      )}
+            </div>
+          );
+        })}
+      </div>
 
       <div className="border-b-[1px] cborder  "></div>
       <div className="flex flex-row justify-between p-4 gap-x-4">
         <div
-           onClick={() => resetHandler()}
-        className=" flex-1 p-3 px-4 bgbtn2 rounded-lg cursor-pointer text-center">
+          onClick={() => resetHandler()}
+          className=" flex-1 p-3 px-4 bgbtn2 rounded-lg cursor-pointer text-center"
+        >
           Reset
         </div>
         <div
