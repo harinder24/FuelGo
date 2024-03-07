@@ -1,5 +1,5 @@
 let serverLink = ""
-if(false){
+if(true){
     serverLink = "http://localhost:3000"
 }else{
  serverLink = "https://fuelgo-server.onrender.com"
