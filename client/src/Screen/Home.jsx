@@ -82,7 +82,7 @@ export default function Home() {
   }
   return (
     <>
-      <TopNav setIsProfilePopUp={setIsProfilePopUp}>
+      <TopNav showSearchbar setIsProfilePopUp={setIsProfilePopUp}>
         <div
           onClick={() => setIsList(true)}
           className={`flex flex-row items-center ${
