@@ -9,8 +9,8 @@ import CustomButton from '../Components/UI/CustomButton';
 export default function LandingPage() {
   const navigate = useNavigate();
   const handleMovePage = async () => {
-    // await handleUserData();
-    navigate('/login');
+    const user = await handleUserData();
+    user ? navigate('/home') : navigate('/accounts/login');
   };
   const handleUserData = async () => {
     try {

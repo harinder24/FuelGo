@@ -14,6 +14,7 @@ import Rewards from './Screen/Rewards.jsx';
 import GasStation from './Screen/GasStation.jsx';
 import ProfileScreen from './Screen/ProfileScreen.jsx';
 import SearchScreen from './Screen/SearchScreen.jsx';
+import Accounts from './Accounts.jsx';
 
 const router = createBrowserRouter([
   { index: true, element: <LandingPage /> },
@@ -23,51 +24,78 @@ const router = createBrowserRouter([
     errorElement: <Error />,
     children: [
       {
-        path: '/error',
+        path: 'error',
         element: <Error />,
       },
       {
-        path: '/home',
+        path: 'home',
         element: <Home />,
       },
       {
-        path: '/favourite',
+        path: 'favourite',
         element: <Home />,
       },
       {
-        path: '/rewards',
+        path: 'rewards',
         element: <Rewards />,
       },
       {
-        path: '/gs',
+        path: 'gs',
         element: <GasStation />,
       },
       {
-        path: '/search',
+        path: 'search',
         element: <SearchScreen />,
       },
      
     ],
   },
-  {
-    path: '/login',
-    element: <Login />,
-  },
-  {
-    path: '/signup',
-    element: <Signup />,
-  },
-  {
-    path: '/forgetpassword',
-    element: <ForgetPassword />,
-  },
-  {
-    path: '/changepassword/:id',
-    element: <ChangePassWord />,
-  },
+  // {
+  //   path: '/login',
+  //   element: <Login />,
+  // },
+  // {
+  //   path: '/signup',
+  //   element: <Signup />,
+  // },
+  // {
+  //   path: '/forgetpassword',
+  //   element: <ForgetPassword />,
+  // },
+  // {
+  //   path: '/changepassword/:id',
+  //   element: <ChangePassWord />,
+  // },
   {
     path: '/profile',
     element: <ProfileScreen />,
+  },
+  {
+    path: '/accounts',
+    element: <Accounts />,
+    children: [
+      { index: true, element: <Login /> },
+      {
+        path: 'login',
+        element: <Login />,
+      },
+      {
+        path: 'signup',
+        element: <Signup />,
+      },
+      {
+        path: 'forgetpassword',
+        element: <ForgetPassword />,
+      },
+      {
+        path: 'changepassword/:id',
+        element: <ChangePassWord />,
+      },
+      {
+        path: 'profile',
+        element: <ProfileScreen />,
+      },
+    ],
   },
 ]);
 
