@@ -1,4 +1,21 @@
-import { useState } from 'react';
+import React, {  useEffect, useRef, useState } from 'react';
+import WhatshotIcon from '@mui/icons-material/Whatshot';
+import DirectionsCarFilledOutlinedIcon from '@mui/icons-material/DirectionsCarFilledOutlined';
+import HomeIcon from '@mui/icons-material/Home';
+import StarIcon from '@mui/icons-material/Star';
+import StarHalfIcon from '@mui/icons-material/StarHalf';
+import SortIcon from '@mui/icons-material/Sort';
+import {
+  Close,
+  FavoriteBorder,
+  MapOutlined,
+  ThumbUp,
+} from '@mui/icons-material';
+import { GoogleMap, Marker, DirectionsRenderer } from '@react-google-maps/api';
+import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
+import PersonIcon from '@mui/icons-material/Person';
+import stationMarke from '/station.png';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import PollOutlinedIcon from '@mui/icons-material/PollOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import SideBar from '../Components/SideBar/SideBar';
@@ -12,6 +29,7 @@ import Contributor from '../Components/StationDetail/Contributor/Contributor';
 import CommentSection from '../Components/StationDetail/CommentSection/CommentSection';
 
 export default function GasStation() {
+
   const [isProfilePopUp, setIsProfilePopUp] = useState(false);
   const [modal, setModal] = useState({});
   const [gasInfo, setGasInfo] = useState([
@@ -40,6 +58,7 @@ export default function GasStation() {
       updatedAt: Date.now(),
     },
   ]);
+  
 
   const handleModal = (title) => {
     setModal({ show: true, title });
