@@ -43,7 +43,7 @@ const router = createBrowserRouter([
         element: <Rewards />,
       },
       {
-        path: 'gs',
+        path: 'gs/:id',
         element: <GasStation />,
       },
       {
