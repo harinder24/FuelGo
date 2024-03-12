@@ -13,6 +13,13 @@ body,
 html {
   overflow: hidden;
 }
+@layer base {
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
 .bg {
   @apply bg-lightMode-bg dark:bg-darkMode-bg;
 }
@@ -24,6 +31,9 @@ html {
 }
 .fbg {
   @apply bg-lightMode-fbg dark:bg-darkMode-fbg;
+}
+.pbg {
+  @apply bg-lightMode-p dark:bg-darkMode-p;
 }
 .bgbtn {
   @apply bg-lightMode-button dark:bg-darkMode-button hover:bg-lightMode-buttonHover hover:dark:bg-darkMode-buttonHover;
@@ -86,7 +96,7 @@ html {
   background-color: #33415580;
 }
 .amantic {
-  font-family: "Amatic SC";
+  font-family: 'Amatic SC';
 }
 .sb::-webkit-scrollbar {
   width: 14px;
@@ -130,13 +140,13 @@ input::-ms-reveal {
   filter: invert(100%);
 }
 
-input[type="checkbox"]:checked {
+input[type='checkbox']:checked {
   background: rgb(14, 165, 233);
   color: white;
   border: 1px solid 0e1726;
 }
 
-input[type="checkbox"] {
+input[type='checkbox'] {
   cursor: pointer;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -147,8 +157,8 @@ input[type="checkbox"] {
   color: white;
 }
 
-input[type="checkbox"]:after {
-  content: " ";
+input[type='checkbox']:after {
+  content: ' ';
   position: relative;
   left: 40%;
   top: 20%;
@@ -160,7 +170,7 @@ input[type="checkbox"]:after {
   display: none;
 }
 
-input[type="checkbox"]:checked:after {
+input[type='checkbox']:checked:after {
   display: block;
 }
 #root {
@@ -178,7 +188,7 @@ input[type="checkbox"]:checked:after {
 * {
   padding: 0;
   margin: 0;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .gradient_bgAbout {
@@ -255,7 +265,7 @@ input[type="checkbox"]:checked:after {
 }
 
 .screen-image {
-  background-image: url("/oilrig.jpg");
+  background-image: url('/oilrig.jpg');
   height: 100%;
   width: 100%;
   position: absolute;
@@ -409,7 +419,7 @@ input[type="checkbox"]:checked:after {
 }
 .FuelGoLogoAuthWrap:before,
 .FuelGoLogoAuthWrap:after {
-  content: "";
+  content: '';
   position: absolute;
   top: 0px;
   background-color: rgb(var(--primary-rgb));
@@ -428,7 +438,7 @@ input[type="checkbox"]:checked:after {
   translate: 26px calc(-1rem - 0.5px);
 }
 :is(.FuelGoLogoAuth) {
-  font-family: "Source Code Pro", monospace;
+  font-family: 'Source Code Pro', monospace;
   color: white;
   text-align: center;
   text-transform: uppercase;
@@ -442,7 +452,7 @@ input[type="checkbox"]:checked:after {
 
 .FuelGoLogoAuth:before,
 .FuelGoLogoAuth:after {
-  content: "";
+  content: '';
   height: 6px;
   width: 6px;
   position: absolute;
