@@ -265,6 +265,53 @@ const deleteComment = async (req, res) => {
 
   return res.status(201).json({ success: false });
 };
+const addFavourite = async (req, res) => {
+  const { placeId } = req.body;
+
+  try {
+    const foundUser = await userModel.findOne({ email: req?.decodedEmail});
+
+    if (foundUser) {
+      if (!foundUser.favourite.includes(placeId)) {
+        foundUser.favourite.push(placeId);
+        await foundUser.save();
+        return res.status(201).json({ success: true, data: foundUser.favourite, message: "Added to favourites successfully." });
+      } else {
+        return res.status(201).json({ success: false, message: "Item already exists in favourites." });
+      }
+    } else {
+      return res.status(201).json({ success: false, message: "Station not found." });
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(201).json({ success: false, message: "Internal server error." });
+  }
+};
+
+const deleteFavourite = async (req, res) => {
+  const { placeId } = req.body;
+
+  try {
+    const foundUser = await userModel.findOne({ email: req?.decodedEmail});
+
+    if (foundUser) {
+      const index = foundUser.favourite.indexOf(placeId);
+      if (index !== -1) {
+        foundUser.favourite.splice(index, 1);
+        await foundUser.save();
+        return res.status(201).json({ success: true, data: foundUser.favourite, message: "Deleted from favourites successfully." });
+      } else {
+        return res.status(201).json({ success: false, message: "Item does not exist in favourites." });
+      }
+    } else {
+      return res.status(201).json({ success: false, message: "Station not found." });
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(201).json({ success: false, message: "Internal server error." });
+  }
+};
+
 
 export {
   sendUserData,
@@ -273,4 +320,6 @@ export {
   addComment,
   editComment,
   deleteComment,
+  addFavourite,
+  deleteFavourite,
 };

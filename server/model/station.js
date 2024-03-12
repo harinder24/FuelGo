@@ -174,10 +174,11 @@ const stationSchema = new mongoose.Schema({
         },
       ],
       email: {
-        type: String
-      }
+        type: String,
+      },
     },
   ],
+ 
 });
 
 stationSchema.index({ location: "2dsphere" });
