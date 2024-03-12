@@ -173,6 +173,7 @@ async function getGasStation(latitude, longitude) {
 const getGasStationData = async (req, res) => {
 
   const id = req.params.id;
+
   try {
     let foundStation = await stationModel.findOne({ placeId: id });
 
