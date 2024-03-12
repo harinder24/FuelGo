@@ -14,7 +14,7 @@ const SURVEY = [
   'Would you consider using this gas station again?',
 ];
 
-export default function Modal({ title, setModal, gasInfo }) {
+export default function ModalContent({ title, setModal, gasInfo }) {
   const [newPrice, setNewPrice] = useState([...gasInfo]);
   const [crrIndex, setCrrIndex] = useState(0);
   const [survey, setSurvey] = useState([]);
@@ -49,9 +49,7 @@ export default function Modal({ title, setModal, gasInfo }) {
     setModal({ show: false });
   };
   return (
-    <div
-      className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-5/6 max-w-96 text-center overflow-x-hidden max-h-96 h-5/6 border-[1.5px] border-lightMode-sbg bg-[#0E1726] dark:bg-[#0E1726] rounded-xl p-5 z-10`}
-    >
+    <>
       <div className='flex justify-end w-full text-darkMode-border min-w-36 mb-4 mt-2 th '>
         <button onClick={handleClose}>
           <MdClose className='text-xl' />
@@ -68,8 +66,9 @@ export default function Modal({ title, setModal, gasInfo }) {
                 paddingLeft='24px'
                 placeHolder={price}
                 handleChange={handleChangePrice}
-                isInvalid={isNaN(newPrice[index].price)}
-                errorMessage='Invalid Input'
+                errorMessage={
+                  isNaN(newPrice[index].price) ? 'Invalid Input' : ''
+                }
               >
                 <FaDollarSign className='absolute left-2 tp text-sm bottom-[13.5px]' />
               </CustomInput>
@@ -103,6 +102,6 @@ export default function Modal({ title, setModal, gasInfo }) {
           </div>
         </form>
       )}
-    </div>
+    </>
   );
 }

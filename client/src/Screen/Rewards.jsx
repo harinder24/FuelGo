@@ -7,11 +7,11 @@ import {
   SiPix,
 } from 'react-icons/si';
 import { BiSolidPurchaseTagAlt } from 'react-icons/bi';
-import BgBlackOpacity from '../Components/BgBlackOpacity';
+import Modal from '../Components/UI/Modal';
 import { useOutletContext } from 'react-router-dom';
 import TopNav from '../Components/TopNav/TopNav';
 import RewardList from '../Components/Reward/RewardList';
-import PurchaseModal from '../Components/Reward/PurchaseModal';
+import ItemInfo from '../Components/Reward/ItemInfo';
 
 const REWARDS = [
   {
@@ -135,14 +135,14 @@ export default function Rewards() {
   return (
     <>
       {showModal && (
-        <BgBlackOpacity>
-          <PurchaseModal
+        <Modal>
+          <ItemInfo
             point={point}
             setPoint={setPoint}
             setShowModal={setShowModal}
             modal={modal}
           />
-        </BgBlackOpacity>
+        </Modal>
       )}
       <TopNav setIsProfilePopUp={setIsProfilePopUp}>
         <div className='flex flex-row items-center th w-[100px] justify-center gap-x-1 cursor-pointer '>

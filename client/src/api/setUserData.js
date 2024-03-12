@@ -9,11 +9,11 @@ export const setUserData = async (user, setUser, navigate) => {
       try {
         const response = await axios.get(
           serverLink + '/user/getuserdata',
-          
+
           {
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`,
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -23,14 +23,14 @@ export const setUserData = async (user, setUser, navigate) => {
           setUser(response.data.data);
           return;
         } else {
-          navigate('/login');
+          navigate('/accounts/login');
         }
       } catch (error) {
-        navigate('/login');
+        navigate('/accounts/login');
         console.error('Network error:', error);
       }
     } else {
-      navigate('/login');
+      navigate('/accounts/login');
     }
   } else {
     return;
