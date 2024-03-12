@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken";
 
 dotenv.config();
 const sendUserData = async (req, res) => {
+
   if (req?.decodedEmail) {
     const foundUser = await userModel.findOne({ email: req.decodedEmail });
     if (foundUser) {
@@ -169,5 +170,29 @@ async function getGasStation(latitude, longitude) {
   ]);
   return specificStation;
 }
+const getGasStationData = async (req, res) => {
 
-export { sendUserData, getGasStations };
+  const id = req.params.id;
+  try {
+    let foundStation = await stationModel.findOne({ placeId: id });
+
+    if (foundStation) {
+     
+      return res.status(201).json({
+        success: true,
+        data: foundStation,
+      });
+    }else{
+      return res.status(201).json({
+        success: false,
+      });
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(201).json({
+      success: false,
+    });
+  }
+}
+
+export { sendUserData, getGasStations,getGasStationData };
