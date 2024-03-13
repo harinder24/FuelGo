@@ -34,10 +34,7 @@ export default function Login() {
       return;
     }
     try {
-      const { success, token, error, fault } = await emailLogin(
-        email,
-        password
-      );
+      const { token, error, fault } = await emailLogin(email, password);
       if (error) {
         fault == 'password' ? setPasswordError(error) : setEmailError(error);
         return;

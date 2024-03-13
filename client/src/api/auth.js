@@ -63,22 +63,6 @@ export const emailLogin = async (email, password) => {
     throw new Error(e);
   }
 };
-
-export const getUserData = async (token, setUser) => {
-  try {
-    const response = await axios.get(serverLink + '/user/getuserdata', {
-      headers: {
-        Authorization: 'Bearer ' + token,
-      },
-    });
-    const userData = response.data.data;
-    setUser(userData);
-    return userData;
-  } catch (e) {
-    throw new Error(e);
-  }
-};
-
 export const googleLogin = async (token) => {
   try {
     const response = await axios.get(
@@ -104,5 +88,42 @@ export const loginWithGoogleAccount = async (googleAccount) => {
     return response.data;
   } catch (error) {
     throw new Error(error);
+  }
+};
+export const sendchangePasswordEmail = async (email) => {
+  try {
+    const response = await axios.post(serverLink + '/auth/forgetpassword', {
+      email,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+export const changePassword = async (id, password, confirmPassword) => {
+  try {
+    const response = await axios.post(serverLink + '/auth/changepassword', {
+      id,
+      password,
+      confirmPassword,
+    });
+
+    return response.data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+export const getUserData = async (token, setUser) => {
+  try {
+    const response = await axios.get(serverLink + '/user/getuserdata', {
+      headers: {
+        Authorization: 'Bearer ' + token,
+      },
+    });
+    const userData = response.data.data;
+    setUser(userData);
+    return userData;
+  } catch (e) {
+    throw new Error(e);
   }
 };
