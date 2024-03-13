@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useEffect, useState } from 'react';
-import { getUserData } from '../api/auth';
+import { createContext, useContext, useState } from 'react';
+import { getUserData } from '../api/user';
 
 export const AuthContext = createContext();
 
@@ -13,12 +13,18 @@ export function AuthProvider({ children }) {
     if (!userToken) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
+
       setToken();
       setUser();
+
       return;
     }
+    const crrUser = await getUserData(userToken);
+
+    setToken(userToken);
+    setUser(crrUser);
+
     localStorage.setItem('token', JSON.stringify(userToken));
-    const crrUser = await getUserData(userToken, setUser);
     localStorage.setItem('user', JSON.stringify(crrUser));
   };
 

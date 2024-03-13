@@ -5,10 +5,13 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import { getGasStationById } from '../../api/gasStation';
 
-export default function GasStationCard({ station, preferences }) {
+export default function GasStationCard({ station, preferences, index }) {
   const navigate = useNavigate();
-  const { _id: id, name, profileImg, distanceFromUser, address } = station;
+  const { token } = useAuth();
+  const { placeId: id, name, profileImg, distanceFromUser, address } = station;
   const rating =
     station.fuelGoRating.rating || parseFloat((Math.random() * 5).toFixed(1));
   const totalRating =
@@ -52,6 +55,11 @@ export default function GasStationCard({ station, preferences }) {
   for (let i = stars.length; i < totalStars; i++) {
     stars.push(<StarIcon key={i} sx={{ fontSize: size }} />);
   }
+  if (!index) {
+    console.log('station', station);
+    getGasStationById(id, token);
+  }
+
   return (
     <div
       className={` caret-transparent w-full rounded-lg bg-transparent border-[1px] cborder flex justify-between p-4  max-[720px]:w-fit  `}

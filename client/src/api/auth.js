@@ -113,17 +113,3 @@ export const changePassword = async (id, password, confirmPassword) => {
     throw new Error(error);
   }
 };
-export const getUserData = async (token, setUser) => {
-  try {
-    const response = await axios.get(serverLink + '/user/getuserdata', {
-      headers: {
-        Authorization: 'Bearer ' + token,
-      },
-    });
-    const userData = response.data.data;
-    setUser(userData);
-    return userData;
-  } catch (e) {
-    throw new Error(e);
-  }
-};

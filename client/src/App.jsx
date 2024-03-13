@@ -15,35 +15,33 @@ export default function App() {
   const [isProfilePopUp, setIsProfilePopUp] = useState(false);
   const [userLatLng, setUserLatLng] = useState(null);
   return (
-    <AuthProvider>
-      <Context.Provider
-        value={{
-          gasStation,
-          setGasStation,
-          gasStationPreference,
-          setGasStationPreference,
-          userLatLng,
-          setUserLatLng,
-        }}
-      >
-        {pathname == '/' ? (
-          <Outlet />
-        ) : (
-          <MainLayout>
-            <SideBar />
-            <div className='flex flex-1 flex-col overflow-hidden'>
-              <Outlet context={{ setIsProfilePopUp }} />
-              <BottomNav />
-            </div>
-            {isProfilePopUp && (
-              <SideBar
-                isProfilePopUp={isProfilePopUp}
-                setIsProfilePopUp={setIsProfilePopUp}
-              />
-            )}
-          </MainLayout>
-        )}
-      </Context.Provider>
-    </AuthProvider>
+    <Context.Provider
+      value={{
+        gasStation,
+        setGasStation,
+        gasStationPreference,
+        setGasStationPreference,
+        userLatLng,
+        setUserLatLng,
+      }}
+    >
+      {pathname == '/' ? (
+        <Outlet />
+      ) : (
+        <MainLayout>
+          <SideBar />
+          <div className='flex flex-1 flex-col overflow-hidden'>
+            <Outlet context={{ setIsProfilePopUp }} />
+            <BottomNav />
+          </div>
+          {isProfilePopUp && (
+            <SideBar
+              isProfilePopUp={isProfilePopUp}
+              setIsProfilePopUp={setIsProfilePopUp}
+            />
+          )}
+        </MainLayout>
+      )}
+    </Context.Provider>
   );
 }
