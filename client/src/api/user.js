@@ -15,3 +15,39 @@ export const getUserData = async (token) => {
     throw new Error(e);
   }
 };
+export const addToFavorite = async (token, stationId) => {
+  try {
+    const response = await axios.post(
+      serverLink + '/user/addfavorite',
+      {
+        placeId: stationId,
+      },
+      {
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+export const deleteFromFavorite = async (token, stationId) => {
+  try {
+    const response = await axios.post(
+      serverLink + '/user/deletefavourite',
+      {
+        placeId: stationId,
+      },
+      {
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};

@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import StarIcon from '@mui/icons-material/Star';
 import StarHalfIcon from '@mui/icons-material/StarHalf';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
@@ -7,11 +7,37 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { getGasStationById } from '../../api/gasStation';
+import { addToFavorite, deleteFromFavorite } from '../../api/user';
 
 export default function GasStationCard({ station, preferences, index }) {
   const navigate = useNavigate();
-  const { token } = useAuth();
+
+  const { user, token, updateUserData } = useAuth();
   const { placeId: id, name, profileImg, distanceFromUser, address } = station;
+
+  const [isFavorite, setIsfavorite] = useState(user.favorite?.includes(id));
+
+  const handleAddFavorite = async () => {
+    const { success, message } = await addToFavorite(token, id);
+
+    if (!success) {
+      alert(message);
+      return;
+    }
+    setIsfavorite(true);
+    await updateUserData(token);
+  };
+  const handleDeleteFavorite = async () => {
+    const { success, message } = await deleteFromFavorite(token, id);
+
+    if (!success) {
+      alert(message);
+      return;
+    }
+    setIsfavorite(false);
+    await updateUserData(token);
+  };
+  //TODO: organize and fix some code from here
   const rating =
     station.fuelGoRating.rating || parseFloat((Math.random() * 5).toFixed(1));
   const totalRating =
@@ -26,7 +52,6 @@ export default function GasStationCard({ station, preferences, index }) {
   const totalStars = 5;
   const size = 16;
   const stars = [];
-  const isFavourite = false;
   // Filled stars
   for (let i = 0; i < filledStars; i++) {
     stars.push(<StarIcon key={i} sx={{ color: 'gold', fontSize: size }} />);
@@ -71,8 +96,12 @@ export default function GasStationCard({ station, preferences, index }) {
             src={profileImg}
             alt=''
           />
-          <div className=' absolute top-0 right-0  p-2 rounded-full cursor-pointer th min-[720px]:hidden'>
-            {isFavourite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+          <div className=' absolute top-0 right-0  p-2 rounded-full cursor-pointer text-darkMode-error min-[720px]:hidden'>
+            {isFavorite ? (
+              <FavoriteIcon onClick={handleDeleteFavorite} />
+            ) : (
+              <FavoriteBorderIcon onClick={handleAddFavorite} />
+            )}
           </div>
         </div>
         <div className=' flex flex-col justify-center max-[720px]:pt-2 '>
@@ -115,8 +144,12 @@ export default function GasStationCard({ station, preferences, index }) {
         </div>
       </div>
       <div className=' flex flex-col justify-between th max-[720px]:hidden ml-4'>
-        <div className='  p-2 rounded-full tbg cursor-pointer'>
-          {isFavourite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+        <div className='  p-2 rounded-full text-darkMode-error tbg cursor-pointer'>
+          {isFavorite ? (
+            <FavoriteIcon onClick={handleDeleteFavorite} />
+          ) : (
+            <FavoriteBorderIcon onClick={handleAddFavorite} />
+          )}
         </div>
         <div
           onClick={() => navigate(`/gs/${id}`, { state: { station } })}
