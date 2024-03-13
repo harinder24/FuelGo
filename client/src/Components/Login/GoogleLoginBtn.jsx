@@ -1,31 +1,57 @@
-import React from 'react';
-import axios from 'axios';
 import { useGoogleLogin } from '@react-oauth/google';
 import CustomButton from '../UI/CustomButton';
 import googleImg from '/google.png';
+import {
+  addAccountInitialData,
+  googleLogin,
+  loginWithGoogleAccount,
+} from '../../api/auth';
+import { useAuth } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function GoogleLoginBtn() {
+  const { updateUserData } = useAuth();
+  const navigate = useNavigate();
+
   const login = useGoogleLogin({
-    onSuccess: (codeResponse) => {
-      console.log(codeResponse);
-      axios
-        .get(
-          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${codeResponse.access_token}`,
-          {
-            headers: {
-              Authorization: `Bearer ${codeResponse.access_token}`,
-              Accept: 'application/json',
-            },
-          }
-        )
-        // Todo post google login to backend
-        .catch((err) => console.log(err));
+    onSuccess: async (res) => {
+      const token = res.access_token;
+
+      try {
+        const googleAccount = await googleLogin(token);
+        const result = await loginWithGoogleAccount(googleAccount);
+
+        if (result.error) {
+          alert(result.error);
+          return;
+        }
+
+        if (!result.token) {
+          const userData = await addAccountInitialData(googleAccount);
+
+          await updateUserData(userData.token);
+          navigate('/home');
+          return;
+        }
+
+        await updateUserData(result.token);
+        navigate('/home');
+      } catch (e) {
+        alert(e.message);
+      }
     },
-    onError: (error) => console.log('Login Failed:', error),
+    onError: (e) => {
+      alert(e.error_description);
+    },
   });
   return (
-    <div className='flex flex-row justify-between items-center gap-x-4 pt-5'>
-      <CustomButton bgColor='#141d2c' handleClick={login} hoverDarker>
+    <div
+      className='flex flex-col justify-between items-center gap-x-4 pt-5'
+      onClick={() => {
+        login();
+      }}
+    >
+      <CustomButton bgColor='#141d2c' hoverDarker>
         {' '}
         <div className='flex items-center justify-center'>
           <img

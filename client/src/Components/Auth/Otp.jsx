@@ -2,7 +2,11 @@ import { useState, useEffect } from 'react';
 import OtpInput from 'react-otp-input';
 import CloseIcon from '@mui/icons-material/Close';
 import Loading from '../UI/Loading';
-import { createAccount, otpResend, otpValidation } from '../../api/auth';
+import {
+  addAccountInitialData,
+  otpResend,
+  otpValidation,
+} from '../../api/auth';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 export default function Otp({ email, setShowModal }) {
@@ -42,7 +46,7 @@ export default function Otp({ email, setShowModal }) {
         return;
       }
       alert('Email was successfully verified');
-      const { token, error: e } = await createAccount(email);
+      const { token, error: e } = await addAccountInitialData(email);
       if (e) {
         setError(e);
         setIsLoading(false);
