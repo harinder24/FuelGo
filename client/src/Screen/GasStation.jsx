@@ -1,8 +1,6 @@
 import { useState } from 'react';
-import PollOutlinedIcon from '@mui/icons-material/PollOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import SideBar from '../Components/SideBar/SideBar';
-import BgBlackOpacity from '../Components/BgBlackOpacity';
 import TopNav from '../Components/TopNav/TopNav';
 import ModalContent from '../Components/StationDetail/ModalContent';
 import StationInfo from '../Components/StationDetail/StationInfo';
@@ -16,7 +14,7 @@ import { useLocation } from 'react-router-dom';
 export default function GasStation() {
   const { station } = useLocation().state;
   const [isProfilePopUp, setIsProfilePopUp] = useState(false);
-  const [modal, setModal] = useState({});
+  const [showModal, setShowModal] = useState();
   const [gasInfo, setGasInfo] = useState([
     {
       type: 'Regular',
@@ -44,44 +42,30 @@ export default function GasStation() {
     },
   ]);
 
-  const handleModal = (title) => {
-    setModal({ show: true, title });
-  };
-  // ToDo get gasInfo from real database
+  // TODO: get gasInfo from real database
   // add useEffect for all the info
   return (
     <>
-      {modal.show && (
+      {showModal && (
         <Modal>
-          <ModalContent
-            title={modal.title}
-            setModal={setModal}
-            gasInfo={gasInfo}
-          />
+          <ModalContent setShowModal={setShowModal} gasInfo={gasInfo} />
         </Modal>
       )}
       <TopNav setIsProfilePopUp={setIsProfilePopUp}>
         <div
-          onClick={() => handleModal('price')}
+          onClick={() => {
+            setShowModal(true);
+          }}
           name='price'
-          className=' flex flex-row items-center tp w-[100px] justify-center gap-x-1 cursor-pointer hover:text-white max-[740px]:w-10 '
+          className=' flex flex-row items-center tp w-[100px] justify-center gap-x-1 cursor-pointer hover:text-white'
         >
           <EditOutlinedIcon />
-          <div className=' max-[740px]:hidden'>Price</div>
-        </div>
-        <div className='h-full cborder border-l-[1px]'></div>
-        <div
-          name='survey'
-          onClick={() => handleModal('survey')}
-          className=' flex flex-row items-center tp w-[100px] justify-center gap-x-1 cursor-pointer hover:text-white max-[740px]:w-10   '
-        >
-          <PollOutlinedIcon />
-          <div className=' max-[740px]:hidden'>Survey</div>
+          <div>Price</div>
         </div>
       </TopNav>
       <div className=' flex-1 flex-col overflow-auto mt-3'>
-        <StationInfo setModal={setModal} station={station} />
-        <GasPrice gasInfo={gasInfo} setModal={setModal} />
+        <StationInfo station={station} />
+        <GasPrice gasInfo={gasInfo} setShowModal={setShowModal} />
         <Amenities />
         <Contributor />
 

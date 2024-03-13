@@ -1,24 +1,12 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import GasStationList from '../Components/GasStationList/GasStationList';
 import Preferences from '../Components/User/Preferences';
-import StarIcon from '@mui/icons-material/Star';
-import StarHalfIcon from '@mui/icons-material/StarHalf';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import { GoogleMap, Marker } from '@react-google-maps/api';
-import stationMarke from '/station.png';
-import CloseIcon from '@mui/icons-material/Close';
 import { useOutletContext } from 'react-router-dom';
 import TopNav from '../Components/TopNav/TopNav';
 import MapOutlinedIcon from '@mui/icons-material/MapOutlined';
 import FormatListBulletedOutlinedIcon from '@mui/icons-material/FormatListBulletedOutlined';
-import { setUserData } from '../api/setUserData';
 import Context from '../context';
 import { useNavigate } from 'react-router-dom';
-import { setGasStationData } from '../api/setGasStationData';
-import getUserCoord from '../api/getUserCoord';
-import { useAuth } from '../context/AuthContext';
 import { getCrrLocation, getGasStations } from '../api/gasStation';
 import Loading from '../Components/UI/Loading';
 
@@ -34,11 +22,13 @@ export default function Home() {
     fuelType: 'Regular',
     Amenities: [],
   });
+
   const navigate = useNavigate();
+
   useEffect(() => {
     getStationList();
-    // getData();
   }, []);
+
   const getStationList = async () => {
     try {
       const crrLatLng = await getCrrLocation();
@@ -50,46 +40,6 @@ export default function Home() {
       alert(e.message);
     }
   };
-  // async function getData() {
-  //   // await setUserData(user, setUser, navigate);
-  //   async function getLocation() {
-  //     if (navigator.geolocation) {
-  //       navigator.geolocation.getCurrentPosition(
-  //         (position) => {
-  //           setGasStationData(
-  //             gasStation,
-  //             setGasStation,
-  //             position.coords.latitude,
-  //             position.coords.longitude
-  //           );
-  //           if (!userLatLng) {
-  //             setUserLatLng({
-  //               lat: position.coords.latitude,
-  //               lng: position.coords.longitude,
-  //             });
-  //           }
-  //         },
-  //         (error) => {
-  //           if (error.code === 1) {
-  //             alert(
-  //               'Allow access to Windows Location \n Go to Windows settings > Location > Enable location + Enable apps can access location'
-  //             );
-  //             getLocation();
-  //           } else {
-  //             console.error('Error getting user location:', error);
-  //             getLocation();
-  //           }
-  //           console.error('Error getting user location:', error);
-  //           getLocation();
-  //         }
-  //       );
-  //     } else {
-  //       alert('Geolocation is not supported by this browser.');
-  //       navigate('/');
-  //     }
-  //   }
-  //   getLocation();
-  // }
 
   return (
     <>
