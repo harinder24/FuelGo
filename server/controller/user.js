@@ -7,7 +7,6 @@ import axios from "axios";
 import nodemailer from "nodemailer";
 import jwt from "jsonwebtoken";
 
-
 dotenv.config();
 const sendUserData = async (req, res) => {
   if (req?.decodedEmail) {
@@ -519,17 +518,143 @@ const changeAvatar = async (req, res) => {
 
 const getFriendInvitationLink = async (req, res) => {
   try {
-    const info = {  email: req?.decodedEmail };
+    const info = { email: req?.decodedEmail };
     const link = jwt.sign(info, process.env.LINK_SECRET);
-    return res
-    .status(201)
-    .json({ success: true, data : link });
+    return res.status(201).json({ success: true, data: link });
   } catch (error) {
     return res
       .status(201)
       .json({ success: false, message: "Internal server error." });
   }
 };
+
+const updateGasPrices = async (req, res) => {
+  try {
+    const { placeId, lat, lng, diesel, midGrade, premium, regular } = req.body;
+    const foundStation = await stationModel.findOne({ placeId: placeId });
+    const distanceInKm = getDistanceFromLatLonInKm(
+      lat,
+      lng,
+      foundStation.latlng.latitude,
+      foundStation.latlng.longitude
+    );
+    const distanceInMeters = distanceInKm * 1000;
+    if (distanceInMeters > 200) {
+      return res
+        .status(201)
+        .json({
+          success: false,
+          message:
+            "Distance between you and station must be 200 meters or less",
+        });
+    }
+    const recentEntry = foundStation.priceHistory
+      .filter((entry) => entry.email === req?.decodedEmail) 
+      .reduce(
+        (mostRecent, current) => {
+          return current.timeStamp > mostRecent.timeStamp
+            ? current
+            : mostRecent;
+        },
+        { timeStamp: 0 }
+      );
+    const currentTimestamp = Date.now();
+    if (isNextTimestampWithin24Hour(currentTimestamp, recentEntry.timeStamp)) {
+      const timeDifferenceInSeconds = Math.floor(
+        (currentTimestamp - recentEntry.timeStamp) / 1000
+      );
+      let timeDifference = "";
+      if (timeDifferenceInSeconds < 60) {
+        timeDifference = `${timeDifferenceInSeconds} sec`;
+      } else if (timeDifferenceInSeconds < 3600) {
+        timeDifference = `${Math.floor(timeDifferenceInSeconds / 60)} min`;
+      } else {
+        timeDifference = `${Math.floor(timeDifferenceInSeconds / 3600)} hr`;
+      }
+
+      return res
+        .status(201)
+        .json({ success: false, message: `You can edit in ${timeDifference}` });
+    }
+    let points = 0
+    if (diesel > 0) {
+      foundStation.price.diesel.price = diesel
+      foundStation.price.diesel.email = req?.decodedEmail
+      foundStation.price.diesel.timeStamp = currentTimestamp
+      points = points + 1
+    }
+    if (regular > 0) {
+      foundStation.price.regular.price = diesel
+      foundStation.price.regular.email = req?.decodedEmail
+      foundStation.price.regular.timeStamp = currentTimestamp
+      points = points + 1
+    }
+    if (midGrade > 0) {
+      foundStation.price.midGrade.price = diesel
+      foundStation.price.midGrade.email = req?.decodedEmail
+      foundStation.price.midGrade.timeStamp = currentTimestamp
+      points = points + 1
+    }
+    if (premium > 0) {
+      foundStation.price.premium.price = diesel
+      foundStation.price.premium.email = req?.decodedEmail
+      foundStation.price.premium.timeStamp = currentTimestamp
+      points = points + 1
+    }
+    if(points === 0){
+      return res
+      .status(201)
+      .json({ success: false, message: "Please enter fuel prices" });
+    }
+    foundStation.priceHistory.push(
+      {
+        email : req?.decodedEmail,
+        timeStamp : currentTimestamp,
+        points: points
+      }
+    )
+    foundStation.save()
+    return res
+    .status(201)
+    .json({ success: true, message: "Successfully updated", data :{
+      price : foundStation.price,
+      priceHistory : foundStation.priceHistory
+    } });
+  } catch (error) {
+    return res
+      .status(201)
+      .json({ success: false, message: "Internal server error." });
+  }
+};
+
+// utils
+function isNextTimestampWithin24Hour(currentTimestamp, prevTimestamp) {
+  prevTimestamp = prevTimestamp + 60 * 60 * 24 * 1000;
+
+  if (currentTimestamp <= prevTimestamp) {
+    return true;
+  } else {
+    return false;
+  }
+}
+function deg2rad(deg) {
+  return deg * (Math.PI / 180);
+}
+
+function getDistanceFromLatLonInKm(lat1, lng1, lat2, lng2) {
+  const R = 6371;
+  const dLat = deg2rad(lat2 - lat1);
+  const dLon = deg2rad(lng2 - lng1);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(lat1)) *
+      Math.cos(deg2rad(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c;
+  return distance;
+}
 
 const transporter = nodemailer.createTransport({
   service: "Gmail",
@@ -617,4 +742,5 @@ export {
   changeFrame,
   changeAvatar,
   getFriendInvitationLink,
+  updateGasPrices
 };

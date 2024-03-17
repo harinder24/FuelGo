@@ -25,6 +25,19 @@ const stationSchema = new mongoose.Schema({
   address: {
     type: String,
   },
+  priceHistory : [
+    {
+      email : {
+        type : String
+      },
+      timeStamp : {
+        type : Number
+      },
+      points : {
+        type : Number
+      }
+    }
+  ],
   price: {
     regular: {
       price: {
@@ -136,7 +149,6 @@ const stationSchema = new mongoose.Schema({
       },
     },
   },
-
   fuelGoRating: {
     rating: {
       type: Number,

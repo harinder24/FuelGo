@@ -16,6 +16,7 @@ import {
   changeFrame,
   changeAvatar,
   getFriendInvitationLink,
+  updateGasPrices,
 } from "../controller/user.js";
 import validateToken from "../middleware/verifyToken.js";
 const userRouter = express.Router();
@@ -36,5 +37,6 @@ userRouter.post("/purchaseavatar", validateToken, purchaseAvatar);
 userRouter.post("/changeframe", validateToken, changeFrame);
 userRouter.post("/changeavatar", validateToken, changeAvatar);
 userRouter.post("/getfriendinvitationlink", validateToken, getFriendInvitationLink);
+userRouter.post("/updategasprices", validateToken, updateGasPrices);
 
 export { userRouter };
