@@ -11,5 +11,5 @@ const frameSchema = new mongoose.Schema({
   },
 });
 
-const frameModel = mongoose.model("Avatar", frameSchema);
+const frameModel = mongoose.model("Frame", frameSchema);
 export default frameModel;

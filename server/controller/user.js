@@ -370,8 +370,8 @@ const getFavouriteStations = async (req, res) => {
     let stationListArray = [];
 
     stations.map(async (station) => {
-      const station = await stationModel.findOne({ _id: station });
-      stationListArray.push(station);
+      const stationz = await stationModel.findOne({ _id: station });
+      stationListArray.push(stationz);
     });
 
     return res.status(201).json({ success: true, data: stationListArray });
