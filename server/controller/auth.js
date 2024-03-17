@@ -386,7 +386,7 @@ const forgetPassword = async (req, res) => {
         sendChangePasswordLink(
           email,
           "FuelGo change password",
-          "http://localhost:5173/changepassword/" + token
+          "http://localhost:5173/accounts/changepassword/" + token
         );
         return res.status(200).json({
           success: true,

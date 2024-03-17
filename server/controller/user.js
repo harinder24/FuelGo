@@ -1,9 +1,12 @@
 import userModel from "../model/user.js";
-import localitiesModel from "../model/localities.js";
 import stationModel from "../model/station.js";
+import avatarModel from "../model/avatar.js";
+import frameModel from "../model/frame.js";
 import dotenv from "dotenv";
 import axios from "axios";
+import nodemailer from "nodemailer";
 import jwt from "jsonwebtoken";
+
 
 dotenv.config();
 const sendUserData = async (req, res) => {
@@ -136,7 +139,6 @@ async function getGasStations(req, res) {
   return res.status(201).json({ success: true, data: gasStationList });
   // }
 }
-
 async function getGasStation(latitude, longitude) {
   const specificStation = await stationModel.aggregate([
     {
@@ -209,7 +211,7 @@ const addComment = async (req, res) => {
 const editComment = async (req, res) => {
   const { placeId, rating, photosVideos, comment } = req.body;
   if (req?.decodedEmail) {
-    const foundStation = await stationModel.findOne({ placeId: placeId });
+    let foundStation = await stationModel.findOne({ placeId: placeId });
     const index = foundStation.reviews.findIndex(
       (review) => review.email === req.decodedEmail
     );
@@ -236,7 +238,7 @@ const deleteComment = async (req, res) => {
 
   if (req?.decodedEmail) {
     try {
-      const foundStation = await stationModel.findOne({ placeId: placeId });
+      let foundStation = await stationModel.findOne({ placeId: placeId });
 
       if (foundStation) {
         const index = foundStation.reviews.findIndex(
@@ -269,50 +271,335 @@ const addFavourite = async (req, res) => {
   const { placeId } = req.body;
 
   try {
-    const foundUser = await userModel.findOne({ email: req?.decodedEmail});
+    let foundUser = await userModel.findOne({ email: req?.decodedEmail });
 
     if (foundUser) {
       if (!foundUser.favourite.includes(placeId)) {
         foundUser.favourite.push(placeId);
         await foundUser.save();
-        return res.status(201).json({ success: true, data: foundUser.favourite, message: "Added to favourites successfully." });
+        return res.status(201).json({
+          success: true,
+          data: foundUser.favourite,
+          message: "Added to favourites successfully.",
+        });
       } else {
-        return res.status(201).json({ success: false, message: "Item already exists in favourites." });
+        return res.status(201).json({
+          success: false,
+          message: "Item already exists in favourites.",
+        });
       }
     } else {
-      return res.status(201).json({ success: false, message: "Station not found." });
+      return res
+        .status(201)
+        .json({ success: false, message: "Station not found." });
     }
   } catch (error) {
     console.error("Error:", error);
-    return res.status(201).json({ success: false, message: "Internal server error." });
+    return res
+      .status(201)
+      .json({ success: false, message: "Internal server error." });
   }
 };
-
 const deleteFavourite = async (req, res) => {
   const { placeId } = req.body;
 
   try {
-    const foundUser = await userModel.findOne({ email: req?.decodedEmail});
+    let foundUser = await userModel.findOne({ email: req?.decodedEmail });
 
     if (foundUser) {
       const index = foundUser.favourite.indexOf(placeId);
       if (index !== -1) {
         foundUser.favourite.splice(index, 1);
         await foundUser.save();
-        return res.status(201).json({ success: true, data: foundUser.favourite, message: "Deleted from favourites successfully." });
+        return res.status(201).json({
+          success: true,
+          data: foundUser.favourite,
+          message: "Deleted from favourites successfully.",
+        });
       } else {
-        return res.status(201).json({ success: false, message: "Item does not exist in favourites." });
+        return res.status(201).json({
+          success: false,
+          message: "Item does not exist in favourites.",
+        });
       }
     } else {
-      return res.status(201).json({ success: false, message: "Station not found." });
+      return res
+        .status(201)
+        .json({ success: false, message: "Station not found." });
     }
   } catch (error) {
     console.error("Error:", error);
-    return res.status(201).json({ success: false, message: "Internal server error." });
+    return res
+      .status(201)
+      .json({ success: false, message: "Internal server error." });
+  }
+};
+const editNameAndProfileImg = async (req, res) => {
+  const { name, profileImg } = req.body;
+
+  try {
+    let foundUser = await userModel.findOne({ email: req?.decodedEmail });
+
+    if (foundUser) {
+      foundUser.name = name;
+      foundUser.profileImg = profileImg;
+      await foundUser.save();
+      return res.status(201).json({
+        success: true,
+        data: {
+          name: foundUser.name,
+          profileImg: foundUser.profileImg,
+        },
+      });
+    } else {
+      return res
+        .status(201)
+        .json({ success: false, message: "Station not found." });
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    return res
+      .status(201)
+      .json({ success: false, message: "Internal server error." });
+  }
+};
+const getFavouriteStations = async (req, res) => {
+  try {
+    const { stations } = req.body;
+
+    let stationListArray = [];
+
+    stations.map(async (station) => {
+      const station = await stationModel.findOne({ _id: station });
+      stationListArray.push(station);
+    });
+
+    return res.status(201).json({ success: true, data: stationListArray });
+  } catch (error) {
+    console.error("Error:", error);
+    return res
+      .status(201)
+      .json({ success: false, message: "Internal server error." });
+  }
+};
+const purchaseGiftCard = async (req, res) => {
+  try {
+    const { giftCardType, amount } = req.body;
+    const foundUser = await userModel.findOne({ email: req?.decodedEmail });
+    const pointAmount = amount * 100;
+
+    const giftCardCode = "a1Qsnd7b912312wr343weeewwe";
+    if (foundUser) {
+      let points = foundUser.points;
+      if (points >= pointAmount) {
+        foundUser.points = points - pointAmount;
+        foundUser.pointHistory.push({
+          reason: `$${amount} ${giftCardType}`,
+          isRedeem: true,
+          pointsAmount: -amount,
+        });
+        foundUser.save();
+        sendGiftCard(foundUser.email, "Gift card code", giftCardCode);
+        return res.status(201).json({
+          success: true,
+          message: "Gift card code sent to your email",
+        });
+      } else {
+        return res
+          .status(201)
+          .json({ success: false, message: "Not enough points" });
+      }
+    }
+  } catch (error) {
+    return res
+      .status(201)
+      .json({ success: false, message: "Internal server error." });
   }
 };
 
+const purchaseFrame = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const foundUser = await userModel.findOne({ email: req?.decodedEmail });
+    const pointAmount = 25;
 
+    if (foundUser) {
+      let points = foundUser.points;
+      if (points >= pointAmount) {
+        foundUser.points = points - pointAmount;
+        foundUser.pointHistory.push({
+          reason: `Frame purchased`,
+          isRedeem: true,
+          pointsAmount: -pointAmount,
+        });
+        foundUser.framesOwned.push(id);
+        foundUser.save();
+
+        return res
+          .status(201)
+          .json({ success: true, message: "Purchased successfully" });
+      } else {
+        return res
+          .status(201)
+          .json({ success: false, message: "Not enough points" });
+      }
+    }
+  } catch (error) {
+    return res
+      .status(201)
+      .json({ success: false, message: "Internal server error." });
+  }
+};
+const purchaseAvatar = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const foundUser = await userModel.findOne({ email: req?.decodedEmail });
+    const pointAmount = 25;
+    if (foundUser) {
+      let points = foundUser.points;
+      if (points >= pointAmount) {
+        foundUser.points = points - pointAmount;
+        foundUser.pointHistory.push({
+          reason: `Avatar purchased`,
+          isRedeem: true,
+          pointsAmount: -pointAmount,
+        });
+        foundUser.avatarOwned.push(id);
+        foundUser.save();
+
+        return res
+          .status(201)
+          .json({ success: true, message: "Purchased successfully" });
+      } else {
+        return res
+          .status(201)
+          .json({ success: false, message: "Not enough points" });
+      }
+    }
+  } catch (error) {
+    return res
+      .status(201)
+      .json({ success: false, message: "Internal server error." });
+  }
+};
+
+const changeFrame = async (req, res) => {
+  try {
+    const { link } = req.body;
+    const foundUser = await userModel.findOne({ email: req?.decodedEmail });
+
+    foundUser.frame = link;
+    foundUser.save();
+
+    return res.status(201).json({ success: true, data: foundUser.frame });
+  } catch (error) {
+    console.error("Error:", error);
+    return res
+      .status(201)
+      .json({ success: false, message: "Internal server error." });
+  }
+};
+
+const changeAvatar = async (req, res) => {
+  try {
+    const { link } = req.body;
+    const foundUser = await userModel.findOne({ email: req?.decodedEmail });
+
+    foundUser.profileImg = link;
+    foundUser.save();
+
+    return res.status(201).json({ success: true, data: foundUser.profileImg });
+  } catch (error) {
+    console.error("Error:", error);
+    return res
+      .status(201)
+      .json({ success: false, message: "Internal server error." });
+  }
+};
+
+const getFriendInvitationLink = async (req, res) => {
+  try {
+    const info = {  email: req?.decodedEmail };
+    const link = jwt.sign(info, process.env.LINK_SECRET);
+    return res
+    .status(201)
+    .json({ success: true, data : link });
+  } catch (error) {
+    return res
+      .status(201)
+      .json({ success: false, message: "Internal server error." });
+  }
+};
+
+const transporter = nodemailer.createTransport({
+  service: "Gmail",
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.gmail,
+    pass: process.env.gmailPassword,
+  },
+});
+function sendGiftCard(toEmail, subject, code) {
+  const mailOptions = {
+    from: process.env.gmail,
+    to: toEmail,
+    subject: subject,
+    text: message,
+    html: ` <html>
+        <head>
+          <style>
+          
+            body {
+              font-family: Arial, sans-serif;
+              background-color: black;
+              padding: 20px;
+              color: black;
+            }
+            .container {
+            
+              border-radius: 5px;
+              padding: 20px;
+            }
+            @media (prefers-color-scheme: dark) {
+              .body {
+                color: white; 
+              }
+            }
+            .green{
+              color: rgb(14,165,233)
+            }
+            p {
+              font-size: 18px;
+              margin-bottom: 20px;
+            }
+            .otp-code {
+              font-size: 36px;
+              font-weight: bold;
+              color: #15803d;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <h1>Fuel<span class="green">Go</span></h1>
+            <p>Your gift code is:</p>
+            <p>${code}</p>
+           
+            <p>This code is just for visual purposes</p>
+          </div>
+        </body>
+      </html>`,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error("Error sending email:", error);
+    } else {
+      console.log("Email sent:", info.response);
+    }
+  });
+}
 export {
   sendUserData,
   getGasStations,
@@ -322,4 +609,12 @@ export {
   deleteComment,
   addFavourite,
   deleteFavourite,
+  editNameAndProfileImg,
+  getFavouriteStations,
+  purchaseGiftCard,
+  purchaseFrame,
+  purchaseAvatar,
+  changeFrame,
+  changeAvatar,
+  getFriendInvitationLink,
 };

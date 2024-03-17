@@ -93,7 +93,7 @@ export default function GasStationCard({ station, preferences }) {
             <div className=' flex flex-row justify-between'>
               <div className='tp flex flex-row text-sm'>
                 <div>
-                  ${fuelPrice}/{preferences.fuelType}
+                  ${fuelPrice.toFixed(2)}/{preferences.fuelType}
                 </div>
               </div>
               <div
