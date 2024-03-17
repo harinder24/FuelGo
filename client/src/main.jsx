@@ -16,6 +16,7 @@ import ProfileScreen from './Screen/ProfileScreen.jsx';
 import SearchScreen from './Screen/SearchScreen.jsx';
 
 import Accounts from './Accounts.jsx';
+import { AuthProvider } from './context/AuthContext.jsx';
 
 const router = createBrowserRouter([
   {
@@ -78,15 +79,12 @@ const router = createBrowserRouter([
         path: 'changepassword/:id',
         element: <ChangePassWord />,
       },
-      {
-        path: 'profile',
-        element: <ProfileScreen />,
-      },
     ],
   },
- 
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <RouterProvider router={router} />
+  <AuthProvider>
+    <RouterProvider router={router} />
+  </AuthProvider>
 );
