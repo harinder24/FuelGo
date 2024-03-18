@@ -1,14 +1,9 @@
-import React, { useState } from 'react';
-import CustomInput from '../Components/UI/CustomInput';
-import { MdLockOutline, MdOutlineMail } from 'react-icons/md';
+import { useState } from 'react';
 import CustomButton from '../Components/UI/CustomButton';
 import { useNavigate } from 'react-router-dom';
-import GoogleLoginBtn from '../Components/Login/GoogleLoginBtn';
-import { GoogleOAuthProvider } from '@react-oauth/google';
 import { emailSignUp } from '../api/auth';
 import Modal from '../Components/UI/Modal';
 import Otp from '../Components/Auth/Otp';
-import PasswordHideBtn from '../Components/Login/PasswordHideBtn';
 import LoginForm from '../Components/Login/LoginForm';
 import GoogleLogin from '../Components/Login/GoogleLogin';
 
@@ -24,8 +19,10 @@ export default function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setEmailError();
     setPasswordError();
+
     if (!email) {
       setEmailError('Email is empty');
       return;
@@ -38,6 +35,7 @@ export default function Signup() {
       alert('Please agree to terms');
       return;
     }
+
     try {
       const { error, fault } = await emailSignUp(
         email,
@@ -49,6 +47,7 @@ export default function Signup() {
         fault == 'password' ? setPasswordError(error) : setEmailError(error);
         return;
       }
+
       setShowModal(true);
     } catch (e) {
       alert(e);

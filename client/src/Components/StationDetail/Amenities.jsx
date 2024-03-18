@@ -1,11 +1,8 @@
-import React from 'react';
-
 const AMENITIYLIST = [
   { name: 'Car wash', src: '/carWash.png' },
   { name: 'Air pump', src: '/airPump.png' },
   { name: 'Convenience store', src: '/conv.webp' },
   { name: 'Ev charging station', src: '/ev.webp' },
-  { name: 'Truck stop', src: '/truck.webp' },
   { name: 'ATM', src: '/atm.png' },
 ];
 

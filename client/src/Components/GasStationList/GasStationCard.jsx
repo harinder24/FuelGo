@@ -15,7 +15,7 @@ export default function GasStationCard({ station, preferences, index }) {
   const { user, token, updateUserData } = useAuth();
   const { placeId: id, name, profileImg, distanceFromUser, address } = station;
 
-  const [isFavorite, setIsfavorite] = useState(user.favorite?.includes(id));
+  const [isFavorite, setIsfavorite] = useState(user.favourite?.includes(id));
 
   const handleAddFavorite = async () => {
     const { success, message } = await addToFavorite(token, id);
@@ -81,7 +81,6 @@ export default function GasStationCard({ station, preferences, index }) {
     stars.push(<StarIcon key={i} sx={{ fontSize: size }} />);
   }
   if (!index) {
-    console.log('station', station);
     getGasStationById(id, token);
   }
 
