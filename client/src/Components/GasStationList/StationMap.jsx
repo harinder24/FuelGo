@@ -10,7 +10,7 @@ export default function StationMap({ gasStationPreference, preferences }) {
   const [showStationInfo, setShowStationInfo] = useState(false);
   const mapRef = useRef(null);
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 520);
-  const navigate = useNavigate();
+
   const [target, setTarget] = useState(null);
   const { userLatLng, setUserLatLng } = useContext(Context);
   useEffect(() => {
@@ -116,10 +116,6 @@ export default function StationMap({ gasStationPreference, preferences }) {
     width: '100%',
     border: '0px',
     borderRadius: isSmallScreen ? '0px' : '8px',
-  };
-  const initialPosition = {
-    lat: 49.258347,
-    lng: -123.076953,
   };
   const handleMarkerClick = (station) => {
     setTarget(station);

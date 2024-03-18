@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import './index.css';
@@ -14,7 +13,6 @@ import Rewards from './Screen/Rewards.jsx';
 import GasStation from './Screen/GasStation.jsx';
 import ProfileScreen from './Screen/ProfileScreen.jsx';
 import SearchScreen from './Screen/SearchScreen.jsx';
-
 import Accounts from './Accounts.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 

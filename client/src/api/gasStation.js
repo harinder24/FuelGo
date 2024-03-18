@@ -1,7 +1,6 @@
 import serverLink from '../serverLink';
 import axios from 'axios';
 export const getGasStations = async (userLatLng) => {
-  console.log('calling getGasStations api');
   try {
     const { lat, lng } = userLatLng;
     const response = await axios.post(serverLink + '/user/getgasstations', {
@@ -27,7 +26,23 @@ export const getGasStationById = async (placeId, token) => {
         },
       }
     );
-    console.log('response.data.data', response.data.data);
+    return response.data.data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+export const getFavoriteStations = async (
+  locationList,
+  token,
+  setFavourites
+) => {
+  setFavourites([]);
+  try {
+    locationList.forEach(async (placeId) => {
+      const stationInfo = await getGasStationById(placeId, token);
+
+      setFavourites((prev) => [...prev, stationInfo]);
+    });
   } catch (error) {
     throw new Error(error);
   }
