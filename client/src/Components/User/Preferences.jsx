@@ -40,7 +40,7 @@ export default function Preferences({
   }, [crrPref]);
   const [crrOptions, setCrrOptions] = useState();
   const { setGasStationPreference, gasStation } = useContext(Context);
-  console.log(gasStation);
+  // console.log(gasStation);
   const applyPrefFilter = () => {
     const stationsFiltered = [...gasStation];
   };
