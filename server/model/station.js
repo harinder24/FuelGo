@@ -25,18 +25,18 @@ const stationSchema = new mongoose.Schema({
   address: {
     type: String,
   },
-  priceHistory : [
+  priceHistory: [
     {
-      email : {
-        type : String
+      email: {
+        type: String,
       },
-      timeStamp : {
-        type : Number
+      timeStamp: {
+        type: Number,
       },
-      points : {
-        type : Number
-      }
-    }
+      points: {
+        type: Number,
+      },
+    },
   ],
   price: {
     regular: {
@@ -188,9 +188,13 @@ const stationSchema = new mongoose.Schema({
       email: {
         type: String,
       },
+      likes: [
+        {
+          type: String,
+        },
+      ],
     },
   ],
- 
 });
 
 stationSchema.index({ location: "2dsphere" });

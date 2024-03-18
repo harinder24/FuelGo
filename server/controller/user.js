@@ -1,12 +1,12 @@
-import userModel from '../model/user.js';
-import stationModel from '../model/station.js';
-import avatarModel from '../model/avatar.js';
-import frameModel from '../model/frame.js';
-import dotenv from 'dotenv';
-import axios from 'axios';
-import nodemailer from 'nodemailer';
-import jwt from 'jsonwebtoken';
-import chatModel from '../model/chat.js';
+import userModel from "../model/user.js";
+import stationModel from "../model/station.js";
+import avatarModel from "../model/avatar.js";
+import frameModel from "../model/frame.js";
+import dotenv from "dotenv";
+import axios from "axios";
+import nodemailer from "nodemailer";
+import jwt from "jsonwebtoken";
+import chatModel from "../model/chat.js";
 
 dotenv.config();
 const sendUserData = async (req, res) => {
@@ -170,7 +170,7 @@ const getGasStationData = async (req, res) => {
       return res.status(201).json({
         success: true,
         data: foundStation,
-        currentTimestamp: currentTimestamp,
+        currentTimestamp: currentTimestamp
       });
     } else {
       return res.status(201).json({
@@ -329,6 +329,77 @@ const unLikeComment = async (req, res) => {
       }
     } catch (error) {
       console.error('Error:', error);
+      return res.status(201).json({ success: false });
+    }
+  }
+
+  return res.status(201).json({ success: false });
+};
+const likeComment = async (req, res) => {
+  const { placeId, commentUserEmail } = req.body;
+
+  if (req?.decodedEmail) {
+    try {
+      let foundStation = await stationModel.findOne({ placeId: placeId });
+
+      if (foundStation) {
+        const index = foundStation.reviews.findIndex(
+          (review) => review.email === commentUserEmail 
+        );
+
+        if (index !== -1) {
+          foundStation.reviews[index].likes.push(req.decodedEmail)
+
+          await foundStation.save();
+
+          return res
+            .status(201)
+            .json({ success: true});
+        } else {
+          return res.status(201).json({ success: false });
+        }
+      } else {
+        return res.status(201).json({ success: false });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      return res.status(201).json({ success: false });
+    }
+  }
+
+  return res.status(201).json({ success: false });
+};
+const unLikeComment = async (req, res) => {
+  const { placeId, commentUserEmail } = req.body;
+
+  if (req?.decodedEmail) {
+    try {
+      let foundStation = await stationModel.findOne({ placeId: placeId });
+
+      if (foundStation) {
+        const index = foundStation.reviews.findIndex(
+          (review) => review.email === commentUserEmail 
+        );
+
+        if (index !== -1) {
+     
+          const index2 = foundStation.reviews[index].likes.findIndex(
+            (review) => review === req.decodedEmail 
+          );
+          foundStation.reviews[index].likes.splice(index2, 1);
+          await foundStation.save();
+
+          return res
+            .status(201)
+            .json({ success: true});
+        } else {
+          return res.status(201).json({ success: false });
+        }
+      } else {
+        return res.status(201).json({ success: false });
+      }
+    } catch (error) {
+      console.error("Error:", error);
       return res.status(201).json({ success: false });
     }
   }
@@ -672,21 +743,21 @@ const updateGasPrices = async (req, res) => {
         .status(201)
         .json({ success: false, message: 'Please enter fuel prices' });
     }
-    foundStation.priceHistory.push({
-      email: req?.decodedEmail,
-      timeStamp: currentTimestamp,
-      points: points,
-    });
-    foundStation.save();
-    return res.status(201).json({
-      success: true,
-      message: 'Successfully updated',
-      data: {
-        price: foundStation.price,
-        priceHistory: foundStation.priceHistory,
-        currentTimestamp: currentTimestamp,
-      },
-    });
+    foundStation.priceHistory.push(
+      {
+        email : req?.decodedEmail,
+        timeStamp : currentTimestamp,
+        points: points
+      }
+    )
+    foundStation.save()
+    return res
+    .status(201)
+    .json({ success: true, message: "Successfully updated", data :{
+      price : foundStation.price,
+      priceHistory : foundStation.priceHistory,
+      currentTimestamp: currentTimestamp
+    } });
   } catch (error) {
     return res
       .status(201)
@@ -741,6 +812,62 @@ const addChat = async (req, res) => {
     });
   }
 };
+const addChat = async (req, res) =>{
+  try{
+    const currentTimestamp = Date.now();
+    const {isNewChat, message, chatType, chatId} = req.body
+    const foundUser = await userModel.findOne({ email: req?.decodedEmail });
+    if(isNewChat){
+      let recentmsg = message
+      if(chatType === "video"){
+        recentmsg = "Video"
+      }else if(chatType === "image"){
+        recentmsg = "Image"
+      }
+      const newChat = new chatModel({
+        user: req?.decodedEmail ,
+        recentChat: recentmsg,      
+        
+      });
+      newChat.chat.push({
+        isChatByUser: true,
+        message: message,
+        chatType: chatType,
+        timeStamp: currentTimestamp
+      })
+      newChat.save()
+      foundUser.chat.push(newChat._id)
+      foundUser.save()
+      return res.status(201)
+      .json({
+        success: true,
+ 
+      });
+    }else{
+      const foundChat = await chatModel.findOne({ _id: chatId });
+      foundChat.chat.push({
+        isChatByUser: true,
+        message: message,
+        chatType: chatType,
+        timeStamp: currentTimestamp
+      })
+      foundChat.save()
+      return res.status(201)
+      .json({
+        success: true,
+ 
+      });
+    }
+    
+  } catch (error) {
+    return res.status(201)
+    .json({
+      success: false,
+      message:
+        "Internal server error",
+    });
+  }
+}
 
 // utils
 function isNextTimestampWithin24Hour(currentTimestamp, prevTimestamp) {
