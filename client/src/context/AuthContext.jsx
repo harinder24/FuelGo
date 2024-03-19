@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import { getUserData } from '../api/user';
 
 export const AuthContext = createContext();
@@ -7,7 +7,6 @@ export const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
   const [token, setToken] = useState(JSON.parse(localStorage.getItem('token')));
-
   const updateUserData = async (userToken) => {
     if (!userToken) {
       localStorage.removeItem('token');

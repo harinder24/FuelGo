@@ -15,7 +15,7 @@ export default function GasStationCard({ station, preferences, index }) {
   const { user, token, updateUserData } = useAuth();
   const { placeId: id, name, profileImg, distanceFromUser, address } = station;
 
-  const [isFavorite, setIsfavorite] = useState(user.favourite?.includes(id));
+  const [isFavorite, setIsfavorite] = useState(user.favourite.includes(id));
 
   const handleAddFavorite = async () => {
     const { success, message } = await addToFavorite(token, id);

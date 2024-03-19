@@ -51,3 +51,42 @@ export const deleteFromFavorite = async (token, stationId) => {
     throw new Error(error);
   }
 };
+export const editUserInfo = async (token, name, newProfileImg) => {
+  console.log(name, newProfileImg);
+  try {
+    const profileImg =
+      typeof newProfileImg == 'string'
+        ? newProfileImg
+        : await uploadProfileImg(newProfileImg);
+    const response = await axios.post(
+      serverLink + '/user/editnameandprofileimg',
+      {
+        name,
+        profileImg,
+      },
+      {
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+const uploadProfileImg = async (file) => {
+  const data = new FormData();
+  data.append('file', file);
+  data.append('upload_preset', import.meta.env.VITE_CLOUDINARY_PRESET);
+
+  try {
+    const response = await axios.post(
+      import.meta.env.VITE_CLOUDINARY_URL,
+      data
+    );
+    return response.data.url;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
