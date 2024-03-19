@@ -19,7 +19,9 @@ import {
   updateGasPrices,
   likeComment,
   unLikeComment,
-  addChat
+  addChat,
+  getAllAvatar,
+  getAllFrame,
 } from "../controller/user.js";
 import validateToken from "../middleware/verifyToken.js";
 const userRouter = express.Router();
@@ -44,4 +46,6 @@ userRouter.post("/updategasprices", validateToken, updateGasPrices);
 userRouter.post("/likecomment", validateToken, likeComment);
 userRouter.post("/unlikecomment", validateToken, unLikeComment);
 userRouter.post("/addchat", validateToken, addChat);
+userRouter.get("/getallavatar", validateToken, getAllAvatar);
+userRouter.get("/getallframe", validateToken, getAllFrame);
 export { userRouter };
