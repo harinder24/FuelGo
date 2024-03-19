@@ -9,8 +9,8 @@ import {
 } from '../api/gasStation';
 import Loading from '../Components/UI/Loading';
 import TopNavHome from '../Components/TopNav/TopNavHome';
-import { useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useLocation } from 'react-router-dom';
 
 export default function Home() {
   const { pathname } = useLocation();
@@ -18,7 +18,7 @@ export default function Home() {
   const { user, token } = useAuth();
   const [isList, setIsList] = useState(true);
   const [isLoading, setIsloading] = useState(true);
-  const [favourites, setFavourites] = useState();
+  const [favourites, setFavourites] = useState([]);
   const { gasStation, setGasStation, userLatLng, setUserLatLng } =
     useContext(Context);
   const [preferences, setPreferences] = useState({
@@ -27,21 +27,13 @@ export default function Home() {
     fuelType: 'Regular',
     Amenities: [],
   });
+  useEffect(() => {
+    fetchInitialStations();
+  }, [user.id, pathname]);
 
   useEffect(() => {
-    if (!user) return;
-
-    if (isFavouritePage) {
-      setIsloading(true);
-      setFavourites();
-
-      getFavouriteStations(user.favourite);
-      return;
-    }
-    if (gasStation) return;
-
-    getStationsNearBy();
-  }, [user, pathname]);
+    fetchFavourite();
+  }, [user.favourite]);
 
   useEffect(() => {
     if (!user?.favourite || !user?.favourite.length) {
@@ -63,18 +55,41 @@ export default function Home() {
       alert(e.message);
     }
   };
-  const getFavouriteStations = async (locations) => {
-    locations.forEach(async (locationId) => {
+  const getFavourites = () => {
+    user.favourite?.map(async (placeId) => {
       try {
-        const station = await getGasStationById(locationId, token);
-        setFavourites((prev) => (prev ? [...prev, station] : [station]));
+        const placeInfo = await getGasStationById(placeId, token);
+        setFavourites((prev) => [...prev, placeInfo]);
       } catch (error) {
         alert(error);
-        return;
       }
     });
   };
 
+  const fetchFavourite = () => {
+    if (!user) return;
+    if (!isFavouritePage) return;
+
+    setIsloading(true);
+
+    setFavourites([]);
+    getFavourites();
+  };
+  const fetchInitialStations = () => {
+    if (!user) return;
+
+    if (isFavouritePage) {
+      setIsloading(true);
+      setFavourites([]);
+      getFavourites();
+      return;
+    }
+
+    if (gasStation) return;
+
+    setIsloading(true);
+    getStationsNearBy();
+  };
   return (
     <>
       <TopNavHome isList={isList} setIsList={setIsList} />
@@ -86,7 +101,12 @@ export default function Home() {
       {isLoading ? (
         <Loading bgColor='bg-inherit' />
       ) : (
-        <GasStationList isList={isList} preferences={preferences} />
+        <GasStationList
+          isList={isList}
+          isFavouritePage={isFavouritePage}
+          favourites={favourites}
+          preferences={preferences}
+        />
       )}
     </>
   );
