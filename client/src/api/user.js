@@ -51,13 +51,12 @@ export const deleteFromFavorite = async (token, stationId) => {
     throw new Error(error);
   }
 };
-export const editUserInfo = async (token, name, newProfileImg) => {
-  console.log(name, newProfileImg);
+export const editUserInfo = async (userId, token, name, newProfileImg) => {
   try {
     const profileImg =
       typeof newProfileImg == 'string'
         ? newProfileImg
-        : await uploadProfileImg(newProfileImg);
+        : await uploadProfileImg(userId, newProfileImg);
     const response = await axios.post(
       serverLink + '/user/editnameandprofileimg',
       {
@@ -75,8 +74,10 @@ export const editUserInfo = async (token, name, newProfileImg) => {
     throw new Error(error);
   }
 };
-const uploadProfileImg = async (file) => {
+const uploadProfileImg = async (userId, file) => {
   const data = new FormData();
+
+  data.append('folder', userId);
   data.append('file', file);
   data.append('upload_preset', import.meta.env.VITE_CLOUDINARY_PRESET);
 
