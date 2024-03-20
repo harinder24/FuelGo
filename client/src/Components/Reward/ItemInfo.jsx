@@ -50,7 +50,9 @@ export default function ItemInfo({ point, setPoint, setShowModal, modal }) {
             width='192px'
             fontSize='base'
           >
-            {isAvailable ? `Get ${modal.type}` : 'NOT ENOUGH UNIT'}
+            {isAvailable
+              ? `GET ${modal.type.toUpperCase()}`
+              : 'NOT ENOUGH UNIT'}
           </CustomButton>
         </>
       )}

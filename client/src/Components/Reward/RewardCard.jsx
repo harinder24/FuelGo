@@ -10,6 +10,8 @@ export default function RewardCard({
   md,
   lg,
 }) {
+  // const icon = false;
+  // const bg = false;
   const { icon, bg } = reward;
   const isAvailable = point >= price;
   const percent = isAvailable ? 100 : (point / price) * 100;
@@ -17,9 +19,9 @@ export default function RewardCard({
 
   const cardSizeClass = sm
     ? `w-48 h-36 ${amount ? '' : 'bg-[#182335] '}`
-    : 'h-[152px] ease-in-out duration-100 cursor-pointer hover:h-40 ' +
-      (md ? 'w-32 hover:w-36 bg-[#182335] ' : '') +
-      (lg ? 'w-56 hover:w-60 ' : '');
+    : 'h-[152px] cursor-pointer ' +
+      (md ? 'w-32 bg-[#182335] ' : '') +
+      (lg ? 'w-56 ' : '');
 
   return (
     <>
@@ -32,16 +34,18 @@ export default function RewardCard({
             sm ? `text-5xl ${amount ? '' : 'scale-150'}` : 'mb-6 mt-2 text-4xl'
           }`}
         >
-          {icon}
+          {icon || ''}
         </div>
         {(lg || md) && (
           <>
-            <div className=' w-full h-[6px] rounded-full bg-neutral-400 mb-4'>
-              <div
-                className='h-full rounded-full bg-white'
-                style={{ width: converted + '%' }}
-              ></div>
-            </div>
+            {lg && (
+              <div className=' w-full h-[6px] rounded-full bg-neutral-400 mb-4'>
+                <div
+                  className='h-full rounded-full bg-white'
+                  style={{ width: converted + '%' }}
+                ></div>
+              </div>
+            )}
 
             <RewardCardDetails
               amount={amount}

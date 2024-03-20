@@ -9,7 +9,7 @@ import Loading from '../UI/Loading';
 import BgBlackOpacity from '../BgBlackOpacity';
 
 export default function ProfileSetting({ setCrrAction }) {
-  const { user, token, updateUserData } = useAuth();
+  const { user, token, updateUserData, crrImg } = useAuth();
   const [error, setError] = useState('');
   const [imgFile, setImgFile] = useState();
   const [newName, setNewName] = useState();
@@ -60,7 +60,7 @@ export default function ProfileSetting({ setCrrAction }) {
         <div className=' relative w-fit mb-4'>
           <img
             className=' size-[100px] rounded-full'
-            src={imgFile ? URL.createObjectURL(imgFile) : user.profileImg}
+            src={imgFile ? URL.createObjectURL(imgFile) : crrImg}
             alt=''
           />
           <div className=' absolute bottom-0 right-[-4px] rounded-full bg-white p-2 shadow-md cursor-pointer'>
