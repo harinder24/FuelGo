@@ -91,3 +91,25 @@ const uploadProfileImg = async (userId, file) => {
     throw new Error(error);
   }
 };
+export const getFriendInvitationLink = async (token) => {
+  try {
+    const response = await axios.post(
+      serverLink + '/user/getfriendinvitationlink',
+      {},
+      {
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      }
+    );
+
+    const { success, reason, message, data } = response.data;
+    if (!success) {
+      throw new Error(message || reason);
+    }
+
+    return data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};

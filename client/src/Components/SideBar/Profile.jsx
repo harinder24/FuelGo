@@ -50,7 +50,7 @@ const SIDEBARACTIONS = [
     icon: <CardGiftcardOutlinedIcon sx={{ color: '#ffffff', fontSize: 25 }} />,
     subtitle: [
       'You earn 100',
-      <PixIcon sx={{ color: 'white', fontSize: 14 }} />,
+      <PixIcon key='15' sx={{ color: 'white', fontSize: 14 }} />,
     ],
   },
   {

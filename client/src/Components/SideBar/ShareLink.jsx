@@ -1,23 +1,31 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AddLinkOutlinedIcon from '@mui/icons-material/AddLinkOutlined';
+import { useAuth } from '../../context/AuthContext';
+import { getFriendInvitationLink } from '../../api/user';
+import { useLocation } from 'react-router-dom';
 
 export default function ShareLink() {
+  const { token } = useAuth();
+  const [link, setLink] = useState();
   const [showCopiedMessage, setShowCopiedMessage] = useState(false);
+  useEffect(() => {
+    getInvitationLink();
+  }, []);
+  const getInvitationLink = async () => {
+    getFriendInvitationLink(token).then(setLink).catch(alert);
+  };
   const copyToClipboard = () => {
     navigator.clipboard
-      .writeText('vuinjkubinjkl')
+      .writeText(link)
       .then(() => {
-        console.log('Link copied to clipboard:', 'vygdbuhnjibuhdj');
         setShowCopiedMessage(true);
 
-        // Set a timeout to hide the message after 2 seconds
         setTimeout(() => {
           setShowCopiedMessage(false);
         }, 2000);
       })
       .catch((error) => {
-        console.error('Error copying link to clipboard:', error);
-        // You may handle errors or show an error message here
+        alert('Error copying link to clipboard:', error);
       });
   };
   const handleShare = async () => {
@@ -36,10 +44,8 @@ export default function ShareLink() {
     <div className=' w-full  caret-transparent pt-1'>
       <div className='w-full px-3'>
         <div className=' relative w-full'>
-          <div className='w-full h-10 border-[1px] cborder rounded-lg px-2 flex items-center overflow-hidden'>
-            <div className=' tp'>
-              ashjalasjkahajskhajskcjcasjbccajsdddsdsdss
-            </div>
+          <div className='w-full h-10 border-[1px] cborder rounded-lg px-2 flex items-center overflow-hidden mt-4'>
+            <div className='tp'>{link}</div>
           </div>
           <div className='absolute right-[1px] top-[1px] h-9  px-2 sbg rounded-lg'>
             <div
