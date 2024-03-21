@@ -1,10 +1,11 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { getUserData } from '../api/user';
 
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
+  
   const crrFrame =
     'https://res.cloudinary.com/dnqglmely/image/upload/fuel-frames/purchasable-frames/law8watuyahmnsfnw1ru.jpg';
   const crrImg =
@@ -27,8 +28,16 @@ export function AuthProvider({ children }) {
     setUser(crrUser);
 
     localStorage.setItem('token', JSON.stringify(userToken));
-    localStorage.setItem('user', JSON.stringify(crrUser));
+    // localStorage.setItem('user', JSON.stringify(crrUser));
   };
+  useEffect(()=>{
+    if(!user){
+      if(localStorage.getItem("token")){
+        const tk = JSON.parse(localStorage.getItem("token"))
+        updateUserData(tk)
+      }
+    }
+  },[])
 
   return (
     <AuthContext.Provider

@@ -3,14 +3,14 @@ import OtpInput from 'react-otp-input';
 import CloseIcon from '@mui/icons-material/Close';
 import Loading from '../UI/Loading';
 import {
-  addAccountInitialData,
+
   otpResend,
   otpValidation,
 } from '../../api/auth';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-export default function Otp({ email, setShowModal }) {
-  const { updateUserData } = useAuth();
+export default function Otp({ email, setShowModal,setIsOtpCorrect }) {
+  // const { updateUserData } = useAuth();
   const navigate = useNavigate();
 
   const [otp, setOtp] = useState('');
@@ -45,15 +45,15 @@ export default function Otp({ email, setShowModal }) {
         setIsLoading(false);
         return;
       }
-      alert('Email was successfully verified');
-      const { token, error: e } = await addAccountInitialData(email);
-      if (e) {
-        setError(e);
-        setIsLoading(false);
-        return;
-      }
-      await updateUserData(token);
-      navigate('/home');
+      // const { token, error: e } = await addAccountInitialData(email);
+      // if (e) {
+      //   setError(e);
+      //   setIsLoading(false);
+      //   return;
+      // }
+      // await updateUserData(token);
+      // navigate('/home');
+      setIsOtpCorrect(true)
     } catch (e) {
       setIsLoading(false);
       setError(e);

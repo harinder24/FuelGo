@@ -31,6 +31,7 @@ export default function TopNavHome({ isList, setIsList }) {
         <MapOutlinedIcon />
         <div className='max-[740px]:hidden'>Map</div>
       </div>
+      
     </TopNav>
   );
 }

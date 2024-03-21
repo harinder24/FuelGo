@@ -206,7 +206,7 @@ const emailLogIn = async (req, res) => {
   }
 };
 const Oauth = async (req, res) => {
-  const { email } = req.body;
+  const { email, name, picture } = req.body;
  
   try {
     let foundUser = await authModel.findOne({ email: email });
@@ -227,25 +227,32 @@ const Oauth = async (req, res) => {
           return res.status(201).json({
             success: true,
             token: token,
-            stageTwo: false,
           });
       } else {
         return res.status(201).json({
-          success: true,
-          stageTwo: true,
+          success: false,
         });
       }
     } else {
+
       const newUser = new authModel({
         email: email,
         authType: "Google",
-        isInitAuthComplete: false,
+        isInitAuthComplete: true,
         isAgreedToTerms: true,
       });
       await newUser.save();
+      const newUserM = new userModel({
+        email: email,
+        name: name,
+        profileImg: picture,
+      });
+      await newUserM.save();
+      const info = {email: foundUser.email };
+      const token = jwt.sign(info, process.env.TOKEN_SECRET);
       return res.status(201).json({
         success: true,
-        stageTwo: true,
+        token: token,
       });
     }
   } catch (error) {

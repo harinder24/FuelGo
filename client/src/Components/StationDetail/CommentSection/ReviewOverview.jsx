@@ -88,7 +88,7 @@ export default function ReviewOverview({station}) {
           <div key={i} className='flex flex-row gap-x-2 items-center mt-2'>
             <div className=' text-sm th'>{item}</div>
             <div className='flex-1 h-2 rounded-lg sbg'>
-              <div className={`  w-[${width.toString()}%] h-2 rounded-lg bg-[#fbbc04]`}></div>
+              <div style={{ width: `${width}%` }} className={` h-2 rounded-lg bg-[#fbbc04]`}></div>
             </div>
           </div>
         );

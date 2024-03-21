@@ -37,21 +37,21 @@ export const otpResend = async (email) => {
   }
 };
 
-export const addAccountInitialData = async (email) => {
-  const name = email.split('@')[0];
-  const profileImg = '/profileDefault.jpg';
+// export const addAccountInitialData = async (email) => {
+//   const name = email.split('@')[0];
+//   const profileImg = '/profileDefault.jpg';
 
-  try {
-    const response = await axios.post(serverLink + '/auth/adduserdata', {
-      email,
-      name,
-      profileImg,
-    });
-    return response.data;
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
+//   try {
+//     const response = await axios.post(serverLink + '/auth/adduserdata', {
+//       email,
+//       name,
+//       profileImg,
+//     });
+//     return response.data;
+//   } catch (e) {
+//     throw new Error(e);
+//   }
+// };
 export const emailLogin = async (email, password) => {
   try {
     const response = await axios.post(serverLink + '/auth/emaillogin', {
@@ -74,18 +74,21 @@ export const googleLogin = async (token) => {
         },
       }
     );
-    const email = response.data.email;
-    return email;
+    const data = response.data;
+    return data;
   } catch (error) {
     throw new Error(error.message);
   }
 };
-export const loginWithGoogleAccount = async (googleAccount) => {
+export const loginWithGoogleAccount = async (name,email,picture) => {
   try {
     const response = await axios.post(serverLink + '/auth/oauth', {
-      email: googleAccount,
+      email: email,
+      name: name,
+      picture: picture
     });
-    return response.data;
+    
+     return response.data;
   } catch (error) {
     throw new Error(error.message);
   }
