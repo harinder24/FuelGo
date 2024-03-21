@@ -5,6 +5,10 @@ import { getUserData } from '../api/user';
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
+  const crrFrame =
+    'https://res.cloudinary.com/dnqglmely/image/upload/fuel-frames/purchasable-frames/law8watuyahmnsfnw1ru.jpg';
+  const crrImg =
+    'https://res.cloudinary.com/dnqglmely/image/upload/fuel-avatars/purchasable-avatars/kaqnmqi6bdlocrrqhktt.jpg';
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
   const [token, setToken] = useState(JSON.parse(localStorage.getItem('token')));
   const updateUserData = async (userToken) => {
@@ -27,7 +31,9 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, updateUserData }}>
+    <AuthContext.Provider
+      value={{ user, token, updateUserData, crrFrame, crrImg }}
+    >
       {children}
     </AuthContext.Provider>
   );

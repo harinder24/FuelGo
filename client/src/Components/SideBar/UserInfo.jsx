@@ -5,15 +5,15 @@ import Loading from '../UI/Loading';
 
 export default function UserInfo({ handleActionChange }) {
   // getUserInfo from backend
-  const { user } = useAuth();
+  const { user, crrFrame, crrImg } = useAuth();
   const [userInfo, setUserInfo] = useState();
   useEffect(() => {
     if (!user) return;
     setUserInfo({
       name: user.name,
       email: user.email,
-      profileImg: user.profileImg,
-      frame: 'level5.jpg',
+      profileImg: crrImg,
+      frame: crrFrame,
       lv: 3,
       crrEXP: 15,
       requiredEXP: 75,
@@ -29,7 +29,7 @@ export default function UserInfo({ handleActionChange }) {
                 <div className='flex flex-row gap-x-4 items-center flex-1'>
                   <div
                     style={{
-                      backgroundImage: `url("/frame/${userInfo.frame}")`,
+                      backgroundImage: `url(${userInfo.frame})`,
                       backgroundSize: 'cover', // Adjust as needed
                       backgroundPosition: 'center', // Adjust as needed
                       // Additional background properties can be added here

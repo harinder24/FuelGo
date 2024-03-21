@@ -9,8 +9,8 @@ export const emailSignUp = async (email, password, isAgreedToTerms) => {
       isAgreedToTerms,
     });
     return response.data;
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error.message);
   }
 };
 
@@ -21,8 +21,8 @@ export const otpValidation = async (email, otp) => {
       otp,
     });
     return response.data;
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error.message);
   }
 };
 
@@ -32,8 +32,8 @@ export const otpResend = async (email) => {
       email,
     });
     return response.data;
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error.message);
   }
 };
 
@@ -48,8 +48,8 @@ export const addAccountInitialData = async (email) => {
       profileImg,
     });
     return response.data;
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error.message);
   }
 };
 export const emailLogin = async (email, password) => {
@@ -59,8 +59,8 @@ export const emailLogin = async (email, password) => {
       password,
     });
     return response.data;
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error.message);
   }
 };
 export const googleLogin = async (token) => {
@@ -77,7 +77,7 @@ export const googleLogin = async (token) => {
     const email = response.data.email;
     return email;
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };
 export const loginWithGoogleAccount = async (googleAccount) => {
@@ -87,7 +87,7 @@ export const loginWithGoogleAccount = async (googleAccount) => {
     });
     return response.data;
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };
 export const sendchangePasswordEmail = async (email) => {
@@ -97,7 +97,7 @@ export const sendchangePasswordEmail = async (email) => {
     });
     return response.data;
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };
 export const changePassword = async (id, password, confirmPassword) => {
@@ -110,6 +110,6 @@ export const changePassword = async (id, password, confirmPassword) => {
 
     return response.data;
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };
