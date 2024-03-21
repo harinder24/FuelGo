@@ -11,8 +11,8 @@ export const getUserData = async (token) => {
     const userData = response.data.data;
 
     return userData;
-  } catch (e) {
-    throw new Error(e);
+  } catch (error) {
+    throw new Error(error.message);
   }
 };
 export const addToFavorite = async (token, stationId) => {
@@ -30,7 +30,7 @@ export const addToFavorite = async (token, stationId) => {
     );
     return response.data;
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };
 export const deleteFromFavorite = async (token, stationId) => {
@@ -48,7 +48,7 @@ export const deleteFromFavorite = async (token, stationId) => {
     );
     return response.data;
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };
 export const editUserInfo = async (userId, token, name, newProfileImg) => {
@@ -71,7 +71,7 @@ export const editUserInfo = async (userId, token, name, newProfileImg) => {
     );
     return response.data;
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };
 const uploadProfileImg = async (userId, file) => {
@@ -88,7 +88,7 @@ const uploadProfileImg = async (userId, file) => {
     );
     return response.data.url;
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };
 export const getFriendInvitationLink = async (token) => {
@@ -110,6 +110,6 @@ export const getFriendInvitationLink = async (token) => {
 
     return data;
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };

@@ -11,9 +11,7 @@ export default function GiftCards({ options, point, setModal, setShowModal }) {
       card: <RewardCard reward={giftCard} amount={amount} sm />,
       title,
       amount,
-      price,
-      isAvailable: point >= price,
-      type: 'card',
+      type: 'giftcard',
     });
     setShowModal(true);
   };
@@ -27,13 +25,7 @@ export default function GiftCards({ options, point, setModal, setShowModal }) {
             onClick={() => openModal(amount, price)}
             className=' mr-3 snap-center h-40'
           >
-            <RewardCard
-              reward={giftCard}
-              point={point}
-              amount={amount}
-              price={price}
-              lg
-            />
+            <RewardCard reward={giftCard} point={point} amount={amount} lg />
           </li>
         ))}
       </ul>

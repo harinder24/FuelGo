@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   SiAmazon,
   SiApple,
@@ -14,6 +14,7 @@ import ItemInfo from '../Components/Reward/ItemInfo';
 import Avatars from '../Components/Reward/Avatars';
 import Frames from '../Components/Reward/Frames';
 import GiftCards from '../Components/Reward/GiftCards';
+import { useAuth } from '../context/AuthContext';
 
 export const GIFTCARDS = {
   items: [
@@ -70,9 +71,17 @@ export const GIFTCARDS = {
 
 export default function Rewards() {
   const { setIsProfilePopUp } = useOutletContext();
-  const [point, setPoint] = useState(720);
+  const { user } = useAuth();
+  const [point, setPoint] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [modal, setModal] = useState();
+  useEffect(() => {
+    if (!user.points) {
+      setPoint(0);
+      return;
+    }
+    setPoint(user.points);
+  }, [user.points]);
   return (
     <>
       {showModal && (

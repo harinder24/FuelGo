@@ -13,7 +13,7 @@ export const getGasStations = async (userLatLng) => {
     }
     return data;
   } catch (error) {
-    console.error('Network error:', error);
+    throw new Error(error.message);
   }
 };
 export const getGasStationById = async (placeId, token) => {
@@ -28,7 +28,7 @@ export const getGasStationById = async (placeId, token) => {
     );
     return response.data.data;
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };
 export const getFavoriteStations = async (
@@ -44,7 +44,7 @@ export const getFavoriteStations = async (
       setFavourites((prev) => [...prev, stationInfo]);
     });
   } catch (error) {
-    throw new Error(error);
+    throw new Error(error.message);
   }
 };
 export const getCrrLocation = async () => {

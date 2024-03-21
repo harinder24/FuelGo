@@ -1,21 +1,24 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { getLvItems } from '../../api/reward';
+import { getLvItems, getOwnedItems } from '../../api/reward';
 
 export default function Frame() {
   const { user, token } = useAuth();
   const [frames, setFrames] = useState();
-  const getFrames = async () => {
+  const displayFrames = async () => {
     try {
       const lvFrames = await getLvItems('frame', token);
-      setFrames(lvFrames);
+      const ownedFrames =
+        (await getOwnedItems('frame', user.framesOwned, token)) || [];
+      setFrames([...lvFrames, ...ownedFrames]);
     } catch (e) {
       alert(e);
     }
   };
   useEffect(() => {
-    getFrames();
-  }, []);
+    if (!user) return;
+    displayFrames();
+  }, [user]);
   return (
     <div className=' w-full p-3 caret-transparent'>
       <div className=' flex flex-row flex-wrap gap-4 pt-4 justify-evenly'>

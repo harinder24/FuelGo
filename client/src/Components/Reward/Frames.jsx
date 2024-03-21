@@ -17,11 +17,11 @@ export default function Frames({ point, setModal, setShowModal }) {
   useEffect(() => {
     getFrames();
   }, []);
-  const handleOpenModal = (icon) => {
+  const handleOpenModal = (id, icon, isPurchased) => {
+    if (isPurchased) return;
     setModal({
+      itemId: id,
       card: <RewardCard reward={{ icon }} sm />,
-      price: 25,
-      isAvailable: point >= 25,
       type: 'frame',
     });
     setShowModal(true);
@@ -32,11 +32,11 @@ export default function Frames({ point, setModal, setShowModal }) {
       <h4 className='th text-md my-8'>Frames</h4>
       <ul className='flex w-full overflow-auto snap-x '>
         {frames &&
-          frames.map((frame, i) => {
+          frames.map(({ link, _id: id }, i) => {
             const icon = (
               <div
                 style={{
-                  backgroundImage: `url(${frame.link})`,
+                  backgroundImage: `url(${link})`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                 }}
@@ -45,13 +45,20 @@ export default function Frames({ point, setModal, setShowModal }) {
                 <div className='w-[93%] h-[93%] rounded-full bg-[#182335]' />
               </div>
             );
+            const isPurchased = user.framesOwned?.includes(id);
             return (
               <li
-                onClick={() => handleOpenModal(icon)}
+                onClick={() => handleOpenModal(id, icon, isPurchased)}
                 key={'frame' + i}
                 className=' mr-3 snap-start h-40'
               >
-                <RewardCard md reward={{ icon }} price='25' point={point} />
+                <RewardCard
+                  md
+                  reward={{ icon }}
+                  price='25'
+                  point={point}
+                  isPurchased={isPurchased}
+                />
               </li>
             );
           })}

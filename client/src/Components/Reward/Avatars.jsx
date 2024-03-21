@@ -17,11 +17,11 @@ export default function Avatars({ point, setModal, setShowModal }) {
   useEffect(() => {
     getAvatars();
   }, []);
-  const handleOpenModal = (icon) => {
+  const handleOpenModal = (id, icon, isPurchased) => {
+    if (isPurchased) return;
     setModal({
+      itemId: id,
       card: <RewardCard reward={{ icon }} sm />,
-      price: 25,
-      isAvailable: point >= 25,
       type: 'avatar',
     });
     setShowModal(true);
@@ -31,17 +31,24 @@ export default function Avatars({ point, setModal, setShowModal }) {
       <h4 className='th text-md my-8'>Avatars</h4>
       <ul className='flex w-full overflow-auto snap-x '>
         {avatars &&
-          avatars.map((avatar, i) => {
+          avatars.map(({ link, _id: id }, i) => {
             const icon = (
-              <img className=' rounded-full size-10' src={avatar.link} alt='' />
+              <img className=' rounded-full size-10' src={link} alt='' />
             );
+            const isPurchased = user.avatarOwned?.includes(id);
             return (
               <li
-                onClick={() => handleOpenModal(icon)}
+                onClick={() => handleOpenModal(id, icon, isPurchased)}
                 key={'avatar' + i}
                 className=' mr-3 snap-start h-40'
               >
-                <RewardCard md reward={{ icon }} price='25' point={point} />
+                <RewardCard
+                  md
+                  reward={{ icon }}
+                  price='25'
+                  point={point}
+                  isPurchased={isPurchased}
+                />
               </li>
             );
           })}
