@@ -6,6 +6,8 @@ import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 export default function AddReview() {
   const size = 36;
   const [comment, setComment] = useState("");
+  const [photosVideos, setPhotosVideos] = useState("")
+  const [review, setReview] = useState(0)
   const [isEditing, setIsEditing] = useState(false);
   return (
     <div className=" flex-1 rounded-lg border-[1px] cborder p-4 flex-col">
