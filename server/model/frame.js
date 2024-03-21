@@ -3,7 +3,7 @@ const frameSchema = new mongoose.Schema({
   link: {  
       type: String,
   },
-  isPurchasebale : {
+  isPurchaseable : {
     type: Boolean
   },
   levelCap : {

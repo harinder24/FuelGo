@@ -36,7 +36,7 @@ export default function GasPrice({ gasInfo, setShowModal }) {
               <div className=' w-full justify-center  tp text-sm flex flex-row gap-x-1 items-center'>
                 <PersonIcon sx={{ fontSize: 16 }} /> <div> {updatedBy}</div>
               </div>
-              <div className=' text-xs tp'>{format(updatedAt)}</div>
+              <div className=' text-xs tp'>{updatedAt}</div>
             </li>
           );
         })}

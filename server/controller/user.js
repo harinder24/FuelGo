@@ -705,9 +705,11 @@ const updateGasPrices = async (req, res) => {
         .status(201)
         .json({ success: false, message: 'Please enter fuel prices' });
     }
+    const foundUser = await userModel.findOne({ email: req.decodedEmail });
     foundStation.priceHistory.push(
       {
-        email : req?.decodedEmail,
+        email: foundUser.email,
+        name : foundUser.name,
         timeStamp : currentTimestamp,
         points: points
       }

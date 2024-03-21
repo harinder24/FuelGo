@@ -4,7 +4,7 @@ import AddReview from './AddReview';
 import Comment from './Comment';
 import Sort from './Sort';
 
-export default function CommentSection() {
+export default function CommentSection({station}) {
   const [isSortPopUp, setIsSortPopUp] = useState(false);
   return (
     <div className='flex-1 p-4 max-[630px]:px-2  mt-4 flex-col'>
@@ -19,7 +19,7 @@ export default function CommentSection() {
       </div>
       <div className='flex flex-row gap-4 p-4 mt-4 max-[640px]:flex-col '>
         <div className=' flex-1  flex  flex-col gap-y-4 h-fit min-[640px]:sticky min-[640px]:top-[-280px] '>
-          <ReviewOverview />
+          <ReviewOverview station={station} />
           <AddReview />
         </div>
         <div className=' flex-1 flex flex-col gap-y-4'>

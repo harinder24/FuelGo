@@ -28,6 +28,9 @@ const stationSchema = new mongoose.Schema({
   priceHistory: [
     {
       email: {
+        type: String
+      },
+      name: {
         type: String,
       },
       timeStamp: {
@@ -97,56 +100,47 @@ const stationSchema = new mongoose.Schema({
       isValid: {
         type: Boolean,
       },
-      valid: {
-        type: Number,
-      },
-      notValid: {
-        type: Number,
-      },
+      name : {
+        default: "Car wash",
+        type : String
+      }
     },
     atm: {
       isValid: {
+        default: "ATM",
         type: Boolean,
       },
-      valid: {
-        type: Number,
-      },
-      notValid: {
-        type: Number,
-      },
+      name : {
+        type : String
+      }
     },
     airPump: {
+      
       isValid: {
         type: Boolean,
       },
-      valid: {
-        type: Number,
-      },
-      notValid: {
-        type: Number,
-      },
+      name : {
+        default: "Air pump",
+        type : String
+      }
     },
     convenienceStore: {
       isValid: {
         type: Boolean,
       },
-      valid: {
-        type: Number,
-      },
-      notValid: {
-        type: Number,
-      },
+      name : {
+        default: "Convenience store",
+        type : String
+      }
     },
     evChargingStation: {
       isValid: {
         type: Boolean,
       },
-      valid: {
-        type: Number,
-      },
-      notValid: {
-        type: Number,
-      },
+      name : {
+        default: "Ev charging station",
+        type : String
+      }
     },
   },
   fuelGoRating: {
