@@ -12,7 +12,7 @@ export default function CustomInput({
   errorMessage,
   autoFocus,
   value,
-  isPix
+  isPix = false,
 }) {
   const inputCSS = `w-full th rounded-lg h-[40px] border-[1px] focus-visible:outline-none bg-lightMode-tbg dark:bg-darkMode-tbg border-lightMode-border dark:border-darkMode-border caret-lightMode-p dark:caret-darkMode-p placeholder:text-lightMode-p dark:placeholder:text-darkMode-p text-white min-w-28 ${
     errorMessage
