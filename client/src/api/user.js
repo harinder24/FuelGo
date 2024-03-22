@@ -15,6 +15,7 @@ export const getUserData = async (token) => {
     throw new Error(error.message);
   }
 };
+
 export const commentLike = async (token, placeId, commentUserEmail) => {
   try {
     const response = await axios.post(
@@ -36,6 +37,7 @@ export const commentLike = async (token, placeId, commentUserEmail) => {
     throw new Error(error.message);
   }
 };
+
 export const commentUnLike = async (token, placeId, commentUserEmail) => {
   try {
     const response = await axios.post(
@@ -57,6 +59,7 @@ export const commentUnLike = async (token, placeId, commentUserEmail) => {
     throw new Error(error.message);
   }
 };
+
 export const addComment = async (
   token,
   placeId,
@@ -86,6 +89,7 @@ export const addComment = async (
     throw new Error(error.message);
   }
 };
+
 export const editComment = async (
   token,
   placeId,
@@ -115,6 +119,7 @@ export const editComment = async (
     throw new Error(error.message);
   }
 };
+
 export const deleteComment = async (token, placeId) => {
   try {
     const response = await axios.post(
@@ -135,6 +140,7 @@ export const deleteComment = async (token, placeId) => {
     throw new Error(error.message);
   }
 };
+
 export const addToFavorite = async (token, stationId) => {
   try {
     const response = await axios.post(
@@ -153,6 +159,7 @@ export const addToFavorite = async (token, stationId) => {
     throw new Error(error.message);
   }
 };
+
 export const updatePrice = async (
   token,
   stationId,
@@ -186,6 +193,7 @@ export const updatePrice = async (
     throw new Error(error.message);
   }
 };
+
 export const deleteFromFavorite = async (token, stationId) => {
   try {
     const response = await axios.post(
@@ -205,12 +213,17 @@ export const deleteFromFavorite = async (token, stationId) => {
   }
 };
 
-export const changeUsingItem = async (type, token, link) => {
+export const editUserInfo = async (userId, token, name, newProfileImg) => {
   try {
+    const profileImg =
+      typeof newProfileImg == 'string'
+        ? newProfileImg
+        : await uploadProfileImg(userId, newProfileImg);
     const response = await axios.post(
-      serverLink + `/user/change${type}`,
+      serverLink + '/user/editnameandprofileimg',
       {
-        link,
+        name,
+        profileImg,
       },
       {
         headers: {
@@ -218,9 +231,24 @@ export const changeUsingItem = async (type, token, link) => {
         },
       }
     );
-    const { success, message, data } = response.data;
-    if (!success) throw new Error(message);
-    return data;
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+const uploadProfileImg = async (userId, file) => {
+  const data = new FormData();
+
+  data.append('folder', userId);
+  data.append('file', file);
+  data.append('upload_preset', import.meta.env.VITE_CLOUDINARY_PRESET);
+
+  try {
+    const response = await axios.post(
+      import.meta.env.VITE_CLOUDINARY_URL,
+      data
+    );
+    return response.data.url;
   } catch (error) {
     throw new Error(error.message);
   }
@@ -243,6 +271,27 @@ export const getFriendInvitationLink = async (token) => {
       throw new Error(message || reason);
     }
 
+    return data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const changeUsingItem = async (type, token, link) => {
+  try {
+    const response = await axios.post(
+      serverLink + `/user/change${type}`,
+      {
+        link,
+      },
+      {
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      }
+    );
+    const { success, message, data } = response.data;
+    if (!success) throw new Error(message);
     return data;
   } catch (error) {
     throw new Error(error.message);
