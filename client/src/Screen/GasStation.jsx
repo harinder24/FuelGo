@@ -8,24 +8,19 @@ import GasPrice from "../Components/StationDetail/GasPrice";
 import Amenities from "../Components/StationDetail/Amenities";
 import Contributor from "../Components/StationDetail/Contributor/Contributor";
 import CommentSection from "../Components/StationDetail/CommentSection/CommentSection";
-import Modal from "../Components/UI/Modal";
+
 import { getGasStationById } from "../api/gasStation";
 import { useAuth } from "../context/AuthContext";
 import Loading from "../Components/UI/Loading";
+import BgBlackOpacity from "../Components/BgBlackOpacity";
 
 export default function GasStation() {
   const [isProfilePopUp, setIsProfilePopUp] = useState(false);
   const [showModal, setShowModal] = useState();
   const [placeId, setPlaceId] = useState(null);
   const [station, setStation] = useState(null);
-  const { user, token } = useAuth();
-  useEffect(() => {
-    const path = window.location.pathname;
-    const parts = path.split("/");
-    const lastPart = parts[parts.length - 1];
-    setPlaceId(lastPart);
-  }, []);
-
+  const [timestamp, setTimestamp] = useState(null);
+  const { user, token, updateUserData } = useAuth();
   const [gasInfo, setGasInfo] = useState([
     {
       type: "Regular",
@@ -52,7 +47,93 @@ export default function GasStation() {
       updatedAt: "Not updated",
     },
   ]);
+
+  useEffect(() => {
+    const path = window.location.pathname;
+    const parts = path.split("/");
+    const lastPart = parts[parts.length - 1];
+    setPlaceId(lastPart);
+  }, []);
   
+  useEffect(() => {
+    if (station && station.price) {
+      if (station.price.regular.price && station.price.regular.price > 0) {
+        const updatedAgo = getUpdatedAgo(station.price.regular.timeStamp);
+
+        updateGasInfo({
+          type: "Regular",
+          price: station.price.regular.price,
+          updatedBy: station.price.regular.name,
+          updatedAt: updatedAgo,
+        });
+      }
+      if (station.price.midGrade.price && station.price.midGrade.price > 0) {
+        const updatedAgo = getUpdatedAgo(station.price.midGrade.timeStamp);
+
+        updateGasInfo({
+          type: "Mid-grade",
+          price: station.price.midGrade.price,
+          updatedBy: station.price.midGrade.name,
+          updatedAt: updatedAgo,
+        });
+      }
+      if (station.price.premium.price && station.price.premium.price > 0) {
+        const updatedAgo = getUpdatedAgo(station.price.premium.timeStamp);
+
+        updateGasInfo({
+          type: "Premium",
+          price: station.price.premium.price,
+          updatedBy: station.price.premium.name,
+          updatedAt: updatedAgo,
+        });
+      }
+      if (station.price.diesel.price && station.price.diesel.price > 0) {
+        const updatedAgo = getUpdatedAgo(station.price.diesel.timeStamp);
+
+        updateGasInfo({
+          type: "Diesel",
+          price: station.price.diesel.price,
+          updatedBy: station.price.diesel.name,
+          updatedAt: updatedAgo,
+        });
+      }
+    }
+  }, [station, timestamp]);
+  const updateGasInfo = (updatedGas) => {
+    setGasInfo((prevGasInfo) => {
+      return prevGasInfo.map((gas) => {
+        if (gas.type === updatedGas.type) {
+          return updatedGas;
+        }
+        return gas;
+      });
+    });
+  };
+
+  function getUpdatedAgo(time) {
+    const timeDifferenceInSeconds = Math.floor((timestamp - time) / 1000);
+    let timeDifference = "";
+
+    if (timeDifferenceInSeconds < 60) {
+      timeDifference = `${timeDifferenceInSeconds} sec ago`;
+    } else if (timeDifferenceInSeconds < 3600) {
+      timeDifference = `${Math.floor(timeDifferenceInSeconds / 60)} min ago`;
+    } else if (timeDifferenceInSeconds < 86400) {
+      timeDifference = `${Math.floor(timeDifferenceInSeconds / 3600)} hr ago`;
+    } else if (timeDifferenceInSeconds < 2592000) {
+      timeDifference = `${Math.floor(timeDifferenceInSeconds / 86400)} day ago`;
+    } else if (timeDifferenceInSeconds < 31536000) {
+      timeDifference = `${Math.floor(
+        timeDifferenceInSeconds / 2592000
+      )} month ago`;
+    } else {
+      timeDifference = `${Math.floor(
+        timeDifferenceInSeconds / 31536000
+      )} year ago`;
+    }
+    return timeDifference;
+  }
+
   useEffect(() => {
     if (token && placeId) {
       getStationData();
@@ -60,16 +141,20 @@ export default function GasStation() {
   }, [token, placeId]);
   const getStationData = async () => {
     try {
-      const placeInfo = await getGasStationById(placeId, token);
+      const { data, currentTimestamp } = await getGasStationById(
+        placeId,
+        token
+      );
 
-      setStation(placeInfo);
+      setStation(data);
+      setTimestamp(currentTimestamp);
     } catch (error) {
       console.log(error);
     }
   };
 
   if (!station) {
-    return      <Loading bgColor='bg-inherit' />;
+    return <Loading bgColor="bg-inherit" />;
   }
 
   // TODO: get gasInfo from real database
@@ -78,7 +163,12 @@ export default function GasStation() {
     <>
       {showModal && (
         <Modal>
-          <ModalContent setShowModal={setShowModal} gasInfo={gasInfo} />
+          <ModalContent
+            station={station}
+            token={token}
+            setShowModal={setShowModal}
+            gasInfo={gasInfo}
+          />
         </Modal>
       )}
       <TopNav setIsProfilePopUp={setIsProfilePopUp}>
@@ -99,7 +189,14 @@ export default function GasStation() {
         <Amenities station={station} />
         <Contributor   station={station}/>
 
-        <CommentSection station={station}/>
+        <CommentSection
+          timestamp={timestamp}
+          setTimestamp={setTimestamp}
+          setStation={setStation}
+          token={token}
+          user={user}
+          station={station}
+        />
       </div>
 
       {isProfilePopUp && (
@@ -107,4 +204,7 @@ export default function GasStation() {
       )}
     </>
   );
+}
+function Modal({ children }) {
+  return <BgBlackOpacity>{children}</BgBlackOpacity>;
 }

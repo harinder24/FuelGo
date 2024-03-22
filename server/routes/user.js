@@ -31,7 +31,7 @@ userRouter.post("/getgasstations", getGasStations);
 userRouter.get("/getgasstationdata/:id", validateToken, getGasStationData);
 userRouter.post("/addcomment", validateToken, addComment);
 userRouter.post("/editcomment", validateToken, editComment);
-userRouter.post("/addcomment", validateToken, deleteComment);
+userRouter.post("/deletecomment", validateToken, deleteComment);
 userRouter.post("/addfavorite", validateToken, addFavourite);
 userRouter.post("/deletefavourite", validateToken, deleteFavourite);
 userRouter.post("/editnameandprofileimg", validateToken, editNameAndProfileImg);

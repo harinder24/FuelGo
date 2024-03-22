@@ -19,9 +19,11 @@ const userSchema = new mongoose.Schema({
   ],
   points: {
     type: Number,
+    default: 0,
   },
   totalPoints: {
     type: Number,
+    default: 0,
   },
   pointHistory: [
     {

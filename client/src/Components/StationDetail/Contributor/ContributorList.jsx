@@ -11,14 +11,19 @@ export default function ContributorList({
   const [contributers, setContributers] = useState(null);
   useEffect(() => {
     if (isMonth) {
+      
       let arr = [];
+     
       if (monthContributers) {
+      
         arr = [...monthContributers];
+   
       }
 
       for (let i = 0; i < 5; i++) {
         arr.push({ name: "- -", points: 0 });
       }
+     
       setContributers(arr);
     } else {
       let arr = [];
@@ -28,16 +33,19 @@ export default function ContributorList({
       for (let i = 0; i < 5; i++) {
         arr.push({ name: "- -", points: 0 });
       }
+     
       setContributers(arr);
     }
-  }, []);
-
+  }, [monthContributers, yearContributers]);
   return (
     <div className=" flex-1 rounded-lg border-[1px] cborder th">
       <div className=" p-4 text-end text-lg">{isMonth ? month : year}</div>
 
       {contributers &&
         contributers.map((item, i) => {
+          if(i > 4){
+            return null
+          }
           return (
             <div
               key={"contributer" + i}

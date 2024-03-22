@@ -39,14 +39,21 @@ export default function StationInfo({ setModal, station, placeId }) {
     }
   }, [user.favourite]);
   useEffect(() => {
-    if (reviews) {
+    if (reviews  && reviews.length > 0) {
+      setRating(0)
+    setFilledStars(0)
+    setNoOfRating(0)
+    
+    
+      
+      
+    
       const sumOfRatings = reviews.reduce(
         (total, obj) => total + obj.rating,
         0
       );
-      sumOfRatings / reviews.length;
-      setRating(sumOfRatings);
-      const flooredRating = Math.floor(sumOfRatings);
+      setRating(sumOfRatings / station.reviews.length);
+      const flooredRating = Math.floor(sumOfRatings / station.reviews.length);
       setFilledStars(flooredRating);
       setNoOfRating(reviews.length);
     }
@@ -119,6 +126,18 @@ export default function StationInfo({ setModal, station, placeId }) {
       await updateUserData(token);
     }
   };
+  const redirectToGoogleMaps = () => {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      
+        window.location.href = `geo:0,0?q=${encodeURIComponent(station.address)}`;
+    } else {
+   
+        window.location.href = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(station.address)}`;
+    }
+    
+};
 
   return (
     <div
@@ -227,11 +246,11 @@ export default function StationInfo({ setModal, station, placeId }) {
           <div className=" w-[230px] max-[640px]:w-[calc(100%-95px)] max-[350px]:w-[220px] max-[330px]:w-[200px] max-[310px]:w-[180px] max-[290px]:w-[160px] text-ellipsis whitespace-nowrap overflow-hidden ">
             {address}
           </div>
-          <div className=" tb text-sm hover:underline cursor-pointer min-[640px]:hidden ml-2 whitespace-nowrap">
+          <div onClick={()=>redirectToGoogleMaps()} className=" tb text-sm hover:underline cursor-pointer min-[640px]:hidden ml-2 whitespace-nowrap">
             Get directions
           </div>
         </div>
-        <div className=" tb text-sm hover:underline cursor-pointer max-[640px]:hidden ">
+        <div onClick={()=>redirectToGoogleMaps()} className=" tb text-sm hover:underline cursor-pointer max-[640px]:hidden ">
           Get directions
         </div>
       </div>

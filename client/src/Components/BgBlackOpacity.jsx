@@ -24,7 +24,7 @@ export default function BgBlackOpacity({ isTransparent = false, children }) {
 
   return (
     <div
-      className={` absolute top-0 right-0 w-screen h-screen ${
+      className={` fixed top-0 right-0 w-screen h-screen ${
         isTransparent ? 'bg-transparent' : 'bg-[rgb(1,1,1,0.5)]'
       }  z-10`}
     >

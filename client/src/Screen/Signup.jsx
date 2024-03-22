@@ -2,11 +2,12 @@ import { useState } from "react";
 import CustomButton from "../Components/UI/CustomButton";
 import { useNavigate } from "react-router-dom";
 import { emailSignUp } from "../api/auth";
-import Modal from "../Components/UI/Modal";
+
 import Otp from "../Components/Auth/Otp";
 import LoginForm from "../Components/Login/LoginForm";
 import GoogleLogin from "../Components/Login/GoogleLogin";
 import UserDataForm from "../Components/Auth/UserDataForm";
+import BgBlackOpacity from "../Components/BgBlackOpacity";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -108,5 +109,14 @@ export default function Signup() {
         </>
       )}
     </>
+  );
+}
+function Modal({ children }) {
+  return (
+    <BgBlackOpacity>
+    
+        {children}
+    
+    </BgBlackOpacity>
   );
 }

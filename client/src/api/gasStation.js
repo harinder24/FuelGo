@@ -26,7 +26,7 @@ export const getGasStationById = async (placeId, token) => {
         },
       }
     );
-    return response.data.data;
+    return response.data;
   } catch (error) {
     throw new Error(error.message);
   }

@@ -11,20 +11,25 @@ export default function ReviewOverview({station}) {
   const [stars, setStars] = useState([]);
   const [userRatingRange, setUserRatingRange] = useState({1:0,2:0,3:0,4:0,5:0})
   useEffect(() => {
-    if (station.reviews) {
+    setRating(0)
+    setFilledStars(0)
+    setNoOfRating(0)
+    setUserRatingRange({1:0,2:0,3:0,4:0,5:0})
+    if (station.reviews && station.reviews.length > 0) {
+
       const sumOfRatings = station.reviews.reduce(
         (total, obj) => total + obj.rating,
         0
       );
-      sumOfRatings / station.reviews.length;
-      setRating(sumOfRatings);
-      const flooredRating = Math.floor(sumOfRatings);
+      
+      setRating(sumOfRatings / station.reviews.length);
+      const flooredRating = Math.floor(sumOfRatings / station.reviews.length);
       setFilledStars(flooredRating);
       setNoOfRating(station.reviews.length);
 
-      const ratingRange = {...userRatingRange}
+      const ratingRange = {1:0,2:0,3:0,4:0,5:0}
      station.reviews.forEach(ratingz => {
-       
+      
         if (!ratingRange[ratingz.rating]) {
           ratingRange[ratingz.rating] = 1;
         } else {
@@ -34,8 +39,11 @@ export default function ReviewOverview({station}) {
     });
     setUserRatingRange(ratingRange)
     }
+    
   }, [station.reviews]);
+ 
   useEffect(() => {
+    setStars([])
     const starsCopy = [];
     let num = 0;
     for (let i = 0; i < filledStars; i++) {
@@ -48,13 +56,13 @@ export default function ReviewOverview({station}) {
       num = num + 1;
       const halfStar = rating - filledStars;
       if (halfStar < 0.3) {
-        starsCopy.push(<StarIcon sx={{ fontSize: size }} />);
+        starsCopy.push(<StarIcon key={i} sx={{ fontSize: size }} />);
       } else if (halfStar > 0.7) {
-        starsCopy.push(<StarIcon sx={{ color: "gold", fontSize: size }} />);
+        starsCopy.push(<StarIcon  key={i} sx={{ color: "gold", fontSize: size }} />);
       } else {
         starsCopy.push(
           <StarHalfIcon
-            key={filledStars}
+          key={i}
             sx={{ color: "gold", fontSize: size }}
           />
         );
@@ -77,22 +85,33 @@ export default function ReviewOverview({station}) {
         <div className=' text-sm tp'>{noOfrating} review{noOfrating > 1 && "s"}</div>
       </div>
       {array.map((item, i) => {
-        const [width, setWidth] = useState(0)
-        useEffect(()=>{
-          if(userRatingRange[item] !== 0){
-            const wdt = (width / noOfrating) * 100
-            setWidth(wdt)
-          }   
-        },[])
-        return (
-          <div key={i} className='flex flex-row gap-x-2 items-center mt-2'>
-            <div className=' text-sm th'>{item}</div>
-            <div className='flex-1 h-2 rounded-lg sbg'>
-              <div style={{ width: `${width}%` }} className={` h-2 rounded-lg bg-[#fbbc04]`}></div>
-            </div>
-          </div>
-        );
+       return(
+        <RatingRange reviews={station.reviews} key={i} item={item} userRatingRange={userRatingRange} noOfrating={noOfrating}/>
+       )
       })}
+    </div>
+  );
+}
+
+function RatingRange({item,userRatingRange,noOfrating}){
+  const [width, setWidth] = useState(0)
+       
+  useEffect(()=>{
+    const times = userRatingRange[item]
+    if(times > 0){
+      const wdt = (times / noOfrating) * 100
+    
+      setWidth(wdt)
+    }else{
+      setWidth(0)
+    }  
+  },[item,userRatingRange,noOfrating])
+  return (
+    <div  className='flex flex-row gap-x-2 items-center mt-2'>
+      <div className=' text-sm th'>{item}</div>
+      <div className='flex-1 h-2 rounded-lg sbg'>
+        <div style={{ width: `${width}%` }} className={` h-2 rounded-lg bg-[#fbbc04]`}></div>
+      </div>
     </div>
   );
 }
