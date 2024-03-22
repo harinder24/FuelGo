@@ -67,7 +67,8 @@ export default function Home() {
     user.favourite?.map(async (placeId) => {
       try {
         const placeInfo = await getGasStationById(placeId, token);
-        setFavourites((prev) => [...prev, placeInfo]);
+        console.log(placeInfo);
+        setFavourites((prev) => [...prev, placeInfo.data]);
       } catch (error) {
         alert(error);
       }
