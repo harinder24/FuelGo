@@ -1,20 +1,20 @@
-import { useContext, useEffect, useState } from "react";
-import GasStationList from "../Components/GasStationList/GasStationList";
-import Preferences from "../Components/User/Preferences";
-import Context from "../context";
+import { useContext, useEffect, useState } from 'react';
+import GasStationList from '../Components/GasStationList/GasStationList';
+import Preferences from '../Components/User/Preferences';
+import Context from '../context';
 import {
   getCrrLocation,
   getGasStationById,
   getGasStations,
-} from "../api/gasStation";
-import Loading from "../Components/UI/Loading";
-import TopNavHome from "../Components/TopNav/TopNavHome";
-import { useAuth } from "../context/AuthContext";
-import { useLocation } from "react-router-dom";
+} from '../api/gasStation';
+import Loading from '../Components/UI/Loading';
+import TopNavHome from '../Components/TopNav/TopNavHome';
+import { useAuth } from '../context/AuthContext';
+import { useLocation } from 'react-router-dom';
 
 export default function Home() {
   const { pathname } = useLocation();
-  const isFavouritePage = pathname == "/favourite";
+  const isFavouritePage = pathname == '/favourite';
 
   const { user, token, updateUserData } = useAuth();
   const [isList, setIsList] = useState(true);
@@ -23,29 +23,24 @@ export default function Home() {
   const { gasStation, setGasStation, userLatLng, setUserLatLng } =
     useContext(Context);
   const [preferences, setPreferences] = useState({
-    sort: "Distance",
+    sort: 'Distance',
     recent: false,
-    fuelType: "Regular",
+    fuelType: 'Regular',
     Amenities: [],
   });
   useEffect(() => {
     if (user) {
-      console.log(user);
       fetchInitialStations();
-    }else{
-      const tk = JSON.parse(
-      localStorage.getItem("token"))
-      updateUserData(tk)
+    } else {
+      const tk = JSON.parse(localStorage.getItem('token'));
+      updateUserData(tk);
     }
-   
-  }, [user, pathname]);
+  }, [user?._id, pathname]);
 
- 
   useEffect(() => {
-    if(user){
+    if (user) {
       fetchFavourite();
     }
-    
   }, [user]);
 
   useEffect(() => {
@@ -105,28 +100,27 @@ export default function Home() {
   };
   return (
     <>
+      {user && (
+        <>
+          <TopNavHome isList={isList} setIsList={setIsList} />
 
-    {user && 
-    <>
-      <TopNavHome isList={isList} setIsList={setIsList} />
-     
-      <Preferences
-        isList={isList}
-        preferences={preferences}
-        setPreferences={setPreferences}
-      />
-      {isLoading ? (
-        <Loading bgColor="bg-inherit" />
-      ) : (
-        <GasStationList
-          isList={isList}
-          isFavouritePage={isFavouritePage}
-          favourites={favourites}
-          preferences={preferences}
-        />
+          <Preferences
+            isList={isList}
+            preferences={preferences}
+            setPreferences={setPreferences}
+          />
+          {isLoading ? (
+            <Loading bgColor='bg-inherit' />
+          ) : (
+            <GasStationList
+              isList={isList}
+              isFavouritePage={isFavouritePage}
+              favourites={favourites}
+              preferences={preferences}
+            />
+          )}
+        </>
       )}
-      </>
-}
     </>
   );
 }

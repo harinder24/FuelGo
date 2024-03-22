@@ -22,7 +22,6 @@ export default function Frame() {
   const wearFrame = async (available, url) => {
     if (!available) return;
     changeUsingItem('frame', token, url)
-      .then(setCrrFrame)
       .then(() => updateUserData(token))
       .catch(alert);
   };

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { getLvItems, getOwnedItems } from '../../api/reward';
 import { changeUsingItem } from '../../api/user';
+import { FaCheck } from 'react-icons/fa';
 
 export default function Avatar() {
   const { user, token, updateUserData } = useAuth();
@@ -21,7 +22,6 @@ export default function Avatar() {
   const wearAvatar = async (available, url) => {
     if (!available) return;
     changeUsingItem('avatar', token, url)
-      .then(setCrrAvatar)
       .then(() => updateUserData(token))
       .catch(alert);
   };
@@ -51,12 +51,14 @@ export default function Avatar() {
                   />
 
                   {preventClick && (
-                    <div className='h-full absolute top-0 rounded-lg bg-[rgba(0,0,0,0.3)]'>
+                    <div className='w-full h-full absolute top-0 rounded-lg bg-[rgba(0,0,0,0.3)]'>
                       <div className=' w-full h-full flex justify-center items-center th text-xs px-4 text-center'>
                         <div>
-                          {isCrrAvatar
-                            ? 'Currently wearing'
-                            : `Unlocks at level ${levelCap}`}
+                          {isCrrAvatar ? (
+                            <FaCheck className='text-darkMode-valid text-2xl' />
+                          ) : (
+                            `Unlocks at level ${levelCap}`
+                          )}
                         </div>
                       </div>
                     </div>

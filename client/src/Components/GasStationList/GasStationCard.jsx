@@ -38,16 +38,14 @@ export default function GasStationCard({ station, preferences, index }) {
     await updateUserData(token);
   };
   //TODO: organize and fix some code from here
-  const rating =
-    station.fuelGoRating.rating || parseFloat((Math.random() * 5).toFixed(1));
-  const totalRating =
-    station.fuelGoRating.totalRating || Math.floor(Math.random() * 1300);
+  const rating = station.fuelGoRating.rating;
+  const totalRating = station.fuelGoRating.totalRating;
   const fuelPrice =
     station.price[
       preferences.fuelType == 'Mid-grade'
         ? 'midGrade'
         : preferences.fuelType.toLowerCase()
-    ].price || parseFloat((Math.random() * 1).toFixed(2)) + 1;
+    ].price;
   const filledStars = Math.floor(rating);
   const totalStars = 5;
   const size = 16;
@@ -129,7 +127,8 @@ export default function GasStationCard({ station, preferences, index }) {
             <div className=' flex flex-row justify-between'>
               <div className='tp flex flex-row text-sm'>
                 <div>
-                  ${fuelPrice.toFixed(2)}/{preferences.fuelType}
+                  {!fuelPrice ? '- -' : '$' + fuelPrice?.toFixed(2)}/
+                  {preferences.fuelType}
                 </div>
               </div>
               <div
