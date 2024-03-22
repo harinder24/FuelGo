@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import StationInfo from './StationInfo';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import stationMarke from '/station.png';
-import { useNavigate } from 'react-router-dom';
 import Context from '../../context';
 import { getCrrLocation } from '../../api/gasStation';
 
