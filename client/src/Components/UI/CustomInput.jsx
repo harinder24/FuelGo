@@ -1,6 +1,6 @@
 import React from 'react';
 import { PiWarningCircleBold } from 'react-icons/pi';
-import PixIcon from "@mui/icons-material/Pix";
+import PixIcon from '@mui/icons-material/Pix';
 export default function CustomInput({
   label,
   paddingLeft,
@@ -8,7 +8,6 @@ export default function CustomInput({
   handleChange,
   children,
   isPassword,
-  isInvalid,
   errorMessage,
   autoFocus,
   value,
@@ -24,7 +23,16 @@ export default function CustomInput({
       <div className='flex flex-col gap-2'>
         {label && (
           <label className='th' htmlFor={label}>
-            {label} {isPix && <span className='text-xs'>+10 <span className=' relative top-[-4px]'> <PixIcon sx={{ fontSize: 12}}/></span></span>}
+            {label}{' '}
+            {isPix && (
+              <span className='text-xs'>
+                +10{' '}
+                <span className=' relative top-[-4px]'>
+                  {' '}
+                  <PixIcon sx={{ fontSize: 12 }} />
+                </span>
+              </span>
+            )}
           </label>
         )}
         <input

@@ -12,6 +12,13 @@ import TopNavHome from '../Components/TopNav/TopNavHome';
 import { useAuth } from '../context/AuthContext';
 import { useLocation } from 'react-router-dom';
 
+export const DEFAULT_PREFERENCE = [
+  false,
+  0,
+  0,
+  [false, false, false, false, false],
+];
+
 export default function Home() {
   const { pathname } = useLocation();
   const isFavouritePage = pathname == '/favourite';
@@ -20,17 +27,12 @@ export default function Home() {
   const [isLoading, setIsloading] = useState(true);
   const { setGasStation } = useContext(Context);
 
-  const [preferences, setPreferences] = useState({
-    sort: 'Distance',
-    recent: false,
-    fuelType: 'Regular',
-    Amenities: [],
-  });
+  const [preferences, setPreferences] = useState(DEFAULT_PREFERENCE);
 
   useEffect(() => {
     if (!user) return;
     fetchStations();
-  }, [isFavouritePage ? user : user?.id, pathname]);
+  }, [isFavouritePage ? user : user?._id, pathname]);
 
   const fetchStations = () => {
     setIsloading(true);
