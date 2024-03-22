@@ -1,11 +1,11 @@
-import serverLink from '../serverLink';
-import axios from 'axios';
+import serverLink from "../serverLink";
+import axios from "axios";
 
 export const getUserData = async (token) => {
   try {
-    const response = await axios.get(serverLink + '/user/getuserdata', {
+    const response = await axios.get(serverLink + "/user/getuserdata", {
       headers: {
-        Authorization: 'Bearer ' + token,
+        Authorization: "Bearer " + token,
       },
     });
     const userData = response.data.data;
@@ -15,18 +15,17 @@ export const getUserData = async (token) => {
     throw new Error(error.message);
   }
 };
-
 export const commentLike = async (token, placeId, commentUserEmail) => {
   try {
     const response = await axios.post(
-      serverLink + '/user/likecomment',
+      serverLink + "/user/likecomment",
       {
         placeId: placeId,
         commentUserEmail: commentUserEmail,
       },
       {
         headers: {
-          Authorization: 'Bearer ' + token,
+          Authorization: "Bearer " + token,
         },
       }
     );
@@ -37,18 +36,17 @@ export const commentLike = async (token, placeId, commentUserEmail) => {
     throw new Error(error.message);
   }
 };
-
 export const commentUnLike = async (token, placeId, commentUserEmail) => {
   try {
     const response = await axios.post(
-      serverLink + '/user/unlikecomment',
+      serverLink + "/user/unlikecomment",
       {
         placeId: placeId,
         commentUserEmail: commentUserEmail,
       },
       {
         headers: {
-          Authorization: 'Bearer ' + token,
+          Authorization: "Bearer " + token,
         },
       }
     );
@@ -59,7 +57,6 @@ export const commentUnLike = async (token, placeId, commentUserEmail) => {
     throw new Error(error.message);
   }
 };
-
 export const addComment = async (
   token,
   placeId,
@@ -69,7 +66,7 @@ export const addComment = async (
 ) => {
   try {
     const response = await axios.post(
-      serverLink + '/user/addcomment',
+      serverLink + "/user/addcomment",
       {
         placeId: placeId,
         rating: rating,
@@ -78,7 +75,7 @@ export const addComment = async (
       },
       {
         headers: {
-          Authorization: 'Bearer ' + token,
+          Authorization: "Bearer " + token,
         },
       }
     );
@@ -89,7 +86,6 @@ export const addComment = async (
     throw new Error(error.message);
   }
 };
-
 export const editComment = async (
   token,
   placeId,
@@ -99,7 +95,7 @@ export const editComment = async (
 ) => {
   try {
     const response = await axios.post(
-      serverLink + '/user/editcomment',
+      serverLink + "/user/editcomment",
       {
         placeId: placeId,
         rating: rating,
@@ -108,7 +104,7 @@ export const editComment = async (
       },
       {
         headers: {
-          Authorization: 'Bearer ' + token,
+          Authorization: "Bearer " + token,
         },
       }
     );
@@ -119,17 +115,16 @@ export const editComment = async (
     throw new Error(error.message);
   }
 };
-
 export const deleteComment = async (token, placeId) => {
   try {
     const response = await axios.post(
-      serverLink + '/user/deletecomment',
+      serverLink + "/user/deletecomment",
       {
         placeId: placeId,
       },
       {
         headers: {
-          Authorization: 'Bearer ' + token,
+          Authorization: "Bearer " + token,
         },
       }
     );
@@ -140,17 +135,16 @@ export const deleteComment = async (token, placeId) => {
     throw new Error(error.message);
   }
 };
-
 export const addToFavorite = async (token, stationId) => {
   try {
     const response = await axios.post(
-      serverLink + '/user/addfavorite',
+      serverLink + "/user/addfavorite",
       {
         placeId: stationId,
       },
       {
         headers: {
-          Authorization: 'Bearer ' + token,
+          Authorization: "Bearer " + token,
         },
       }
     );
@@ -159,7 +153,6 @@ export const addToFavorite = async (token, stationId) => {
     throw new Error(error.message);
   }
 };
-
 export const updatePrice = async (
   token,
   stationId,
@@ -172,7 +165,7 @@ export const updatePrice = async (
 ) => {
   try {
     const response = await axios.post(
-      serverLink + '/user/updategasprices',
+      serverLink + "/user/updategasprices",
       {
         placeId: stationId,
         lat: lat,
@@ -184,7 +177,7 @@ export const updatePrice = async (
       },
       {
         headers: {
-          Authorization: 'Bearer ' + token,
+          Authorization: "Bearer " + token,
         },
       }
     );
@@ -193,17 +186,16 @@ export const updatePrice = async (
     throw new Error(error.message);
   }
 };
-
 export const deleteFromFavorite = async (token, stationId) => {
   try {
     const response = await axios.post(
-      serverLink + '/user/deletefavourite',
+      serverLink + "/user/deletefavourite",
       {
         placeId: stationId,
       },
       {
         headers: {
-          Authorization: 'Bearer ' + token,
+          Authorization: "Bearer " + token,
         },
       }
     );
@@ -212,22 +204,21 @@ export const deleteFromFavorite = async (token, stationId) => {
     throw new Error(error.message);
   }
 };
-
 export const editUserInfo = async (userId, token, name, newProfileImg) => {
   try {
     const profileImg =
-      typeof newProfileImg == 'string'
+      typeof newProfileImg == "string"
         ? newProfileImg
         : await uploadProfileImg(userId, newProfileImg);
     const response = await axios.post(
-      serverLink + '/user/editnameandprofileimg',
+      serverLink + "/user/editnameandprofileimg",
       {
         name,
         profileImg,
       },
       {
         headers: {
-          Authorization: 'Bearer ' + token,
+          Authorization: "Bearer " + token,
         },
       }
     );
@@ -239,9 +230,9 @@ export const editUserInfo = async (userId, token, name, newProfileImg) => {
 const uploadProfileImg = async (userId, file) => {
   const data = new FormData();
 
-  data.append('folder', userId);
-  data.append('file', file);
-  data.append('upload_preset', import.meta.env.VITE_CLOUDINARY_PRESET);
+  data.append("folder", userId);
+  data.append("file", file);
+  data.append("upload_preset", import.meta.env.VITE_CLOUDINARY_PRESET);
 
   try {
     const response = await axios.post(
@@ -253,15 +244,14 @@ const uploadProfileImg = async (userId, file) => {
     throw new Error(error.message);
   }
 };
-
 export const getFriendInvitationLink = async (token) => {
   try {
     const response = await axios.post(
-      serverLink + '/user/getfriendinvitationlink',
+      serverLink + "/user/getfriendinvitationlink",
       {},
       {
         headers: {
-          Authorization: 'Bearer ' + token,
+          Authorization: "Bearer " + token,
         },
       }
     );
@@ -276,7 +266,6 @@ export const getFriendInvitationLink = async (token) => {
     throw new Error(error.message);
   }
 };
-
 export const changeUsingItem = async (type, token, link) => {
   try {
     const response = await axios.post(
