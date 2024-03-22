@@ -1,104 +1,47 @@
 import { useContext, useEffect, useState } from 'react';
 import GasStationList from '../Components/GasStationList/GasStationList';
-import Preferences from '../Components/User/Preferences';
+import Preferences from '../Components/Preference/Preferences';
 import Context from '../context';
 import {
   getCrrLocation,
-  getGasStationById,
+  getFavouriteStations,
   getGasStations,
 } from '../api/gasStation';
 import Loading from '../Components/UI/Loading';
 import TopNavHome from '../Components/TopNav/TopNavHome';
 import { useAuth } from '../context/AuthContext';
 import { useLocation } from 'react-router-dom';
-import { getFavStations } from '../api/user';
 
 export default function Home() {
   const { pathname } = useLocation();
   const isFavouritePage = pathname == '/favourite';
-
-  const { user, token, updateUserData } = useAuth();
+  const { user, token } = useAuth();
   const [isList, setIsList] = useState(true);
   const [isLoading, setIsloading] = useState(true);
-  const [favourites, setFavourites] = useState([]);
-  const { gasStation, setGasStation, userLatLng, setUserLatLng } =
-    useContext(Context);
+  const { setGasStation } = useContext(Context);
+
   const [preferences, setPreferences] = useState({
     sort: 'Distance',
     recent: false,
     fuelType: 'Regular',
     Amenities: [],
   });
-  useEffect(() => {
-    if (user) {
-      fetchInitialStations();
-    } 
-  }, [user?._id, pathname]);
 
   useEffect(() => {
-    if (user) {
-      fetchFavourite();
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (!user?.favourite || !user?.favourite.length) {
-      setIsloading(false);
-      return;
-    }
-    if (user?.favourite.length !== favourites?.length) return;
-    setIsloading(false);
-  }, [favourites, user]);
-
-  const getStationsNearBy = async () => {
-    try {
-      const crrLatLng = await getCrrLocation();
-      setUserLatLng(crrLatLng);
-      const stationList = await getGasStations(crrLatLng);
-      setGasStation(stationList);
-      setIsloading(false);
-    } catch (e) {
-      alert(e.message);
-    }
-  };
-  const getFavourites = async () => {
-    
-      const crrLatLng = await getCrrLocation();
-      
-     
-        const placeInfo = await getFavStations( token, user.favourite,crrLatLng.lat, crrLatLng.lng);
-        if(placeInfo.success){
-         console.log(placeInfo);
-          setFavourites(placeInfo.data)
- 
-        }
-    
-   
-  };
-
-  const fetchFavourite = () => {
     if (!user) return;
-    if (!isFavouritePage) return;
+    fetchStations();
+  }, [isFavouritePage ? user : user?.id, pathname]);
 
+  const fetchStations = () => {
     setIsloading(true);
-
-    setFavourites([]);
-    getFavourites();
-  };
-  const fetchInitialStations = () => {
-    if (!user) return;
-
-    if (isFavouritePage) {
-      setIsloading(true);
-      setFavourites([]);
-      getFavourites();
-      return;
-    }
-
-    if (gasStation) return;
-
-    setIsloading(true);
-    getStationsNearBy();
+    isFavouritePage
+      ? getFavouriteStations(user.favourite, token)
+          .then(setGasStation)
+          .then(() => setIsloading(false))
+      : getCrrLocation()
+          .then(getGasStations)
+          .then(setGasStation)
+          .then(() => setIsloading(false));
   };
   return (
     <>
@@ -114,12 +57,7 @@ export default function Home() {
           {isLoading ? (
             <Loading bgColor='bg-inherit' />
           ) : (
-            <GasStationList
-              isList={isList}
-              isFavouritePage={isFavouritePage}
-              favourites={favourites}
-              preferences={preferences}
-            />
+            <GasStationList isList={isList} preferences={preferences} />
           )}
         </>
       )}
