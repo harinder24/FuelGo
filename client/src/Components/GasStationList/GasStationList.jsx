@@ -23,10 +23,7 @@ export default function GasStationList({ isList, preferences }) {
         </div>
       ) : (
         <div className=' flex-1 w-full '>
-          <StationMap
-            preferences={preferences}
-            gasStationPreference={gasStationPreference}
-          />
+          <StationMap preferences={preferences} />
         </div>
       )}
     </>
