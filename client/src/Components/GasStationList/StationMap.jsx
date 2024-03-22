@@ -5,7 +5,8 @@ import stationMarke from '/station.png';
 import Context from '../../context';
 import { getCrrLocation } from '../../api/gasStation';
 
-export default function StationMap({ gasStationPreference, preferences }) {
+export default function StationMap({ preferences }) {
+  const { gasStationPreference } = useContext(Context);
   const [showStationInfo, setShowStationInfo] = useState(false);
   const mapRef = useRef(null);
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 520);

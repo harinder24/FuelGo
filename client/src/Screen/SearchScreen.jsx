@@ -1,7 +1,6 @@
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import CustomInput from '../Components/UI/CustomInput';
-import { useContext, useEffect, useState } from 'react';
-import Context from '../context';
+import { useEffect, useState } from 'react';
 import GasStationCard from '../Components/GasStationList/GasStationCard';
 import { DEFAULT_PREFERENCE } from './Home';
 import { useAuth } from '../context/AuthContext';
@@ -41,7 +40,7 @@ export default function SearchScreen() {
         </CustomInput>
       </div>
 
-      <div className='flex-1 my-4  w-full min-w-auto flex h-full flex-col overflow-y-auto px-2 gap-4 items-center'>
+      <div className='flex-1 my-4  w-full min-w-auto flex h-full flex-col overflow-y-auto px-2 gap-4 items-center max-[519px]:pb-12'>
         {searchedList &&
           searchedList.map((station, index) => (
             <div className='sbg' key={station._id}>
