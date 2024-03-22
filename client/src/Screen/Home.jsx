@@ -11,6 +11,7 @@ import Loading from '../Components/UI/Loading';
 import TopNavHome from '../Components/TopNav/TopNavHome';
 import { useAuth } from '../context/AuthContext';
 import { useLocation } from 'react-router-dom';
+import { getFavStations } from '../api/user';
 
 export default function Home() {
   const { pathname } = useLocation();
@@ -31,10 +32,7 @@ export default function Home() {
   useEffect(() => {
     if (user) {
       fetchInitialStations();
-    } else {
-      const tk = JSON.parse(localStorage.getItem('token'));
-      updateUserData(tk);
-    }
+    } 
   }, [user?._id, pathname]);
 
   useEffect(() => {
@@ -50,7 +48,7 @@ export default function Home() {
     }
     if (user?.favourite.length !== favourites?.length) return;
     setIsloading(false);
-  }, [favourites]);
+  }, [favourites, user]);
 
   const getStationsNearBy = async () => {
     try {
@@ -63,16 +61,19 @@ export default function Home() {
       alert(e.message);
     }
   };
-  const getFavourites = () => {
-    user.favourite?.map(async (placeId) => {
-      try {
-        const placeInfo = await getGasStationById(placeId, token);
-        console.log(placeInfo);
-        setFavourites((prev) => [...prev, placeInfo.data]);
-      } catch (error) {
-        alert(error);
-      }
-    });
+  const getFavourites = async () => {
+    
+      const crrLatLng = await getCrrLocation();
+      
+     
+        const placeInfo = await getFavStations( token, user.favourite,crrLatLng.lat, crrLatLng.lng);
+        if(placeInfo.success){
+         console.log(placeInfo);
+          setFavourites(placeInfo.data)
+ 
+        }
+    
+   
   };
 
   const fetchFavourite = () => {

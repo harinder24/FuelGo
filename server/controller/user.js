@@ -444,15 +444,26 @@ const editNameAndProfileImg = async (req, res) => {
 };
 const getFavouriteStations = async (req, res) => {
   try {
-    const { stations } = req.body;
+    const { stations, lat, lng } = req.body;
 
     let stationListArray = [];
 
-    stations.map(async (station) => {
-      const stationz = await stationModel.findOne({ _id: station });
+    await Promise.all(stations.map(async (station) => {
+      const stationz = await stationModel.findOne({ placeId: station });
       stationListArray.push(stationz);
-    });
+  }));
+    for (const station of stationListArray) {
+      const gasStationLatitude = station.latlng.latitude;
+      const gasStationLongitude = station.latlng.longitude;
+      const distanceResponse = await axios.get(
+        `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${lat},${lng}&destinations=${gasStationLatitude},${gasStationLongitude}&key=${process.env.GOOGLE_API_KEY}`
+      );
 
+      const distance = distanceResponse.data.rows[0].elements[0].distance.text;
+
+      station.distanceFromUser = distance;
+    }
+    
     return res.status(201).json({ success: true, data: stationListArray });
   } catch (error) {
     console.error("Error:", error);

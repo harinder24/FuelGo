@@ -15,6 +15,27 @@ export const getUserData = async (token) => {
     throw new Error(error.message);
   }
 };
+export const getFavStations = async (token, stations, lat, lng) => {
+  try {
+    
+    const response = await axios.post(
+      serverLink + "/user/getfavouritestations",
+      {
+        stations, lat, lng
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    const data = response.data;
+
+    return data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
 export const commentLike = async (token, placeId, commentUserEmail) => {
   try {
     const response = await axios.post(
