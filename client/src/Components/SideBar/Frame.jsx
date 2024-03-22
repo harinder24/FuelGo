@@ -1,19 +1,30 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { getLvItems, getOwnedItems } from '../../api/reward';
+import { changeUsingItem } from '../../api/user';
+import { FaCheck } from 'react-icons/fa';
 
 export default function Frame() {
-  const { user, token } = useAuth();
+  const { user, token, updateUserData } = useAuth();
   const [frames, setFrames] = useState();
+  const [crrFrame, setCrrFrame] = useState();
   const displayFrames = async () => {
     try {
       const lvFrames = await getLvItems('frame', token);
       const ownedFrames =
         (await getOwnedItems('frame', user.framesOwned, token)) || [];
       setFrames([...lvFrames, ...ownedFrames]);
+      setCrrFrame(user.frame);
     } catch (e) {
       alert(e);
     }
+  };
+  const wearFrame = async (available, url) => {
+    if (!available) return;
+    changeUsingItem('frame', token, url)
+      .then(setCrrFrame)
+      .then(() => updateUserData(token))
+      .catch(alert);
   };
   useEffect(() => {
     if (!user) return;
@@ -23,15 +34,21 @@ export default function Frame() {
     <div className=' w-full p-3 caret-transparent'>
       <div className=' flex flex-row flex-wrap gap-4 pt-4 justify-evenly'>
         {frames &&
-          frames.map((frame) => {
-            const isActive = frame.levelCap <= 3;
+          frames.map(({ link, levelCap }) => {
+            const isCrrFrame = link == crrFrame;
+            const isActive = levelCap <= 3;
+            const preventClick = isCrrFrame || !isActive;
 
             return (
-              <div key={frame.link} className={`${isActive ? '' : 'relative'}`}>
-                <div className=' size-[100px] rounded-lg tbg flex justify-center items-center cursor-pointer'>
+              <div
+                key={link}
+                onClick={() => wearFrame(isActive, link)}
+                className={preventClick ? '' : 'cursor-pointer'}
+              >
+                <div className='relative size-[100px] rounded-lg tbg flex justify-center items-center'>
                   <div
                     style={{
-                      backgroundImage: `url(${frame.link})`,
+                      backgroundImage: `url(${link})`,
                       backgroundSize: 'cover', // Adjust as needed
                       backgroundPosition: 'center', // Adjust as needed
                       // Additional background properties can be added here
@@ -40,17 +57,21 @@ export default function Frame() {
                   >
                     <div className='size-14 rounded-full tbg' />
                   </div>
-                </div>
-                {isActive || (
-                  <div className='w-full h-full absolute top-0 rounded-lg bg-[rgba(0,0,0,0.3)]'>
-                    <div className=' w0full h-full flex justify-center items-center th text-xs px-4 text-center'>
-                      <div>
-                        Unlocks at level
-                        {frame.levelCap}
+
+                  {preventClick && (
+                    <div className='absolute top-0 rounded-lg bg-[rgba(0,0,0,0.3)] w-full h-full'>
+                      <div className=' w-full h-full flex justify-center items-center th text-xs px-4 text-center'>
+                        <div>
+                          {isCrrFrame ? (
+                            <FaCheck className='text-darkMode-valid text-2xl' />
+                          ) : (
+                            `Unlocks at level ${levelCap}`
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             );
           })}

@@ -1,19 +1,18 @@
 import { useEffect, useState } from 'react';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import { useAuth } from '../../context/AuthContext';
-import Loading from '../UI/Loading';
 
 export default function UserInfo({ handleActionChange }) {
   // getUserInfo from backend
-  const { user, crrFrame, crrImg } = useAuth();
+  const { user } = useAuth();
   const [userInfo, setUserInfo] = useState();
   useEffect(() => {
     if (!user) return;
     setUserInfo({
       name: user.name,
       email: user.email,
-      profileImg: crrImg,
-      frame: crrFrame,
+      profileImg: user.profileImg,
+      frame: user.frame,
       lv: 3,
       crrEXP: 15,
       requiredEXP: 75,
