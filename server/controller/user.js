@@ -450,19 +450,19 @@ const getFavouriteStations = async (req, res) => {
 
     await Promise.all(stations.map(async (station) => {
       const stationz = await stationModel.findOne({ placeId: station });
-      stationListArray.push(stationz);
-  }));
-    for (const station of stationListArray) {
-      const gasStationLatitude = station.latlng.latitude;
-      const gasStationLongitude = station.latlng.longitude;
+      const gasStationLatitude = stationz.latlng.latitude;
+      const gasStationLongitude = stationz.latlng.longitude;
       const distanceResponse = await axios.get(
         `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${lat},${lng}&destinations=${gasStationLatitude},${gasStationLongitude}&key=${process.env.GOOGLE_API_KEY}`
       );
-
       const distance = distanceResponse.data.rows[0].elements[0].distance.text;
-
-      station.distanceFromUser = distance;
-    }
+      const stationObject = stationz.toObject();
+      stationObject.distanceFromUser = distance;
+      
+      stationListArray.push(stationObject);
+  }));
+  
+    
     
     return res.status(201).json({ success: true, data: stationListArray });
   } catch (error) {
