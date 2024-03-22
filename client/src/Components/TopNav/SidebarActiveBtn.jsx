@@ -1,11 +1,11 @@
 import { useAuth } from '../../context/AuthContext';
 
 export default function SidebarActiveBtn({ setIsProfilePopUpHandler }) {
-  const { user, crrFrame, crrImg } = useAuth();
+  const { user } = useAuth();
   return (
     <div
       style={{
-        backgroundImage: `url(${crrFrame})`,
+        backgroundImage: `url(${user?.frame})`,
         backgroundSize: 'cover', // Adjust as needed
 
         backgroundPosition: 'center', // Adjust as needed
@@ -16,7 +16,7 @@ export default function SidebarActiveBtn({ setIsProfilePopUpHandler }) {
       <img
         onClick={setIsProfilePopUpHandler}
         className='size-9 rounded-full  cursor-pointer object-cover relative'
-        src={crrImg}
+        src={user?.profileImg}
         alt=''
       />
     </div>

@@ -266,3 +266,23 @@ export const getFriendInvitationLink = async (token) => {
     throw new Error(error.message);
   }
 };
+export const changeUsingItem = async (type, token, link) => {
+  try {
+    const response = await axios.post(
+      serverLink + `/user/change${type}`,
+      {
+        link,
+      },
+      {
+        headers: {
+          Authorization: 'Bearer ' + token,
+        },
+      }
+    );
+    const { success, message, data } = response.data;
+    if (!success) throw new Error(message);
+    return data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
