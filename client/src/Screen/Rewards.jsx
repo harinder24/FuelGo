@@ -76,12 +76,13 @@ export default function Rewards() {
   const [showModal, setShowModal] = useState(false);
   const [modal, setModal] = useState();
   useEffect(() => {
+    if (!user) return;
     if (!user.points) {
       setPoint(0);
       return;
     }
     setPoint(user.points);
-  }, [user.points]);
+  }, [user?.points]);
   return (
     <>
       {showModal && (
