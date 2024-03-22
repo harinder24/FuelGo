@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import StarIcon from '@mui/icons-material/Star';
 import StarHalfIcon from '@mui/icons-material/StarHalf';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
@@ -9,14 +9,31 @@ import { useAuth } from '../../context/AuthContext';
 import { getGasStationById } from '../../api/gasStation';
 import { addToFavorite, deleteFromFavorite } from '../../api/user';
 
-export default function GasStationCard({ station, preferences, index }) {
+export default function GasStationCard({
+  station,
+  preferences,
+  index,
+  isFavoritePage,
+}) {
   const navigate = useNavigate();
 
   const { user, token, updateUserData } = useAuth();
   const { placeId: id, name, profileImg, distanceFromUser, address } = station;
 
   const [isFavorite, setIsfavorite] = useState(user.favourite.includes(id));
+  const [rating, setRating] = useState();
+  const [totalRating, setTotalRating] = useState();
+  const [fuelPrice, setFuelPrice] = useState();
+  const [fuelType, setFuelType] = useState();
 
+  useEffect(() => {
+    if (!station) return;
+    setRating(station.fuelGoRating.rating);
+    setTotalRating(station.fuelGoRating.totalRating);
+    setFuelPrice(Object.values(station.price)[preferences[2]].price);
+    const type = Object.keys(station.price)[preferences[2]];
+    type == 'midGrade' ? setFuelType('mid-grade') : setFuelType(type);
+  }, [station, preferences]);
   const handleAddFavorite = async () => {
     const { success, message } = await addToFavorite(token, id);
 
@@ -38,14 +55,6 @@ export default function GasStationCard({ station, preferences, index }) {
     await updateUserData(token);
   };
   //TODO: organize and fix some code from here
-  const rating = station.fuelGoRating.rating;
-  const totalRating = station.fuelGoRating.totalRating;
-  const fuelPrice =
-    station.price[
-      preferences.fuelType == 'Mid-grade'
-        ? 'midGrade'
-        : preferences.fuelType.toLowerCase()
-    ].price;
   const filledStars = Math.floor(rating);
   const totalStars = 5;
   const size = 16;
@@ -127,8 +136,8 @@ export default function GasStationCard({ station, preferences, index }) {
             <div className=' flex flex-row justify-between'>
               <div className='tp flex flex-row text-sm'>
                 <div>
-                  {!fuelPrice ? '- -' : '$' + fuelPrice?.toFixed(2)}/
-                  {preferences.fuelType}
+                  {!fuelPrice ? '- -' : '$' + fuelPrice?.toFixed(2)} /
+                  <span className='capitalize'> {fuelType}</span>
                 </div>
               </div>
               <div
