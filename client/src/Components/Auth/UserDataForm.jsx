@@ -23,7 +23,10 @@ export default function UserDataForm({
     e.preventDefault();
     // setIsLoading(true);
     setErrorNameBorder(false);
-
+    let invite = ""
+    if(localStorage.getItem("inviteToken")){
+       invite = JSON.parse(localStorage.getItem("inviteToken"))
+    }
     try {
       const response = await axios.post(
         serverLink + '/auth/adduserdata',
@@ -31,6 +34,7 @@ export default function UserDataForm({
           email: email,
           name: userName,
           profileImg: img,
+          invite: invite
         },
         {
           headers: {

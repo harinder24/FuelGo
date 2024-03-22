@@ -633,8 +633,8 @@ const getAllFrame = async (req, res) => {
 
 const getFriendInvitationLink = async (req, res) => {
   try {
-    const info = { email: req?.decodedEmail };
-    const link = jwt.sign(info, process.env.LINK_SECRET);
+   
+    const link =   Buffer.from(req?.decodedEmail).toString('base64');
     return res.status(201).json({ success: true, data: link });
   } catch (error) {
     return res

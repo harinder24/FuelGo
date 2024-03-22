@@ -64,6 +64,7 @@ export const emailLogin = async (email, password) => {
   }
 };
 export const googleLogin = async (token) => {
+  
   try {
     const response = await axios.get(
       `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token}`,
@@ -81,11 +82,16 @@ export const googleLogin = async (token) => {
   }
 };
 export const loginWithGoogleAccount = async (name,email,picture) => {
+  let invite = ""
+  if(localStorage.getItem("inviteToken")){
+     invite = JSON.parse(localStorage.getItem("inviteToken"))
+  }
   try {
     const response = await axios.post(serverLink + '/auth/oauth', {
       email: email,
       name: name,
-      picture: picture
+      picture: picture,
+      invite: invite
     });
     
      return response.data;

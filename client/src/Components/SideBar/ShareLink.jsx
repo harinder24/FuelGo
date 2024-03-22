@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { getFriendInvitationLink } from '../../api/user';
 import { useLocation } from 'react-router-dom';
 
+
 export default function ShareLink() {
   const { token } = useAuth();
   const [link, setLink] = useState();
@@ -12,7 +13,8 @@ export default function ShareLink() {
     getInvitationLink();
   }, []);
   const getInvitationLink = async () => {
-    getFriendInvitationLink(token).then(setLink).catch(alert);
+    const tk = await getFriendInvitationLink(token)
+    setLink(  "http://localhost:5173/invite/" + tk)
   };
   const copyToClipboard = () => {
     navigator.clipboard
@@ -33,13 +35,16 @@ export default function ShareLink() {
       await navigator.share({
         title: 'Your App Title',
         text: 'Check out this link!',
-        url: 'https://www.yourapp.com',
+        url: link,
       });
       console.log('Link shared successfully');
     } catch (error) {
       console.error('Error sharing link:', error);
     }
   };
+  if(!link){
+    return <></>
+  }
   return (
     <div className=' w-full  caret-transparent pt-1'>
       <div className='w-full px-3'>
