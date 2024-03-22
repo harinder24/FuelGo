@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import Context from '../../context';
 import PreferenceItem from './PreferenceItem';
 import PreferenceOptions from './PreferenceOptions';
+import { DEFAULT_PREFERENCE } from '../../Screen/Home';
 
 export const PREFERENCES = [
   { title: 'Recently updated' },
@@ -23,12 +24,7 @@ export const PREFERENCES = [
 ];
 
 export default function Preferences({ isList, preferences, setPreferences }) {
-  const [crrPref, setCrrPref] = useState([
-    false,
-    0,
-    0,
-    [false, false, false, false, false],
-  ]);
+  const [crrPref, setCrrPref] = useState(DEFAULT_PREFERENCE);
   const [crrOptions, setCrrOptions] = useState();
   const { setGasStationPreference, gasStation } = useContext(Context);
 
@@ -47,7 +43,6 @@ export default function Preferences({ isList, preferences, setPreferences }) {
       .filter((station) => {
         if (!crrPref[0]) return true;
         const oneMonth = 30 * 24 * 60 * 60 * 1000;
-        console.log(1711099568151 - oneMonth);
         return (
           now - Object.values(station.price)[crrPref[2]].timeStamp <= oneMonth
         );

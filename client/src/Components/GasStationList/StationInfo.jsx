@@ -6,17 +6,29 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { addToFavorite, deleteFromFavorite } from '../../api/user';
 
-export default function StationInfo({ setShowStationInfo, target }) {
+export default function StationInfo({
+  setShowStationInfo,
+  target,
+  preferences,
+}) {
   const navigate = useNavigate();
-  const rating = 4.3;
   const { user, token, updateUserData } = useAuth();
   const { placeId: id, name, profileImg, distanceFromUser, address } = target;
 
   const [isFavorite, setIsfavorite] = useState();
+  const [rating, setRating] = useState();
+  const [totalRating, setTotalRating] = useState();
+  const [fuelPrice, setFuelPrice] = useState();
+  const [fuelType, setFuelType] = useState();
 
   useEffect(() => {
     setIsfavorite(user.favourite?.includes(id));
-  }, [target]);
+    setRating(target.fuelGoRating.rating);
+    setTotalRating(target.fuelGoRating.totalRating);
+    setFuelPrice(Object.values(target.price)[preferences[2]].price || '- -');
+    const type = Object.keys(target.price)[preferences[2]];
+    type == 'midGrade' ? setFuelType('mid-grade') : setFuelType(type);
+  }, [target, preferences]);
 
   const handleAddFavorite = async () => {
     const { success, message } = await addToFavorite(token, id);
@@ -82,7 +94,8 @@ export default function StationInfo({ setShowStationInfo, target }) {
               </div>
               <div className=' flex flex-row justify-between'>
                 <div className='tp flex flex-row text-sm'>
-                  <div className=''>$1.23/</div> Regular
+                  <div className=''>$ {fuelPrice}/</div>
+                  <div>{fuelType}</div>
                 </div>
                 <div
                   onClick={() =>

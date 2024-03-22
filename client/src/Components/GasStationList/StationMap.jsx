@@ -5,7 +5,14 @@ import stationMarke from '/station.png';
 import Context from '../../context';
 import { getCrrLocation } from '../../api/gasStation';
 
-export default function StationMap({ gasStationPreference, preferences }) {
+export default function StationMap({ preferences }) {
+  const { gasStationPreference } = useContext(Context);
+  const [stations, setStations] = useState();
+  useEffect(() => {
+    if (!gasStationPreference) return;
+    console.log(gasStationPreference);
+  }, [gasStationPreference]);
+  //TODO:
   const [showStationInfo, setShowStationInfo] = useState(false);
   const mapRef = useRef(null);
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 520);
@@ -140,59 +147,65 @@ export default function StationMap({ gasStationPreference, preferences }) {
         center={userLatLng}
         zoom={13}
       >
-        {gasStationPreference.map((station) => {
-          const [fuelPrice, setFuelPrice] = useState(null);
-          useEffect(() => {
-            if (preferences.fuelType === 'Regular') {
-              if (station.price.regular.price === 0) {
-                setFuelPrice('--');
-              } else {
-                setFuelPrice(station.price.regular.price);
-              }
-            } else if (preferences.fuelType === 'Mid-grade') {
-              if (station.price.midGrade.price === 0) {
-                setFuelPrice('--');
-              } else {
-                setFuelPrice(station.price.midGrade.price);
-              }
-            } else if (preferences.fuelType === 'Premium') {
-              if (station.price.premium.price === 0) {
-                setFuelPrice('--');
-              } else {
-                setFuelPrice(station.price.premium.price);
-              }
-            } else if (preferences.fuelType === 'Diesel') {
-              if (station.price.diesel.price === 0) {
-                setFuelPrice('--');
-              } else {
-                setFuelPrice(station.price.diesel.price);
-              }
-            }
-          }, [preferences.fuelType]);
-          return (
-            <Marker
-              key={station._id}
-              position={{
-                lat: station.latlng.latitude,
-                lng: station.latlng.longitude,
-              }}
-              title={station.name}
-              icon={{
-                url: stationMarke,
-                scaledSize: { width: 36, height: 40 },
-                labelOrigin: { x: 8, y: -4 },
-              }}
-              label={{
-                text: `$${fuelPrice}/ ${preferences.fuelType}`,
-                color: 'white',
-
-                fontSize: '12px',
-                fontWeight: '200',
-              }}
-              onClick={() => handleMarkerClick(station)}
-            />
-          );
-        })}
+        {gasStationPreference &&
+          gasStationPreference.map((station) => {
+            // const [fuelPrice, setFuelPrice] = useState(null);
+            // useEffect(() => {
+            //   if (preferences.fuelType === 'Regular') {
+            //     if (station.price.regular.price === 0) {
+            //       setFuelPrice('--');
+            //     } else {
+            //       setFuelPrice(station.price.regular.price);
+            //     }
+            //   } else if (preferences.fuelType === 'Mid-grade') {
+            //     if (station.price.midGrade.price === 0) {
+            //       setFuelPrice('--');
+            //     } else {
+            //       setFuelPrice(station.price.midGrade.price);
+            //     }
+            //   } else if (preferences.fuelType === 'Premium') {
+            //     if (station.price.premium.price === 0) {
+            //       setFuelPrice('--');
+            //     } else {
+            //       setFuelPrice(station.price.premium.price);
+            //     }
+            //   } else if (preferences.fuelType === 'Diesel') {
+            //     if (station.price.diesel.price === 0) {
+            //       setFuelPrice('--');
+            //     } else {
+            //       setFuelPrice(station.price.diesel.price);
+            //     }
+            //   }
+            // }, [preferences.fuelType]);
+            const fuelPrice =
+              Object.values(station.price)[preferences[2]].price || '- -';
+            const fuelType =
+              Object.keys(station.price)[preferences[2]] == 'midGrade'
+                ? 'mid-grade'
+                : Object.keys(station.price)[preferences[2]];
+            return (
+              <Marker
+                key={station._id}
+                position={{
+                  lat: station.latlng.latitude,
+                  lng: station.latlng.longitude,
+                }}
+                title={station.name}
+                icon={{
+                  url: stationMarke,
+                  scaledSize: { width: 36, height: 40 },
+                  labelOrigin: { x: 8, y: -4 },
+                }}
+                label={{
+                  text: `$ ${fuelPrice}/${fuelType}`,
+                  color: 'white',
+                  fontSize: '12px',
+                  fontWeight: '200',
+                }}
+                onClick={() => handleMarkerClick(station)}
+              />
+            );
+          })}
       </GoogleMap>
     </div>
   );
