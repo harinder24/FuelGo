@@ -7,6 +7,7 @@ export const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
   const [token, setToken] = useState(JSON.parse(localStorage.getItem('token')));
+  const [station, setStation] = useState(null);
   const updateUserData = async (userToken) => {
     if (!userToken) {
       localStorage.removeItem('token');

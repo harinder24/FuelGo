@@ -6,7 +6,7 @@ import CustomButton from "../UI/CustomButton";
 import { getCrrLocation } from "../../api/gasStation";
 import { updatePrice } from "../../api/user";
 
-export default function ModalContent({ setShowModal, station, token }) {
+export default function ModalContent({ setShowModal, station, token,setTimestamp, setStation,updateUserData }) {
   const [error, setError] = useState("");
   const [spoof, setSpoof] = useState(false);
   const [isSpoof, setIsSpoof] = useState(false);
@@ -79,9 +79,12 @@ export default function ModalContent({ setShowModal, station, token }) {
       premium,
       regular
     );
-    console.log(result);
     if (result.success) {
-      
+      setTimestamp(result.data.currentTimestamp)
+      setStation((prevState) => ({ ...prevState , priceHistory: result.data.priceHistory, price: result.data.price}));
+      updateUserData()
+      setShowModal(false)
+
     } else {
       setError(result.message);
     }

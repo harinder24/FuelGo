@@ -220,6 +220,7 @@ const emailLogIn = async (req, res) => {
       .json({ success: false, error: "Internal Server Error" });
   }
 };
+
 const Oauth = async (req, res) => {
   const { email, name, picture , invite} = req.body;
  

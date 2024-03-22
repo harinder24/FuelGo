@@ -168,6 +168,8 @@ export default function GasStation() {
             token={token}
             setShowModal={setShowModal}
             gasInfo={gasInfo}
+            setStation={setStation} setTimestamp={setTimestamp} 
+            updateUserData={updateUserData}
           />
         </Modal>
       )}
