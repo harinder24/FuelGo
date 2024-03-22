@@ -1,21 +1,21 @@
-import { useContext, useEffect, useState } from 'react';
-import GasStationList from '../Components/GasStationList/GasStationList';
-import Preferences from '../Components/User/Preferences';
-import Context from '../context';
+import { useContext, useEffect, useState } from "react";
+import GasStationList from "../Components/GasStationList/GasStationList";
+import Preferences from "../Components/User/Preferences";
+import Context from "../context";
 import {
   getCrrLocation,
   getGasStationById,
   getGasStations,
-} from '../api/gasStation';
-import Loading from '../Components/UI/Loading';
-import TopNavHome from '../Components/TopNav/TopNavHome';
-import { useAuth } from '../context/AuthContext';
-import { useLocation } from 'react-router-dom';
-import { getFavStations } from '../api/user';
+} from "../api/gasStation";
+import Loading from "../Components/UI/Loading";
+import TopNavHome from "../Components/TopNav/TopNavHome";
+import { useAuth } from "../context/AuthContext";
+import { useLocation } from "react-router-dom";
+import { getFavStations } from "../api/user";
 
 export default function Home() {
   const { pathname } = useLocation();
-  const isFavouritePage = pathname == '/favourite';
+  const isFavouritePage = pathname == "/favourite";
 
   const { user, token, updateUserData } = useAuth();
   const [isList, setIsList] = useState(true);
@@ -24,15 +24,15 @@ export default function Home() {
   const { gasStation, setGasStation, userLatLng, setUserLatLng } =
     useContext(Context);
   const [preferences, setPreferences] = useState({
-    sort: 'Distance',
+    sort: "Distance",
     recent: false,
-    fuelType: 'Regular',
+    fuelType: "Regular",
     Amenities: [],
   });
   useEffect(() => {
     if (user) {
       fetchInitialStations();
-    } 
+    }
   }, [user?._id, pathname]);
 
   useEffect(() => {
@@ -53,7 +53,6 @@ export default function Home() {
   const getStationsNearBy = async () => {
     try {
       const crrLatLng = await getCrrLocation();
-      setUserLatLng(crrLatLng);
       const stationList = await getGasStations(crrLatLng);
       setGasStation(stationList);
       setIsloading(false);
@@ -62,18 +61,18 @@ export default function Home() {
     }
   };
   const getFavourites = async () => {
-    
-      const crrLatLng = await getCrrLocation();
-      
-     
-        const placeInfo = await getFavStations( token, user.favourite,crrLatLng.lat, crrLatLng.lng);
-        if(placeInfo.success){
-         console.log(placeInfo);
-          setFavourites(placeInfo.data)
- 
-        }
-    
-   
+    const crrLatLng = await getCrrLocation();
+
+    const placeInfo = await getFavStations(
+      token,
+      user.favourite,
+      crrLatLng.lat,
+      crrLatLng.lng
+    );
+    if (placeInfo.success) {
+      console.log(placeInfo);
+      setFavourites(placeInfo.data);
+    }
   };
 
   const fetchFavourite = () => {
@@ -112,7 +111,7 @@ export default function Home() {
             setPreferences={setPreferences}
           />
           {isLoading ? (
-            <Loading bgColor='bg-inherit' />
+            <Loading bgColor="bg-inherit" />
           ) : (
             <GasStationList
               isList={isList}

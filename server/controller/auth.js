@@ -46,7 +46,7 @@ async function formatVerification(email, password) {
 }
 
 const addUserData = async (req, res) => {
-  const { email, profileImg, name } = req.body;
+  const { email, profileImg, name, invite } = req.body;
   let trimmedStr = name.trim();
   if (trimmedStr.length < 3) {
     return res
@@ -65,6 +65,21 @@ const addUserData = async (req, res) => {
       await newUser.save();
       foundUser.isInitAuthComplete = true;
       await foundUser.save();
+      if(invite){
+       const inviteEmail =  Buffer.from(invite, 'base64').toString('utf8');
+       let foundInviteUser = await userModel.findOne({ email: inviteEmail });
+       if(foundInviteUser){
+        foundInviteUser.points += 100;
+        foundInviteUser.totalPoints += 100;
+    
+        foundInviteUser.pointHistory.push({
+          reason: `Friend invitation`,
+          isRedeem: false,
+          pointsAmount: 100,
+        });
+        foundInviteUser.save()
+       }
+      }
       const info = {  email: foundUser.email };
       const token = jwt.sign(info, process.env.TOKEN_SECRET);
       return res.status(201).json({
@@ -206,7 +221,7 @@ const emailLogIn = async (req, res) => {
   }
 };
 const Oauth = async (req, res) => {
-  const { email, name, picture } = req.body;
+  const { email, name, picture , invite} = req.body;
  
   try {
     let foundUser = await authModel.findOne({ email: email });
@@ -248,6 +263,21 @@ const Oauth = async (req, res) => {
         profileImg: picture,
       });
       await newUserM.save();
+      if(invite){
+        const inviteEmail =  Buffer.from(invite, 'base64').toString('utf8');
+        let foundInviteUser = await userModel.findOne({ email: inviteEmail });
+        if(foundInviteUser){
+         foundInviteUser.points += 100;
+         foundInviteUser.totalPoints += 100;
+     
+         foundInviteUser.pointHistory.push({
+           reason: `Friend invitation`,
+           isRedeem: false,
+           pointsAmount: 100,
+         });
+         foundInviteUser.save()
+        }
+       }
       const info = {email: foundUser.email };
       const token = jwt.sign(info, process.env.TOKEN_SECRET);
       return res.status(201).json({

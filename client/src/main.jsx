@@ -15,6 +15,7 @@ import ProfileScreen from './Screen/ProfileScreen.jsx';
 import SearchScreen from './Screen/SearchScreen.jsx';
 import Accounts from './Accounts.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
+import InviteFriend from './Screen/InviteFriend.jsx';
 
 const router = createBrowserRouter([
   {
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
     element: <ProfileScreen />,
   },
   {
+    path: 'invite/:id',
+    element: <InviteFriend />,
+  },
+  {
     path: '/accounts',
     element: <Accounts />,
     children: [
@@ -77,6 +82,7 @@ const router = createBrowserRouter([
         path: 'changepassword/:id',
         element: <ChangePassWord />,
       },
+      
     ],
   },
 ]);
