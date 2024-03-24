@@ -6,21 +6,23 @@ export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState();
+  const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(JSON.parse(localStorage.getItem('token')));
 
   const updateUserData = async (userToken) => {
+    setLoading(true);
     if (!userToken) {
       localStorage.removeItem('token');
-
       setToken();
       setUser();
-
+      setLoading(false);
       return;
     }
     const crrUser = await getUserData(userToken);
 
     setToken(userToken);
     setUser(crrUser);
+    setLoading(false);
 
     localStorage.setItem('token', JSON.stringify(userToken));
   };
@@ -29,12 +31,14 @@ export function AuthProvider({ children }) {
       if (localStorage.getItem('token')) {
         const tk = JSON.parse(localStorage.getItem('token'));
         updateUserData(tk);
+      } else {
+        setLoading(false);
       }
     }
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, token, updateUserData }}>
+    <AuthContext.Provider value={{ user, token, updateUserData, loading }}>
       {children}
     </AuthContext.Provider>
   );
