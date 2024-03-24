@@ -10,7 +10,6 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(JSON.parse(localStorage.getItem('token')));
 
   const updateUserData = async (userToken) => {
-    setLoading(true);
     if (!userToken) {
       localStorage.removeItem('token');
       setToken();

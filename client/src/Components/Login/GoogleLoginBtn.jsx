@@ -12,7 +12,6 @@ export default function GoogleLoginBtn() {
   const login = useGoogleLogin({
     onSuccess: async (res) => {
       const token = res.access_token;
-
       try {
         const { name, email, picture } = await googleLogin(token);
 
@@ -23,20 +22,9 @@ export default function GoogleLoginBtn() {
           return;
         }
         if (result.success) {
-          updateUserData(result.token);
+          await updateUserData(result.token);
           navigate('/home');
         }
-
-        // if (!result.token) {
-        //   // const userData = await addAccountInitialData(googleAccount);
-
-        //   // await updateUserData(userData.token);
-        //   // navigate('/home');
-        //   return;
-        // }
-
-        // await updateUserData(result.token);
-        // navigate('/home');
       } catch (e) {
         alert(e.message);
       }
@@ -45,6 +33,7 @@ export default function GoogleLoginBtn() {
       alert(e.error_description);
     },
   });
+
   return (
     <div
       className='flex flex-col justify-between items-center gap-x-4 pt-5'
