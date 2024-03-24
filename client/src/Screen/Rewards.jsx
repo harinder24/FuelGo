@@ -84,7 +84,6 @@ export default function Rewards() {
       return;
     }
     setPoint(user.points);
-    console.log(1);
   }, [user?.points]);
   const showPointHistory = () => {
     setShowHistory(true);
@@ -108,7 +107,6 @@ export default function Rewards() {
                   key={history._id}
                   className='rounded-lg bg-transparent border-[1px] cborder flex px-4 py-2 mb-1 max-[360px]:flex-col'
                 >
-                  {console.log(history)}
                   <div className='th flex-1 flex items-center max-[270px]:hidden'>
                     {history.reason}
                   </div>
