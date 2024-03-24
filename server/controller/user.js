@@ -484,7 +484,7 @@ const purchaseGiftCard = async (req, res) => {
           reason: `$${amount} ${giftCardType}`,
           isRedeem: true,
           pointsAmount: -pointAmount,
-          pointsLeft: points - pointAmount,
+          pointsLeft: foundUser.points,
         });
         foundUser.save();
         sendGiftCard(foundUser.email, 'Gift card code', giftCardCode);
@@ -519,7 +519,7 @@ const purchaseFrame = async (req, res) => {
           reason: `Frame purchased`,
           isRedeem: true,
           pointsAmount: pointAmount,
-          pointsLeft: points - pointAmount,
+          pointsLeft: foundUser.points,
         });
         foundUser.framesOwned.push(id);
         foundUser.save();
@@ -548,11 +548,12 @@ const purchaseAvatar = async (req, res) => {
       let points = foundUser.points;
       if (points >= pointAmount) {
         foundUser.points = points - pointAmount;
+
         foundUser.pointHistory.push({
           reason: `Avatar purchased`,
           isRedeem: true,
           pointsAmount: pointAmount,
-          pointsLeft: points - pointAmount,
+          pointsLeft: foundUser.points,
         });
         foundUser.avatarOwned.push(id);
         foundUser.save();
@@ -684,12 +685,10 @@ const updateGasPrices = async (req, res) => {
         timeDifference = `${Math.floor(timeDifferenceInSeconds / 3600)} hr`;
       }
 
-      return res
-        .status(201)
-        .json({
-          success: false,
-          message: `You updated ${timeDifference} ago, you can only update once 24 hour`,
-        });
+      return res.status(201).json({
+        success: false,
+        message: `You updated ${timeDifference} ago, you can only update once 24 hour`,
+      });
     }
     let points = 0;
     if (diesel && diesel > 0) {
@@ -741,6 +740,7 @@ const updateGasPrices = async (req, res) => {
       reason: `Price update`,
       isRedeem: false,
       pointsAmount: points,
+      pointsLeft: foundUser.points,
     });
     foundUser.save();
     return res.status(201).json({
