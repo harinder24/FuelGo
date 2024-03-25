@@ -29,8 +29,7 @@ export default function ItemInfo({ point, setPoint, setShowModal, modal }) {
       .then(setResult)
       .catch(alert)
       .finally(() => updateUserData(token));
-    const balance = point - price;
-    setPoint(balance);
+    
   };
 
   return (

@@ -480,13 +480,12 @@ const purchaseGiftCard = async (req, res) => {
 
     const giftCardCode = "a1Qsnd7b912312wr343weeewwe";
     if (foundUser) {
-      let points = foundUser.points;
-      if (points >= pointAmount) {
-        foundUser.points = points - pointAmount;
+      if (foundUser.points >= pointAmount) {
+        foundUser.points -=  pointAmount;
         foundUser.pointHistory.push({
           reason: `$${amount} ${giftCardType}`,
           isRedeem: true,
-          pointsAmount: -amount,
+          pointsAmount: amount,
         });
         foundUser.save();
         sendGiftCard(foundUser.email, "Gift card code", giftCardCode);
@@ -501,6 +500,7 @@ const purchaseGiftCard = async (req, res) => {
       }
     }
   } catch (error) {
+    console.log(error);
     return res
       .status(201)
       .json({ success: false, message: "Internal server error." });
@@ -514,9 +514,8 @@ const purchaseFrame = async (req, res) => {
     const pointAmount = 25;
 
     if (foundUser) {
-      let points = foundUser.points;
-      if (points >= pointAmount) {
-        foundUser.points = points - pointAmount;
+      if (foundUser.points >= pointAmount) {
+        foundUser.points -=  pointAmount;
         foundUser.pointHistory.push({
           reason: `Frame purchased`,
           isRedeem: true,
@@ -546,9 +545,8 @@ const purchaseAvatar = async (req, res) => {
     const foundUser = await userModel.findOne({ email: req?.decodedEmail });
     const pointAmount = 25;
     if (foundUser) {
-      let points = foundUser.points;
-      if (points >= pointAmount) {
-        foundUser.points = points - pointAmount;
+      if (foundUser.points >= pointAmount) {
+        foundUser.points -=  pointAmount;
         foundUser.pointHistory.push({
           reason: `Avatar purchased`,
           isRedeem: true,
@@ -850,7 +848,7 @@ function sendGiftCard(toEmail, subject, code) {
     from: process.env.gmail,
     to: toEmail,
     subject: subject,
-    text: message,
+    text: code,
     html: ` <html>
         <head>
           <style>

@@ -27,6 +27,7 @@ export default function GoogleLoginBtn({setPasswordError}) {
         }
         if(result.success){
           localStorage.setItem("token", JSON.stringify(result.token))
+          await updateUserData(result.token)
           navigate('/home')
         }
         

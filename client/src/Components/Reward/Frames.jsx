@@ -53,7 +53,9 @@ export default function Frames({ point, setModal, setShowModal }) {
                     <div className='w-[93%] h-[93%] rounded-full bg-[#182335]' />
                   </div>
                 );
-                const isPurchased = user.framesOwned?.includes(id);
+               
+                const isPurchased =  user.framesOwned?.includes(id);
+                
                 return (
                   <li
                     onClick={() => handleOpenModal(id, icon, isPurchased)}

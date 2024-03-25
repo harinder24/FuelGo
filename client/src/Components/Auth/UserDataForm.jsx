@@ -6,11 +6,13 @@ import CustomButton from "../UI/CustomButton";
 import EditIcon from '@mui/icons-material/Edit';
 
 import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
+import { useAuth } from "../../context/AuthContext";
 export default function UserDataForm({
 
   email,
 
 }) {
+  const { updateUserData } = useAuth();
     const [img, setImg] = useState("https://res.cloudinary.com/dddggrofv/image/upload/v1691608835/profile_lxq8sq.jpg")
     const [userName, setUserName] = useState("")
   
@@ -46,6 +48,7 @@ export default function UserDataForm({
     //   setIsLoading(false);
       if (success === true) {
         localStorage.setItem('token', JSON.stringify(token));
+        await updateUserData(token)
         navigate('/home');
       } else {
         setError(error);
