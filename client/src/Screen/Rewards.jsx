@@ -121,10 +121,10 @@ export default function Rewards() {
                       <SiPix className='text-xs mr-1.5' />
                       {Math.abs(history.pointsAmount)}
                     </span>
-                    <span className='flex items-center tp justify-end max-[270px]:justify-center'>
+                    {/* <span className='flex items-center tp justify-end max-[270px]:justify-center'>
                       <SiPix className='text-xs mr-1.5' />
                       {history.pointsLeft}
-                    </span>
+                    </span> */}
                   </div>
                   <p></p>
                 </div>

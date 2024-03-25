@@ -29,6 +29,7 @@ export default function Frames({ point, setModal, setShowModal }) {
       itemId: id,
       card: <RewardCard reward={{ icon }} sm />,
       type: 'frame',
+      price: 25
     });
     setShowModal(true);
   };
