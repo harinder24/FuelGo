@@ -22,7 +22,7 @@ FuelGo is a web application designed to provide users with up-to-date gas prices
 
 We welcome contributions from the developer community to enhance FuelGo. Here's how you can contribute:
 
-1. Fork the repository from [GitHub](https://github.com/yourusername/fuelgo).
+1. Fork the repository from [GitHub](https://github.com/harinder24/fuelgo).
 2. Clone the forked repository to your local machine.
 3. Create a new branch for your feature or bug fix: `git checkout -b feature/new-feature`.
 4. Make your changes and ensure that the code follows the project's coding standards.
