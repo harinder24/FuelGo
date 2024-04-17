@@ -5,7 +5,7 @@ import glsl from 'vite-plugin-glsl';
 export default defineConfig({
   plugins: [
     react(),
-    glsl(), // Add the glsl plugin
+    glsl(), 
   ],
   
 });

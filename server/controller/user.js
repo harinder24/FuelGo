@@ -342,7 +342,7 @@ const unLikeComment = async (req, res) => {
 
   return res.status(201).json({ success: false });
 };
-const addFavourite = async (req, res) => {
+const  addFavourite = async (req, res) => {
   const { placeId } = req.body;
 
   try {
