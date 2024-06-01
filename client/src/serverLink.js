@@ -1,7 +1,7 @@
 let serverLink = '';
-if (true) {
+if (false) {
   serverLink = 'http://localhost:3000';
 } else {
-  serverLink = 'https://cstp-2204-jin-harinder-018c35245b00.herokuapp.com';
+  serverLink = 'https://fuelgo-server.onrender.com';
 }
 export default serverLink;
