@@ -67,7 +67,7 @@ export default function StationInfo({
           </div>
           <div className=' relative pt-2'>
             <img
-              className=' w-[320px]   min-[520px]:aspect-video max-[500px]:w-full rounded-lg object-cover'
+              className=' w-[320px] h-[200px]   min-[520px]:aspect-video max-[500px]:w-full rounded-lg object-cover'
               src={profileImg}
               alt=''
             />
@@ -89,7 +89,7 @@ export default function StationInfo({
                   </div>
                 </div>
                 <div className='p-[6px] rounded-full th sbg text-xs '>
-                  {rating}
+                {Number(rating).toFixed(1)}
                 </div>
               </div>
               <div className=' flex flex-row justify-between'>

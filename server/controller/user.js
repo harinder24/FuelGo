@@ -22,16 +22,15 @@ const sendUserData = async (req, res) => {
 };
 async function getGasStations(req, res) {
   const { latitude, longitude } = req.body;
-
+  
   let radius = 1000;
   let isGasStation20 = false;
 
   let gasStations = [];
-console.log("getting gas stations 1");
   const responseData = await axios.get(
     `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&rankby=distance&type=gas_station&key=${process.env.GOOGLE_API_KEY}`
   );
-  console.log("getting gas stations 2");
+
   gasStations = responseData.data.results;
 
   gasStations.map(async (station) => {
@@ -136,6 +135,7 @@ console.log("getting gas stations 1");
     console.log(error);
   }
 
+ 
   return res.status(201).json({ success: true, data: gasStationList });
   // }
 }

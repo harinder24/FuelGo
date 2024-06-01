@@ -172,11 +172,11 @@ export default function GasStationCard({
                 {name}
               </div>
               <div className='p-[6px] rounded-full th fbg text-xs min-[720px]:hidden'>
-                {rating}
+                {Number(rating).toFixed(1)}
               </div>
             </div>
             <div className=' flex flex-row tp items-center gap-x-2 text-sm max-[720px]:hidden'>
-              <div>{rating}</div>
+              <div>   {Number(rating).toFixed(1)}</div>
               <div className='  relative '>
                 <div className=' flex flex-row gap-x-[2px]'>{stars}</div>
               </div>

@@ -31,6 +31,7 @@ export default function Preferences({ isList, preferences, setPreferences }) {
   //TODO:
   useEffect(() => {
     if (!gasStation) return;
+    console.log(gasStation);
     const now = Date.now();
     const filtered = gasStation
       // amenity filter
@@ -49,6 +50,7 @@ export default function Preferences({ isList, preferences, setPreferences }) {
       });
     // sort stations
     filtered.sort((station_a, station_b) => {
+      console.log(station_a, station_b);
       switch (crrPref[1]) {
         case 0:
           return (
