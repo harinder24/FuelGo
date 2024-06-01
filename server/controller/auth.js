@@ -422,7 +422,7 @@ const forgetPassword = async (req, res) => {
         sendChangePasswordLink(
           email,
           'FuelGo change password',
-          'https://cstp-2204-jin-harinder.netlify.app/accounts/changepassword/' + token
+          'https://fuelgo1.netlify.app/accounts/changepassword/' + token
         );
         return res.status(200).json({
           success: true,
