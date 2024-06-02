@@ -23,8 +23,14 @@ export default function StationInfo({
 
   useEffect(() => {
     setIsfavorite(user.favourite?.includes(id));
-    setRating(target.fuelGoRating.rating);
-    setTotalRating(target.fuelGoRating.totalRating);
+    setRating(0);//target.fuelGoRating.rating
+    setTotalRating(0 );//target.fuelGoRating.totalRating
+    const sumOfRatings = target.reviews.reduce(
+      (total, obj) => total + obj.rating,
+      0
+    );
+    setRating(sumOfRatings / target.reviews.length);
+  
     setFuelPrice(Object.values(target.price)[preferences[2]].price || '- -');
     const type = Object.keys(target.price)[preferences[2]];
     type == 'midGrade' ? setFuelType('mid-grade') : setFuelType(type);
