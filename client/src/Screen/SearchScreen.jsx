@@ -40,7 +40,7 @@ export default function SearchScreen() {
         </CustomInput>
       </div>
 
-      <div className='flex-1 my-4  w-full min-w-auto flex h-full flex-col overflow-y-auto px-2 gap-4 items-center max-[519px]:pb-12'>
+      <div className='flex-1 my-4  w-full min-w-auto flex h-full flex-col overflow-y-auto px-2 gap-4 items-center max-[519px]:pb-14'>
         {searchedList &&
           searchedList.map((station, index) => (
             <div className='sbg' key={station._id}>

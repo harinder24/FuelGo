@@ -38,7 +38,7 @@ export default function CommentSection({
     }
   };
   return (
-    <div className="flex-1 p-4 max-[630px]:px-2  mt-4 flex-col max-[520px]:pb-[64px]">
+    <div className="flex-1 p-4 max-[630px]:px-2  mt-4 flex-col ">
       <div className=" flex flex-row justify-between items-center">
         <div className="th text-2xl">Reviews</div>
         {reviews && reviews.length > 0 && (

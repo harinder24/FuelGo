@@ -159,7 +159,7 @@ export default function Rewards() {
           <span className='text-sm '>{point.toLocaleString('en-US')}</span>
         </div>
       </TopNav>
-      <ul className='overflow-y-auto max-[520px]:px-2 max-[519px]:pb-16'>
+      <ul className='overflow-y-auto max-[520px]:px-2 pb-4'>
         <Frames point={point} setModal={setModal} setShowModal={setShowModal} />
         <Avatars
           point={point}
