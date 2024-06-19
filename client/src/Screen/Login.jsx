@@ -14,7 +14,7 @@ export default function Login() {
   const [password, setPassword] = useState();
   const [emailError, setEmailError] = useState();
   const [passwordError, setPasswordError] = useState();
-
+  const {setIsLoading} = useAuth()
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -29,16 +29,18 @@ export default function Login() {
       setPasswordError('Password is empty');
       return;
     }
-
+    setIsLoading(true)
     try {
       const { token, error, fault } = await emailLogin(email, password);
+      setIsLoading(false)
       if (error) {
         fault == 'password' ? setPasswordError(error) : setEmailError(error);
         return;
       }
       await updateUserData(token);
-      navigate('/home');
+      navigate('/home'); 
     } catch (err) {
+      setIsLoading(false)
       alert(err);
     }
   };
@@ -73,7 +75,7 @@ export default function Login() {
         </h4>
       </div>
 
-      <GoogleLogin />
+      {/* <GoogleLogin /> */}
     </div>
   );
 }

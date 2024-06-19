@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
+import Loading from '../UI/Loading';
+import { useAuth } from '../../context/AuthContext';
 
-export default function AuthLayout({ children }) {
+export default function AuthLayout({ children  }) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
+  const {isLoading} = useAuth()
   useEffect(() => {
     const updateMousePosition = (e) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
@@ -91,6 +93,7 @@ export default function AuthLayout({ children }) {
 
   return (
     <>
+    {isLoading &&  <div className=' absolute top-0 w-full h-full flex flex-row justify-center z-[90] bg-[rgba(0,0,0,0.5)]'><Loading bgColor='bg-inherit' /></div> }
       {!isMobile && (
         <div className=' absolute top-0 z-10'>
           <div className='relative w-screen h-screen overflow-hidden'>

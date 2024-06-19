@@ -4,11 +4,12 @@ import { MdOutlineMail } from 'react-icons/md';
 import CustomButton from '../Components/UI/CustomButton';
 import { useNavigate } from 'react-router-dom';
 import { sendchangePasswordEmail } from '../api/auth';
+import { useAuth } from '../context/AuthContext';
 
 export default function ForgetPassword() {
   const [email, setEmail] = useState();
   const [error, setError] = useState();
-
+  const {setIsLoading} = useAuth()
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError();
@@ -16,7 +17,7 @@ export default function ForgetPassword() {
       setError('Email is empty');
       return;
     }
-
+    setIsLoading(true)
     try {
       const { error: err } = await sendchangePasswordEmail(email);
 
@@ -24,10 +25,12 @@ export default function ForgetPassword() {
         setError(err);
         return;
       }
-
+      setIsLoading(false)
       alert('Email successfully sent');
     } catch (err) {
+      setIsLoading(false)
       alert(err);
+      
     }
   };
   const navigate = useNavigate();

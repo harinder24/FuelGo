@@ -8,7 +8,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(JSON.parse(localStorage.getItem('token')));
-
+  const [isLoading, setIsLoading] = useState(false)
   const updateUserData = async (userToken) => {
     if (!userToken) {
       localStorage.removeItem('token');
@@ -18,9 +18,15 @@ export function AuthProvider({ children }) {
       return;
     }
     const crrUser = await getUserData(userToken);
-
+    if(!crrUser.success){
+      localStorage.removeItem('token');
+      setToken();
+      setUser();
+      setLoading(false);
+      return;
+    }
     setToken(userToken);
-    setUser(crrUser);
+    setUser(crrUser.data);
     setLoading(false);
 
     localStorage.setItem('token', JSON.stringify(userToken));
@@ -37,7 +43,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, token, updateUserData, loading }}>
+    <AuthContext.Provider value={{ user, token, updateUserData, loading ,isLoading,setIsLoading }}>
       {children}
     </AuthContext.Provider>
   );

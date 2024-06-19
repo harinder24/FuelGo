@@ -16,7 +16,7 @@ export default {
           fbg: '#33415580',
           p: '#747c88',
           valid: '#B6F09C',
-          error: '#d32f2f',
+          error: '#d32f2f ',
         },
         darkMode: {
           transparentBg: '#0f172abf',

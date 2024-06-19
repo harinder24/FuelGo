@@ -12,21 +12,22 @@ export default function Otp({ email, setShowModal, setIsOtpCorrect }) {
   const [otp, setOtp] = useState("");
   const [timer, setTimer] = useState(9);
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-
+  const {setIsLoading} = useAuth()
   const resendHandler = async () => {
     setOtp("");
     setError("");
     setIsLoading(true);
     try {
       const { error: e } = await otpResend(email);
+      setIsLoading(false);
       if (e) {
         setError(e);
         return;
       }
-      setIsLoading(false);
+  
       setTimer(9);
     } catch (error) {
+      setIsLoading(false);
       console.error("Network error:", error);
     }
   };
@@ -36,9 +37,10 @@ export default function Otp({ email, setShowModal, setIsOtpCorrect }) {
     setError("");
     try {
       const { error } = await otpValidation(email, otp);
+      setIsLoading(false);
       if (error) {
         setError(error);
-        setIsLoading(false);
+    
         return;
       }
       // const { token, error: e } = await addAccountInitialData(email);
@@ -76,14 +78,9 @@ export default function Otp({ email, setShowModal, setIsOtpCorrect }) {
   return (
     <>
       <div className="flex flex-row w-screen h-screen justify-center items-center fixed top-0 ">
-        <div className="w-[380px] sbg p-4 rounded-lg max-[440px]:h-screen  max-[440px]:w-screen max-[440px]:rounded-none">
+        <div className="w-[380px] sbg p-4 rounded-lg max-[440px]:h-[100svh]  max-[440px]:w-screen max-[440px]:rounded-none">
           <div className=" relative z-[2] h-full cursor-default ">
-            {isLoading && (
-              <div className=" absolute top-0 w-full h-full z-[50]">
-                {" "}
-                <Loading />
-              </div>
-            )}
+            
             <div
               onClick={handleCloseOtp}
               className=" absolute top-1 right-1 cursor-pointer "

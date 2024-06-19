@@ -6,7 +6,7 @@ import CustomButton from "../UI/CustomButton";
 import { getCrrLocation } from "../../api/gasStation";
 import { updatePrice } from "../../api/user";
 
-export default function ModalContent({ setShowModal, station, token,setTimestamp, setStation,updateUserData }) {
+export default function ModalContent({ setShowModal, station, token,setTimestamp, setStation,updateUserData,setIsLoading }) {
   const [error, setError] = useState("");
   const [spoof, setSpoof] = useState(false);
   const [isSpoof, setIsSpoof] = useState(false);
@@ -68,7 +68,7 @@ export default function ModalContent({ setShowModal, station, token,setTimestamp
     let regular = parseFloat(getPriceForType("Regular"));
     let midGrade = parseFloat(getPriceForType("Mid-grade"));
     let premium = parseFloat(getPriceForType("Premium"));
-
+    setIsLoading(true)
     const result = await updatePrice(
       token,
       station.placeId,
@@ -79,6 +79,7 @@ export default function ModalContent({ setShowModal, station, token,setTimestamp
       premium,
       regular
     );
+    setIsLoading(false)
     if (result.success) {
       setTimestamp(result.data.currentTimestamp)
       setStation((prevState) => ({ ...prevState , priceHistory: result.data.priceHistory, price: result.data.price}));
@@ -134,7 +135,7 @@ export default function ModalContent({ setShowModal, station, token,setTimestamp
             </div>
           )}
 
-          <div className="max-[520px]:flex-1"></div>
+          {/* <div className="max-[520px]:flex-1"></div> */}
           <div className="w-full mt-12 ">
             <CustomButton handleClick={handleSubmit} />
           </div>

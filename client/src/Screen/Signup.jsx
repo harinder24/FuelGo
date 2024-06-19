@@ -9,6 +9,8 @@ import GoogleLogin from '../Components/Login/GoogleLogin';
 import UserDataForm from '../Components/Auth/UserDataForm';
 import Modal from '../Components/UI/Modal';
 import BgBlackOpacity from '../Components/BgBlackOpacity';
+import Loading from '../Components/UI/Loading';
+import { useAuth } from '../context/AuthContext';
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -20,7 +22,7 @@ export default function Signup() {
   const [emailError, setEmailError] = useState();
   const [passwordError, setPasswordError] = useState();
   const [isOtpCorrect, setIsOtpCorrect] = useState(false);
-
+  const {setIsLoading} = useAuth()
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -39,6 +41,7 @@ export default function Signup() {
       alert('Please agree to terms');
       return;
     }
+    setIsLoading(true)
 
     try {
       const { error, fault } = await emailSignUp(
@@ -46,7 +49,7 @@ export default function Signup() {
         password,
         isAgreedToTerms
       );
-
+      setIsLoading(false)
       if (error) {
         fault == 'password' ? setPasswordError(error) : setEmailError(error);
         return;
@@ -54,12 +57,14 @@ export default function Signup() {
 
       setShowModal(true);
     } catch (e) {
+      setIsLoading(false)
       alert(e);
     }
   };
 
   return (
     <>
+   
       {isOtpCorrect ? (
         <UserDataForm email={email} />
       ) : (
@@ -108,7 +113,7 @@ export default function Signup() {
                 </button>
               </h4>
             </div>
-            <GoogleLogin setPasswordError={setPasswordError} />
+            {/* <GoogleLogin setPasswordError={setPasswordError} /> */}
           </div>
         </>
       )}

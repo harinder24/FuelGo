@@ -8,7 +8,7 @@ export const getUserData = async (token) => {
         Authorization: 'Bearer ' + token,
       },
     });
-    const userData = response.data.data;
+    const userData = response.data;
 
     return userData;
   } catch (error) {

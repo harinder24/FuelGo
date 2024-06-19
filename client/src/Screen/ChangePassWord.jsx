@@ -18,7 +18,7 @@ export default function ChangePassWord() {
 
   const [passwordError, setPasswordError] = useState();
   const [matchError, setMatchError] = useState(false);
-
+  const {setIsLoading} = useAuth()
   const handlePassword = (e) => {
     setPasswordError();
     setPassword(e.target.value);
@@ -48,12 +48,14 @@ export default function ChangePassWord() {
     if (password.length < 6) {
       setPasswordError('Password is too short');
     }
+    setIsLoading(true)
     try {
       const { fault, token } = await changePassword(
         id,
         password,
         confirmPassword
       );
+      setIsLoading(false)
       if (fault == 'badlink') {
         alert('The link is alread expired!');
         navigate('/accounts/forgetpassword');
@@ -67,6 +69,7 @@ export default function ChangePassWord() {
 
       setPasswordError('Password was not valid');
     } catch (err) {
+      setIsLoading(false)
       alert(err);
     }
   };

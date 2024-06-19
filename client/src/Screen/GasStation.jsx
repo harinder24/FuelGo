@@ -21,6 +21,7 @@ export default function GasStation() {
   const [station, setStation] = useState(null);
   const [timestamp, setTimestamp] = useState(null);
   const { user, token, updateUserData } = useAuth();
+  const [isLoading, setIsLoading] = useState(false)
   const [gasInfo, setGasInfo] = useState([
     {
       type: 'Regular',
@@ -164,6 +165,7 @@ export default function GasStation() {
   // add useEffect for all the info
   return (
     <>
+       {isLoading &&  <div className=' absolute top-0 w-full h-full flex flex-row justify-center z-[90] bg-[rgba(0,0,0,0.5)]'><Loading bgColor='bg-inherit' /></div>}
       {showModal && (
         <Modal>
           <ModalContent
@@ -174,6 +176,7 @@ export default function GasStation() {
             setStation={setStation}
             setTimestamp={setTimestamp}
             updateUserData={updateUserData}
+            setIsLoading={setIsLoading}
           />
         </Modal>
       )}
