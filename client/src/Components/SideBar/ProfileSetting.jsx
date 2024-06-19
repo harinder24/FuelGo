@@ -32,6 +32,7 @@ export default function ProfileSetting({ setCrrAction }) {
         newName || user.name,
         imgFile || user.profileImg
       );
+      setOnSave(false);
       if (!success) {
         setError('Your request was rejected!');
         return;
