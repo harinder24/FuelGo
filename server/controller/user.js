@@ -429,7 +429,7 @@ const editNameAndProfileImg = async (req, res) => {
     } else {
       return res
         .status(201)
-        .json({ success: false, message: 'Station not found.' });
+        .json({ success: false, message: 'user not found.' });
     }
   } catch (error) {
     console.error('Error:', error);

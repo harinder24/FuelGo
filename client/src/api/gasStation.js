@@ -81,12 +81,29 @@ export const getCrrLocation = async () => {
           };
           resolve(userLatLng);
         },
-        (error) => {
-          reject(error);
+        async (error) => {
+          try {
+            const response = await axios.get('https://ipapi.co/json/');
+            resolve({
+              lat: response.data.latitude,
+              lng: response.data.longitude,
+            });
+          } catch (apiError) {
+            reject(apiError);
+          }
         }
       );
     } else {
-      reject(new Error('Geolocation is not supported by this browser.'));
+      axios.get('https://ipapi.co/json/')
+        .then((response) => {
+          resolve({
+            lat: response.data.latitude,
+            lng: response.data.longitude,
+          });
+        })
+        .catch((apiError) => {
+          reject(apiError);
+        });
     }
   });
 };
