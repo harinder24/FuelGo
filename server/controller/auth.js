@@ -187,7 +187,7 @@ const emailLogIn = async (req, res) => {
           foundUser.password
         );
         if (matchPassword) {
-          const info = { email: foundUser.email };
+          const info = { email: email };
           const token = jwt.sign(info, process.env.TOKEN_SECRET);
           return res.status(201).json({
             success: true,
