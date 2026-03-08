@@ -53,6 +53,8 @@ export default function Preferences({ isList, preferences, setPreferences }) {
   
       switch (crrPref[1]) {
         case 0:
+         
+          
           return (
             station_a.distanceFromUser.replace(" km", "") -
             station_b.distanceFromUser.replace(" km", "")

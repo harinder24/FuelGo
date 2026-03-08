@@ -4,6 +4,7 @@ export const getGasStations = async (userLatLng) => {
   try {
     const { lat, lng } = userLatLng;
 
+    
     const response = await axios.post(serverLink + '/user/getgasstations', {
       latitude: lat,
       longitude: lng,
@@ -20,6 +21,7 @@ export const getGasStations = async (userLatLng) => {
 export const getFavouriteStations = async (stations, token) => {
   try {
     const { lat, lng } = await getCrrLocation();
+
     const response = await axios.post(
       serverLink + '/user/getfavouritestations',
       { stations, lat, lng },

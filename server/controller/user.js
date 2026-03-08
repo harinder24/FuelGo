@@ -22,6 +22,7 @@ const sendUserData = async (req, res) => {
 };
 async function getGasStations(req, res) {
   const { latitude, longitude } = req.body;
+
   
   let radius = 1000;
   let isGasStation20 = false;
@@ -126,9 +127,11 @@ async function getGasStations(req, res) {
       const distanceResponse = await axios.get(
         `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${latitude},${longitude}&destinations=${gasStationLatitude},${gasStationLongitude}&key=${process.env.GOOGLE_API_KEY}`
       );
-
+      console.log(distanceResponse);
+      
       const distance = distanceResponse.data.rows[0].elements[0].distance.text;
-
+     
+      
       station.distanceFromUser = distance;
     }
   } catch (error) {
